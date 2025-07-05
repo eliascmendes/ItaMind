@@ -1,7 +1,7 @@
 {
   "name": "itamind-backend",
   "version": "1.0.0",
-  "description": "Backend para sistema de previsão de vendas com Machine Learning",
+  "description": "Back do projeto ItaMind",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -15,7 +15,7 @@
     "mongodb",
     "machine-learning"
   ],
-  "author": "ItaMind Team",
+  "author": "Equipe backend da ItaMind",
   "dependencies": {
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",
