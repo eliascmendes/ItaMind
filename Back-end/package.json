@@ -1,19 +1,27 @@
 {
   "name": "itamind-backend",
   "version": "1.0.0",
-  "description": "Back do projeto ItaMind",
+  "description": "API Backend do sistema ItaMind - Previsões de vendas com Machine Learning",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "echo 'ESLint não configurado ainda'",
+    "clean:logs": "rimraf logs/*.log",
+    "prod": "NODE_ENV=production node src/app.js"
   },
   "keywords": [
     "nodejs",
     "express",
     "mongodb",
-    "machine-learning"
+    "machine-learning",
+    "api",
+    "vendas",
+    "previsao",
+    "itamind"
   ],
   "author": "Equipe backend da ItaMind",
   "dependencies": {
@@ -36,6 +44,18 @@
     "supertest": "^6.3.3"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/app.js"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
   }
 }
