@@ -2,36 +2,38 @@ const swaggerJsdoc = require("swagger-jsdoc")
 const path = require("path")
 
 const opcoes = {
-    definicao: {
-        openapi: "3.0.0",
-        informacao: {
-            titulo:  "ItaMind Backend",
-            versao: "1.0.0",
-            descricao: "Api do sistem Itamind para previsões para previsões de vendas com Machine Learning",
-            contato: {
-                nome: "Suporte Itamind",
-                email: "",
+    defition: {
+        openapi: '3.0.0',
+        info: {
+            title: "ItaMind Backend",
+            description: "Api do backend do sistema ItaMind - Previsões de venda com Machine Learning",
+            contact: {
+                name: "Suporte ItaMind",
+                email: ""
             }
         },
-        servidor: [
-            {
-                url: "http://localhost:3000",
-                descricao: "Servidor local para desenvolvimento"
-            }
-        ],
-        componentes: {
-            usuarios: {
-                login: {
-                    email: 'email',
-                    senha: 'senha',
+        servers: [{
+            url: "http://localhost:3000",
+            description: 'Servidor local para desenvolvimento'
+        }],
+        components: {
+            securitySchemas: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
                 }
             },
         },
-        users: [{
-            login: []
-        }]
-    }
+        security: [{
+            bearerAuth: []
+        }] 
+    },
+    apis: [
+        path.join(__dirname, "../routes/*.js"),
+        path.join(__dirname, "../app.js")
+    ]
 };
 
-const specs = swaggerJsdoc(opcoes);
-module.exports = specs
+const specs = swaggerJsdoc(opcoes)
+module.exports  = specs
