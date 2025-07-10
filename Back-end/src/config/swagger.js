@@ -58,7 +58,102 @@ const opcoes = {
             }
           }
         },
+        CadastroUsuario: {
+          type: 'object',
+          required: ['nome', 'email', 'senha'],
+          properties: {
+            nome: {
+              type: 'string',
+              minLength: 2,
+              maxLength: 50,
+              description: 'Nome completo do usuário',
+              example: 'Itamind'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário',
+              example:'itamind@itamind.com'
+            },
+            senha: {
+              type: 'string',
+              minLength: 6,
+              description: 'Senha do usuário',
+              example: '123456789'
+            }
+          }
+        },
+        LoginUsuario: {
+          type: 'object',
+          required: ['email', 'senha'],
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário',
+              example: 'itamind@itamind.com'
+            },
+            senha: {
+              type: 'string',
+              description: 'Senha do usuário',
+              example: '123456789'
+            }
+          }
+        },
+        RespostaSucesso: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'sucesso'
+            },
+            token: {
+              type: 'string',
+              description: 'Token JWT para autenticação'
+            },
+            data: {
+              type: 'object',
+              properties: {
+                user: {
+                  $ref: '#/components/schemas/Usuario'
+                }
+              }
+            }
+          }
+        },
+        RespostaErro: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'erro'
+            },
+            message: {
+              type: 'string',
+              description: 'Mensagem de erro'
+            }
+          }
+        },
+        RespostaPing: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'pong'
+            }
+          }
+        }
       }
-    }
-  }
-}
+    },
+    security: [{
+      bearerAuth: []
+    }]
+  },
+  apis: [
+    path.join(__dirname, "../routes/*.js"),
+    path.join(__dirname, "../app.js")
+  ]
+};
+
+const specs = swaggerJsdoc(opcoes)
+module.exports = specs
