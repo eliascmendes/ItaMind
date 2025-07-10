@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dashboard</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="./estilos/painelPrincipal.css">
+    <!-- Include Chart.js library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Dashboard Container -->
+    <div class="dashboard">
+        <!-- Navigation Sidebar -->
+        <section class="cabecalho">
+            <div class="dropdown">
+            <button class="dropbtn"><img class="botao__menu" src="./assents/menu.png" alt="botao__menu"></button>
+                <div class="dropdown-content">
+                    <a href="#previsao">Previsão</a>
+                    <a href="#estoque">Estoque</a>
+                    <a href="#addDados">Adicionar Dados</a>
+                    <a href="#coperadores">Coperadores</a>
+                </div>
+        </div>
+        <nav class="cabecalho__usuario">
+            <a class="cabecalho__usuario__link" href="#">Cadastro</a>
+            <div class="dropdown">
+            <button class="dropbtn"><img class="botao__menu" src="./assents/gear-fill.png" alt="botao__menu"></button>
+                <div class="dropdown-content">
+                    <a href="painelPincipal.html">Página Principal</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+        </nav>
+        </section>
+            <section id="previsao">
+                <!-- Main Content Area -->
+                <div class="main-content">
+                    <!-- Header Section -->
+                    <header>
+                        <h1>Bem Vindo, User</h1>
+                        <h2>Previsão</h2>
+                    </header>
+
+                    <!-- Widgets Section -->
+                    <section class="widgets">
+                        <!-- Widget 1 -->
+                        <div class="widget">
+                            <h3>Saída</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 2 -->
+                        <div class="widget">
+                            <h3>Entrada</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 3 -->
+                        <div class="widget">
+                            <h3>Ganho</h3>
+                            <p>kg</p>
+                        </div>
+                        <div class="widget">
+                            <h3>Perda</h3>
+                            <p>kg</p>
+                        </div>
+                    </section>
+
+                    <!-- Charts Section -->
+                    <section class="charts">
+                        <!-- Line Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                        <!-- Bar Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </section>
+            <section id="estoque">
+                <!-- Main Content Area -->
+                <div class="main-content">
+                    <!-- Header Section -->
+                    <header>
+                        
+                        <h2>Estoque</h2>
+                    </header>
+
+                    <!-- Widgets Section -->
+                    <section class="widgets">
+                        <!-- Widget 1 -->
+                        <div class="widget">
+                            <h3>Saída</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 2 -->
+                        <div class="widget">
+                            <h3>Entrada</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 3 -->
+                        <div class="widget">
+                            <h3>Ganho</h3>
+                            <p>kg</p>
+                        </div>
+                        <div class="widget">
+                            <h3>Perda</h3>
+                            <p>kg</p>
+                        </div>
+                    </section>
+                    
+                    
+                </div>
+            </section>
+            <section id="addDados">
+                <!-- Main Content Area -->
+                <div class="main-content">
+                    <!-- Header Section -->
+                    <header>
+                        
+                        <h2>Adicionar Dados</h2>
+                    </header>
+
+                    <!-- Widgets Section -->
+                    <section class="widgets">
+                        <!-- Widget 1 -->
+                        <div class="widget">
+                            <h3>Congelamento</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 2 -->
+                        <div class="widget">
+                            <h3>Dia 1</h3>
+                            <p>kg</p>
+                        </div>
+                        <!-- Widget 3 -->
+                        <div class="widget">
+                            <h3>Dia 2</h3>
+                            <p>kg</p>
+                        </div>
+                        <div class="widget">
+                            <h3>Venda</h3>
+                            <p>kg</p>
+                        </div>
+                    </section>
+
+                    
+                    
+                </div>
+            </section>
+            <section id="coperadores">
+                <!-- Main Content Area -->
+                <div class="main-content">
+                    <!-- Header Section -->
+                    <header>
+                        
+                        <h2>Coperadores</h2>
+                    </header>
+
+                    <!-- Widgets Section -->
+                    
+                        <!-- Widget 1 -->
+                        <div class="widget">
+                            <h3>itaMind</h3>
+                            <p></p>
+                        </div>
+            </section>
+        </div>
+            
+            
+            
+            
+        
+    
+</body>
+<!-- Link to external JavaScript file -->
+<script src="dados.js"></script>
+</html>
