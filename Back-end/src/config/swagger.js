@@ -23,10 +23,15 @@ const opcoes = {
             usuarios: {
                 login: {
                     email: 'email',
-                    senha: 'senha'
+                    senha: 'senha',
                 }
             },
         },
-        us
+        users: [{
+            login: []
+        }]
     }
-}
+};
+
+const specs = swaggerJsdoc(opcoes);
+module.exports = specs
