@@ -145,5 +145,15 @@ const opcoes = {
         }
       }
     },
-  }
-}
+    security: [{
+      bearerAuth: []
+    }]
+  },
+  apis: [
+    path.join(__dirname, "../routes/*.js"),
+    path.join(__dirname, "../app.js")
+  ]
+};
+
+const specs = swaggerJsdoc(opcoes)
+module.exports = specs
