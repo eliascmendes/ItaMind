@@ -2,7 +2,7 @@ const swaggerJsdoc = require("swagger-jsdoc")
 const path = require("path")
 
 const opcoes = {
-    defition: {
+    definition: {
         openapi: '3.0.0',
         info: {
             title: "ItaMind Backend",
