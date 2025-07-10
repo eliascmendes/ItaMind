@@ -4,7 +4,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const conectarDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
-
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpecs = require("./config/swagger")
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // rotas
 app.use('/api/auth', authRoutes);
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 // teste
 app.get('/ping', (req, res) => {
   res.json({ message: 'pong' });
