@@ -20,7 +20,31 @@ app.use(express.urlencoded({ extended: true }));
 // rotas
 app.use('/api/auth', authRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
-// teste
+
+/**
+ * @swagger
+ * tags:
+ *   name: Teste
+ *   description: Endpoints para teste da API
+ */
+
+/**
+ * @swagger
+ * /ping:
+ *   get:
+ *     summary: Teste de conectividade
+ *     description: Verifica se a API está funcionando corretamente
+ *     tags: [Teste]
+ *     responses:
+ *       200:
+ *         description: API funcionando corretamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RespostaPing'
+ *             example:
+ *               message: "pong"
+ */
 app.get('/ping', (req, res) => {
   res.json({ message: 'pong' });
 });
@@ -29,4 +53,4 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 
-module.exports = app; 
+module.exports = app;
