@@ -82,7 +82,24 @@ const opcoes = {
               example: '123456789'
             }
           }
-        }
+        },
+        LoginUsuario: {
+          type: 'object',
+          required: ['email', 'senha'],
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário',
+              example: 'itamind@itamind.com'
+            },
+            senha: {
+              type: 'string',
+              description: 'Senha do usuário',
+              example: '123456789'
+            }
+          }
+        },
       }
     }
   }
