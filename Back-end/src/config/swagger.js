@@ -27,7 +27,37 @@ const opcoes = {
         }
       },
       schemas: {
-        Usuario: {}
+        Usuario: {
+          type: 'object',
+          required: ['nome', 'email'],
+          properties: {
+            _id: {
+              type: 'string',
+              description: 'ID único do usuário'
+            },
+            nome: {
+              type: 'string',
+              minLength: 2,
+              maxLength: 50,
+              description: 'Nome completo do usuário'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Data de criação do usuário'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Data da última atualização'
+            }
+          }
+        },
       }
     }
   }
