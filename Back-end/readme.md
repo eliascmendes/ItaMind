@@ -2,7 +2,7 @@
 
 API Backend do sistema ItaMind para previsões de vendas com Machine Learning.
 
-##  Tecnologias
+## Tecnologias
 
 - **Node.js** + **Express** - Framework web
 - **MongoDB** + **Mongoose** - Banco de dados
@@ -13,27 +13,27 @@ API Backend do sistema ItaMind para previsões de vendas com Machine Learning.
 - **Winston** - Logs
 - **Jest** - Testes
 
-##  Pré-requisitos
+## Pré-requisitos
 
 - Node.js (v16+)
 - MongoDB (local ou Atlas)
 - npm ou yarn
 
-
-##  Documentação da API (Swagger)
+## Documentação da API (Swagger)
 
 A documentação da API está disponível através do Swagger UI:
 
 - **URL local**: http://localhost:3000/api-docs
 
-## 🛠️ Rotas Disponíveis
+## Rotas Disponíveis
 
-### 🔐 Autenticação
+### Autenticação
+
 - `POST /api/auth/cadastrar` - Cadastrar novo usuário
 - `POST /api/auth/login` - Fazer login
 - `GET /api/auth/perfil` - Buscar perfil do usuário
 
-##  Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 src/
