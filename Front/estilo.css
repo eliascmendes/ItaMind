@@ -10,11 +10,11 @@
     --cor-terciaria:#D9D9D9;
 }
 body{
-    background-color: #0F0F0F;
+    background-color: var(--cor-principal);
 }
 
 .cabecalho{
-    background-color: #085A8C;
+    background-color: var(--cor-secundaria);
     padding: 1.720%;
     display: flex;
     justify-content: space-between;
@@ -22,13 +22,13 @@ body{
 
 
 .cabecalho__menu__link{
-    color: black;
+    color: var(--cor-principal);
     padding: 6px;
-    border: 1px solid black;
+    border: 1px solid var(--cor-principal);
     border-radius: 6px;
 }
 .cabecalho__usuario__link{
-    color: aliceblue;
+    color: var(--cor-terciaria);
 }
 
 .conteudo{
@@ -76,7 +76,7 @@ body{
 }
 
 .conteudo__titulo{
-    color: aliceblue;
+    color: var(--cor-terciaria);
     display: flex;
     justify-content: center;
     
@@ -96,15 +96,18 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 32px;
 }
 
 .conteudo__dados__palavra{
     color: var(--cor-terciaria);
-    padding: 15%;
 
 }
 .conteudo__dados__valor{
     display: flex;
+    flex-direction: column;
     background-color: var(--cor-terciaria);
     text-align: center;
     justify-content: center;
@@ -115,4 +118,24 @@ body{
     
 
 }
-
+.conteudo__dados__valor__RG{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-terciaria);
+    text-align: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+}
+.conteudo__dados__adicionar{
+    display: flex;
+    flex-direction: column;
+    color: var(--cor-secundaria);
+    background-color: var(--cor-terciaria);
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    text-align: center;
+    font-size: 50px;
+}
