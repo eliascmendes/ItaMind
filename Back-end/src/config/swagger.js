@@ -58,6 +58,31 @@ const opcoes = {
             }
           }
         },
+        CadastroUsuario: {
+          type: 'object',
+          required: ['nome', 'email', 'senha'],
+          properties: {
+            nome: {
+              type: 'string',
+              minLength: 2,
+              maxLength: 50,
+              description: 'Nome completo do usuário',
+              example: 'Itamind'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              description: 'Email do usuário',
+              example:'itamind@itamind.com'
+            },
+            senha: {
+              type: 'string',
+              minLength: 6,
+              description: 'Senha do usuário',
+              example: '123456789'
+            }
+          }
+        }
       }
     }
   }
