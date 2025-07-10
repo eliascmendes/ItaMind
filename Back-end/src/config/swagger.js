@@ -133,8 +133,17 @@ const opcoes = {
               description: 'Mensagem de erro'
             }
           }
+        },
+        RespostaPing: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'pong'
+            }
+          }
         }
       }
-    }
+    },
   }
 }
