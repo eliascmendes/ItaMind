@@ -2,38 +2,33 @@ const swaggerJsdoc = require("swagger-jsdoc")
 const path = require("path")
 
 const opcoes = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: "ItaMind Backend",
-            description: "Api do backend do sistema ItaMind - Previsões de venda com Machine Learning",
-            contact: {
-                name: "Suporte ItaMind",
-                email: ""
-            }
-        },
-        servers: [{
-            url: "http://localhost:3000",
-            description: 'Servidor local para desenvolvimento'
-        }],
-        components: {
-            securitySchemas: {
-                bearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: 'JWT'
-                }
-            },
-        },
-        security: [{
-            bearerAuth: []
-        }] 
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: "ItaMind Backend API",
+      version: "1.0.0",
+      description: "API do backend do sistema ItaMind - Previsões de vendas com Machine Learning",
+      contact: {
+        name: "Suporte ItaMind",
+        email: "emailficticioitamind@itamind.com"
+      }
     },
-    apis: [
-        path.join(__dirname, "../routes/*.js"),
-        path.join(__dirname, "../app.js")
-    ]
-};
-
-const specs = swaggerJsdoc(opcoes)
-module.exports  = specs
+    servers: [{
+      url: "http://localhost:3000",
+      description: 'Servidor local para desenvolvimento'
+    }],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormart: 'JWT',
+          description: 'Token JWT para autenticação'
+        }
+      },
+      schemas: {
+        Usuario: {}
+      }
+    }
+  }
+}
