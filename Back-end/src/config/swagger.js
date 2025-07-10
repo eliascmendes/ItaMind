@@ -100,6 +100,40 @@ const opcoes = {
             }
           }
         },
+        RespostaSucesso: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'sucesso'
+            },
+            token: {
+              type: 'string',
+              description: 'Token JWT para autenticação'
+            },
+            data: {
+              type: 'object',
+              properties: {
+                user: {
+                  $ref: '#/components/schemas/Usuario'
+                }
+              }
+            }
+          }
+        },
+        RespostaErro: {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'string',
+              example: 'erro'
+            },
+            message: {
+              type: 'string',
+              description: 'Mensagem de erro'
+            }
+          }
+        }
       }
     }
   }
