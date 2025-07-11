@@ -5,11 +5,38 @@
 
 ## 🛠️ Tecnologias Utilizadas
 
--   **Frontend:** 
--   **Backend:** 
--   **Ciência de Dados:** 
--   **Estilização:** 
+### **💻 Frontend & Interface do Usuário**
 
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white "HTML5 - Linguagem de marcação para estruturar o conteúdo web.")
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white "CSS3 - Linguagem de estilo para estilizar a aparência das páginas.")
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black "JavaScript - Linguagem de programação essencial para interatividade.")
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white "Bootstrap - Framework de frontend para um design responsivo e ágil.")
+![Charts.js](https://img.shields.io/badge/Charts.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white "Charts.js - Biblioteca para criação de gráficos interativos e visualização de dados.")
+
+### **⚙️ Backend & Servidor**
+
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white "Node.js - Ambiente de execução JavaScript no servidor.")
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white "Express.js - Framework web minimalista para construir a API de forma eficiente.")
+
+### **💾 Banco de Dados**
+
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white "MongoDB - Banco de dados NoSQL flexível e escalável.")
+![Mongoose](https://img.shields.io/badge/Mongoose-800000?style=for-the-badge&logo=mongoose&logoColor=white "Mongoose - ODM para MongoDB, facilitando a interação e modelagem de dados.")
+
+### **🔒 Segurança & Autenticação**
+
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white "JWT - Padrão para autenticação e autorização seguras através de tokens.")
+![bcrypt](https://img.shields.io/badge/bcrypt-000000?style=for-the-badge&logo=npm&logoColor=white "bcrypt - Biblioteca para hashing de senhas, protegendo as credenciais.")
+
+### **✅ Validação & Documentação da API**
+
+![Joi](https://img.shields.io/badge/Joi-B71C1C?style=for-the-badge&logo=joi&logoColor=white "Joi - Biblioteca robusta para validação de esquemas de dados.")
+![Swagger / OpenAPI](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black "Swagger/OpenAPI - Para documentação interativa e visualização dos endpoints da API.")
+
+### **🔧 Ferramentas de Desenvolvimento & Testes**
+
+![Winston](https://img.shields.io/badge/Winston-000000?style=for-the-badge&logo=npm&logoColor=white "Winston - Sistema de logging flexível para monitoramento de eventos.")
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white "Jest - Framework de teste JavaScript com foco na simplicidade e velocidade.")
 
 
 
