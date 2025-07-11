@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 from datetime import timedelta, datetime
 from pathlib import Path
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from xgboost import XGBRegressor
 
-#  funções de descongelamento
+# descongelamento
 from descongelamento_asa import calcular_retirada, calcular_idade_lote
 
 ARQUIVO_CSV = Path(__file__).with_name("dados_vendas_itamind.csv")
@@ -58,3 +58,85 @@ def treinar_modelo(train: pd.DataFrame) -> XGBRegressor:
     )
     model.fit(X_train, y_train)
     return model
+
+def avaliar_modelo(model: XGBRegressor, test: pd.DataFrame) -> dict:
+    X_test = test.drop(columns=["ds", "y"])
+    y_true = test["y"].values
+    y_pred = model.predict(X_test)
+
+    # RMSE
+    try:
+        rmse = mean_squared_error(y_true, y_pred, squared=False)
+    except TypeError:
+        rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+
+    # MAPE
+    try:
+        mape = mean_absolute_percentage_error (y_true, y_pred)
+    except Exception:
+        mape = np.mean(np.abs((y_true - y_pred) / np.where(y_true == 0, 1, y_true))) * 100
+
+    return {"RMSE": rmse, "MAPE": mape}
+
+
+def prever_proximos_dias(df: pd.DataFrame, model: XGBRegressor, dias: int = 7) -> pd.DataFrame:
+    ultimos = df.copy()
+    futuras_linhas = []
+    for i in range(1, dias + 1):
+        proxima_data = ultimos["ds"].iloc[-1] + timedelta(days=1)
+        nova_linha = {"ds": proxima_data}
+
+        # features temporais
+        nova_linha["dayofweek"] = proxima_data.dayofweek
+        nova_linha["month"] = proxima_data.month
+        nova_linha["day"] = proxima_data.day
+
+        # lags
+        nova_linha["lag1"] = ultimos["y"].iloc[-1]
+        nova_linha["lag2"] = ultimos["y"].iloc[-2] if len(ultimos) >= 2 else np.nan
+
+        # média móvel 7 dias
+        nova_linha["roll7"] = ultimos["y"].tail(7).mean()
+
+        features = ["dayofweek", "month", "day", "lag1", "lag2", "roll7"]
+        y_pred = model.predict(pd.DataFrame([nova_linha])[features])[0]
+
+        nova_linha["y"] = y_pred
+        futuras_linhas.append(nova_linha)
+        ultimos = pd.concat([ultimos, pd.DataFrame([nova_linha])], ignore_index=True)
+
+    previsoes = pd.DataFrame(futuras_linhas)
+    return previsoes[["ds", "y"]]
+
+
+def calcular_retiradas(previsoes: pd.DataFrame) -> pd.DataFrame:
+    previsoes = previsoes.copy()
+    previsoes["retirada_kg"] = previsoes["y"].apply(calcular_retirada)
+    return previsoes
+
+
+def pipeline():
+    df_raw = carregar_dados()
+    df_feat = criar_features(df_raw)
+    train, test = divisao_treino_teste_temporal(df_feat)
+    model = treinar_modelo(train)
+    metricas = avaliar_modelo(model, test)
+
+    prox7 = prever_proximos_dias(df_feat, model, dias=7)
+    prox7 = calcular_retiradas(prox7)
+
+    return metricas, prox7
+
+
+if __name__ == "__main__":
+    metricas, previsoes = pipeline()
+    print("Métricas de avaliação:")
+    for k, v in metricas.items():
+        print(f"{k}: {v:.2f}")
+
+    print("\nPrevisões e retiradas sugeridas:")
+    for _, row in previsoes.iterrows():
+        data = row["ds"].strftime("%d/%m/%Y")
+        venda = row["y"]
+        retirada = row["retirada_kg"]
+        print(f"{data} | Previsto: {venda:.2f} kg | Retirada sugerida: {retirada:.2f} kg")
