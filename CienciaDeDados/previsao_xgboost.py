@@ -112,6 +112,12 @@ def prever_proximos_dias(df: pd.DataFrame, model: XGBRegressor, dias: int = 7) -
 def calcular_retiradas(previsoes: pd.DataFrame) -> pd.DataFrame:
     previsoes = previsoes.copy()
     previsoes["retirada_kg"] = previsoes["y"].apply(calcular_retirada)
+    #  data de retirada (2 dias antes da venda)
+    previsoes["data_retirada"] = previsoes["ds"] - timedelta(days=2)
+    # idade do lote no dia da venda
+    previsoes["idade_lote"] = previsoes.apply(
+        lambda row: calcular_idade_lote(row["data_retirada"], row["ds"]), axis=1
+    )
     return previsoes
 
 
@@ -135,8 +141,17 @@ if __name__ == "__main__":
         print(f"{k}: {v:.2f}")
 
     print("\nPrevisões e retiradas sugeridas:")
+    print("=" * 60)
     for _, row in previsoes.iterrows():
-        data = row["ds"].strftime("%d/%m/%Y")
+        data_venda = pd.to_datetime(row["ds"]).strftime("%d/%m/%Y")
+        data_retirada = pd.to_datetime(row["data_retirada"]).strftime("%d/%m/%Y")
         venda = row["y"]
         retirada = row["retirada_kg"]
-        print(f"{data} | Previsto: {venda:.2f} kg | Retirada sugerida: {retirada:.2f} kg")
+        idade = row["idade_lote"]
+
+        print(f"Venda: {data_venda}")
+        print(f"Retirar em: {data_retirada}")
+        print(f"Previsto: {venda:.2f} kg")
+        print(f"Retirada: {retirada:.2f} kg")
+        print(f"Idade: {idade}")
+        print("-" * 40)
