@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const conectarDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const previsaoRoutes = require('./routes/previsaoRoutes');
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpecs = require("./config/swagger")
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // rotas
 app.use('/api/auth', authRoutes);
+app.use('/api/previsao', previsaoRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 /**

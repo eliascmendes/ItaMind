@@ -1,9 +1,9 @@
-const express = require('express');
-const { cadastrar, login, buscarPerfil } = require('../controllers/authController');
-const { autenticar } = require('../middlewares/auth');
-const { validarCadastro, validarLogin } = require('../middlewares/validacao');
+const express = require('express')
+const { cadastrar, login, buscarPerfil } = require('../controllers/authController')
+const { autenticar } = require('../middlewares/auth')
+const { validarCadastro, validarLogin } = require('../middlewares/validacao')
 
-const router = express.Router();
+const router = express.Router()
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ const router = express.Router();
  *                   status: "erro"
  *                   message: "Nome deve ter pelo menos 2 caracteres"
  */
-router.post('/cadastrar', validarCadastro, cadastrar);
+router.post('/cadastrar', validarCadastro, cadastrar)
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ router.post('/cadastrar', validarCadastro, cadastrar);
  *               status: "erro"
  *               message: "Email ou senha incorretos"
  */
-router.post('/login', validarLogin, login);
+router.post('/login', validarLogin, login)
 
 /**
  * @swagger
@@ -173,6 +173,6 @@ router.post('/login', validarLogin, login);
  *               status: "erro"
  *               message: "Token de acesso necessário"
  */
-router.get('/perfil', autenticar, buscarPerfil);
+router.get('/perfil', autenticar, buscarPerfil)
 
-module.exports = router;
+module.exports = router
