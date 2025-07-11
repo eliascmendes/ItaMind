@@ -22,3 +22,9 @@ def carregar_dados(caminho: Path = ARQUIVO_CSV) -> pd.DataFrame:
   df = preencher_datas_faltantes(df)
   return df
 
+def preencher_datas_faltantes(df: pd.DataFrame) -> pd.DataFrame:
+  idx = pd.date_range(df["ds"].min(), df["ds"].max(), freq="D")
+  df = df.set_index("ds").reindex(indx).fillna(0).rename_axis("ds").reset_index()
+  return df
+
+def criar_features(df: pd.DataFrame) -> pd.DataFrame:
