@@ -4,6 +4,7 @@ from datetime import timedelta, datetime
 from pathlib import Path
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from xgboost import XGBRegressor
+from xgboost.core import Objective
 
 
 # import descongelamento
@@ -37,3 +38,22 @@ def criar_features(df: pd.DataFrame) -> pd.DataFrame:
   df_feat["roll7"] = df_feat["y"].shift(1).rolling(7).mean()
   df_feat = df_feat.dropna().reset_index(drop=True)
   return df_feat
+
+def divisao_treino_teste_temporal(df: pd.DataFrame, test_size: float = 0.2):
+  split_idx = int(len(df) * (1 - test_size))
+  treino = df.iloc[:split_idx]
+  teste = df.iloc[split_idx:]
+  return treino, teste
+
+
+def treinar_modelo(train: pd.DataFrame) -> XGBRegressor:
+  X_train = train.drop(columns=["ds","y"])
+  y_train = train["y"]
+  model = XGBRegressor(
+    objective="reg:squarederror",
+    n_estimator=100,
+    learning_rate=0.1,
+    random_state=42,
+  )
+  model.fit(X_train, y_train)
+  return model
