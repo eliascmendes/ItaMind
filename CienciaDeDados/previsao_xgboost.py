@@ -28,3 +28,12 @@ def preencher_datas_faltantes(df: pd.DataFrame) -> pd.DataFrame:
   return df
 
 def criar_features(df: pd.DataFrame) -> pd.DataFrame:
+  df_feat = df.copy()
+  df_feat["dayofweek"] = df_feat["ds"].dt.dayofweek
+  df_feat["month"] = df_feat["ds"].dt.month
+  df_feat["day"] = df_feat["ds"].dt.day
+  df_feat["lag1"] = df_feat["y"].shift(1)
+  df_feat["lag2"] = df_feat["y"].shift(2)
+  df_feat["roll7"] = df_feat["y"].shift(1).rolling(7).mean()
+  df_feat = df_feat.dropna().reset_index(drop=True)
+  return df_feat
