@@ -1,159 +1,116 @@
-const swaggerJsdoc = require("swagger-jsdoc")
-const path = require("path")
+const swaggerJSDoc = require('swagger-jsdoc')
 
 const opcoes = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: "ItaMind Backend API",
-      version: "1.0.0",
-      description: "API do backend do sistema ItaMind - Previsões de vendas com Machine Learning",
-      contact: {
-        name: "Suporte ItaMind",
-        email: "emailficticioitamind@itamind.com"
-      }
+      title: 'ItaMind API',
+      version: '1.0.0',
+      description: 'API para sistema de previsão de vendas ItaMind',
     },
-    servers: [{
-      url: "http://localhost:3000",
-      description: 'Servidor local para desenvolvimento'
-    }],
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Servidor de desenvolvimento',
+      },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormart: 'JWT',
-          description: 'Token JWT para autenticação'
-        }
+          bearerFormat: 'JWT',
+        },
       },
       schemas: {
         Usuario: {
           type: 'object',
-          required: ['nome', 'email'],
           properties: {
-            _id: {
+            id: {
               type: 'string',
-              description: 'ID único do usuário'
+              description: 'ID único do usuário',
             },
             nome: {
               type: 'string',
-              minLength: 2,
-              maxLength: 50,
-              description: 'Nome completo do usuário'
+              description: 'Nome do usuário',
             },
             email: {
               type: 'string',
-              format: 'email',
-              description: 'Email do usuário'
+              description: 'Email do usuário',
             },
-            createdAt: {
+          },
+        },
+        Previsao: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              description: 'ID único da previsão',
+            },
+            sku: {
+              type: 'number',
+              description: 'SKU do produto',
+            },
+            data_previsao: {
               type: 'string',
               format: 'date-time',
-              description: 'Data de criação do usuário'
+              description: 'Data e hora da previsão',
             },
-            updatedAt: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Data da última atualização'
-            }
-          }
-        },
-        CadastroUsuario: {
-          type: 'object',
-          required: ['nome', 'email', 'senha'],
-          properties: {
-            nome: {
-              type: 'string',
-              minLength: 2,
-              maxLength: 50,
-              description: 'Nome completo do usuário',
-              example: 'Itamind'
+            rmse: {
+              type: 'number',
+              description: 'Root Mean Square Error',
             },
-            email: {
-              type: 'string',
-              format: 'email',
-              description: 'Email do usuário',
-              example:'itamind@itamind.com'
+            mape: {
+              type: 'number',
+              description: 'Mean Absolute Percentage Error',
             },
-            senha: {
-              type: 'string',
-              minLength: 6,
-              description: 'Senha do usuário',
-              example: '123456789'
-            }
-          }
-        },
-        LoginUsuario: {
-          type: 'object',
-          required: ['email', 'senha'],
-          properties: {
-            email: {
-              type: 'string',
-              format: 'email',
-              description: 'Email do usuário',
-              example: 'itamind@itamind.com'
+            previsoes: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  ds: {
+                    type: 'string',
+                    format: 'date',
+                    description: 'Data da previsão',
+                  },
+                  yhat: {
+                    type: 'number',
+                    description: 'Valor previsto',
+                  },
+                  yhat_lower: {
+                    type: 'number',
+                    description: 'Limite inferior da previsão',
+                  },
+                  yhat_upper: {
+                    type: 'number',
+                    description: 'Limite superior da previsão',
+                  },
+                },
+              },
             },
-            senha: {
-              type: 'string',
-              description: 'Senha do usuário',
-              example: '123456789'
-            }
-          }
-        },
-        RespostaSucesso: {
-          type: 'object',
-          properties: {
-            status: {
-              type: 'string',
-              example: 'sucesso'
-            },
-            token: {
-              type: 'string',
-              description: 'Token JWT para autenticação'
-            },
-            data: {
-              type: 'object',
-              properties: {
-                user: {
-                  $ref: '#/components/schemas/Usuario'
-                }
-              }
-            }
-          }
-        },
-        RespostaErro: {
-          type: 'object',
-          properties: {
-            status: {
-              type: 'string',
-              example: 'erro'
-            },
-            message: {
-              type: 'string',
-              description: 'Mensagem de erro'
-            }
-          }
+          },
         },
         RespostaPing: {
           type: 'object',
           properties: {
             message: {
               type: 'string',
-              example: 'pong'
-            }
-          }
-        }
-      }
+              description: 'Mensagem de resposta',
+            },
+          },
+        },
+      },
     },
-    security: [{
-      bearerAuth: []
-    }]
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: [
-    path.join(__dirname, "../routes/*.js"),
-    path.join(__dirname, "../app.js")
-  ]
-};
+  apis: ['./src/routes/*.js', './src/app.js'],
+}
 
-const specs = swaggerJsdoc(opcoes)
-module.exports = specs
+const especificacoes = swaggerJSDoc(opcoes)
+
+module.exports = especificacoes
