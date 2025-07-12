@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Dashboard</title>
+    <title>ItaMind</title>
     <!-- Link do Css -->
     <link rel="stylesheet" href="./estilos/painelPrincipal.css">
     <!-- Link dos gráficos (Chart.Js)-->
@@ -15,30 +15,31 @@
         <!-- Barra de Navegação -->
         <section class="cabecalho">
             <div class="dropdown">
-            <button class="dropbtn"><img class="botao__menu" src="./assents/menu.png" alt="botao__menu"></button>
+            <button class="dropbtn"><img class="botao__menu" src="./assets/menu.png" alt="botao__menu"></button>
                 <div class="dropdown-content">
                     
                     <a href="#previsao">Previsão</a>
                     <a href="#estoque">Estoque</a>
                     <a href="#addDados">Adicionar Dados</a>
-                    <a href="#coperadores">Coperadores</a>
+                    <a href="#cooperadores">Cooperadores</a>
                 </div>
                 
         </div>
+          <!-- Barra de configuração-->
         <nav class="cabecalho__usuario">
-            
-            <div class="configuracao">
-            <button class="dropbtn"><img class="botao__menu" src="./assents/gear-fill.png" alt="botao__menu"></button>
-                <div class="configuracao-content">
-                    
-                    <a href="painelPincipal.html">Conta</a>
-                    <a href="#">Segurança</a>
-                    <a href="#">Política de privacidade</a>
-                    <a href="#">Sair da conta</a>
-                    <input type="checkbox"> dark-mode
-
-                </div>
-        </nav>
+    <div class="configuracao">
+    <button class="dropbtn">
+      <img class="botao__menu" src="./assets/gear-fill.png" alt="Configuração">
+    </button>
+    <div class="configuracao-content">
+      <a href="painelPrincipal.html">Conta</a>
+      <a href="#">Segurança</a>
+      <a href="#">Política de privacidade</a>
+      <a href="#">Sair da conta</a>
+      <label><input type="checkbox"> dark-mode</label>
+    </div>
+  </div>
+      </nav>
         </section>
             <section id="previsao">
                 <!-- Área do Conteúdo Principal de previsão -->
@@ -52,7 +53,7 @@
                         <h3>Data</h3>
                         <input type="date">
                     </div>
-                    <!-- Aréa de Estoque -->
+                    <!-- Área de Estoque -->
                     <section class="widgets">
 
                         <!-- Widget de Saída-->
@@ -91,7 +92,7 @@
                 </div>
             </section>
             <section id="estoque">
-                <!-- Main Content Area -->
+                <!-- Main Content Área -->
                 <div class="main-content">
                     <!-- Header Section -->
                     <header>
@@ -99,23 +100,24 @@
                         <h2>Estoque</h2>
                     </header>
 
-                    <!-- Widgets Section -->
+                    <!-- Área de Estoque -->
                     <section class="widgets">
-                        <!-- Widget 1 -->
+                        <!-- Widget Saída -->
                         <div class="widget">
                             <h3>Saída</h3>
                             <p>kg</p>
                         </div>
-                        <!-- Widget 2 -->
+                        <!-- Widget Entrada -->
                         <div class="widget">
                             <h3>Entrada</h3>
                             <p>kg</p>
                         </div>
-                        <!-- Widget 3 -->
+                        <!-- Widget Ganho -->
                         <div class="widget">
                             <h3>Ganho</h3>
                             <p>kg</p>
                         </div>
+                         <!-- Widget Perda -->
                         <div class="widget">
                             <h3>Perda</h3>
                             <p>kg</p>
@@ -136,7 +138,7 @@
 
                     <!-- Seção Adicionar Dados-->
                     <section class="widgets">
-                        <!-- Widget do Cogelamento -->
+                        <!-- Widget do Congelamento -->
                         <div class="widget">
                             <h3>Congelamento</h3>
                             <input type="number" class="widget widget__kg" placeholder="kg">
@@ -159,23 +161,22 @@
 
                 </div>
             </section>
-            <section id="coperadores">
-                <!-- Main Content Area -->
+            <section id="cooperadores">
                 <div class="main-content">
-                    <!-- Header Section -->
                      <header>
 
-                        <h2>Coperadores</h2>
+                        <h2>Cooperadores</h2>
                     </header>
 
-                    <!-- Widgets Section -->
+                    <!-- Área de Cooperadores -->
                     <section>
-                        <!-- Widget 1 -->
-                        <div class="widget__coperadores">
+                        <!-- Widget Itamind -->
+                        <div class="widget__cooperadores">
                             <h3>itaMind</h3>
                             <p class="oi">oi</p>
                         </div>
                     </section>
+                    </div> 
             </section>
         </div>
 

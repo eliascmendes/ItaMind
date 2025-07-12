@@ -270,7 +270,7 @@ header p {
     margin-bottom: 10px;
     font-weight: bold;
 }
-.widget__coperadores {
+.widget__cooperadores {
   background-color: var(--white-color);
   padding: 20px;
   border-radius: 8px;
@@ -279,17 +279,17 @@ header p {
   transition: transform 0.3s;
 }
 
-.widget__coperadores h3 {
+.widget__cooperadores h3 {
   font-size: 20px;
   margin-bottom: 10px;
   color: var(--primary-color);
 }
 
-.widget__coperadores p {
+.widget__cooperadores p {
   font-size: 28px;
   font-weight: bold;
 }
-.widget__coperadores:hover {
+.widget__cooperadores:hover {
   transform: translateY(-5px);
 }
 .oi{
