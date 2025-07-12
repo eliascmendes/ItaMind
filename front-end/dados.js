@@ -98,3 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // executa a função de buscar dados assim que a página carrega
   buscarPrevisaoPadrao()
 })
+document.querySelector('input').onclick = () => {
+  document.body.classList.toggle('dark-mode')
+}
