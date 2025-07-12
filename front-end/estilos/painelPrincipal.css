@@ -19,12 +19,24 @@ html{
     --white-color: #FFFFFF;         /* Pure white */
 
 }
+.dark-mode{
+    --cor-principal: #0F0F0F; /* Dark background */
+    --cor-secundaria: #085A8C; /* Darker secondary color */
+    --cor-terciaria: #BB86FC; /* Lighter accent color */
+    --cor-quaternaria: #03DAC6; /* Teal accent color */
+    --primary-color: #085A8C; /* Purple shade */
+    --secondary-color: #03DAC6; /* Teal shade */
+    --background-color: #121212; /* Dark gray background */
+    --text-color: #4A4A4A; /* Light gray text */
+    --white-color: #FFFFFF; /* Pure white for contrast */
+}
 body{
     background-color: var(--cor-principal);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
 
 .cabecalho{
     background-color: var(--cor-secundaria);
@@ -51,7 +63,7 @@ body{
     background-color: var(--cor-secundaria);
 
 }
-.dropdown {
+.configuracoes {
   position: relative;
   display: inline-block;
   text-decoration: none;
@@ -85,11 +97,44 @@ body{
     background-color: #3e8e41;
 }
 
-
-.botao__menu{
-    width: 30px;
-    background-color: var(--cor-secundaria);
+.configuracao {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
 }
+
+.configuracao-content {
+  display: none;
+  
+  position: absolute;
+  right: 0%;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.configuracao-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.configuracao-content a:hover {
+  background-color: #ddd;
+}
+
+.configuracao:hover .configuracao-content {
+  display: block;
+}
+
+.configuracao:hover {
+    background-color: #3e8e41;
+}
+
+
+
 
 
 
@@ -103,11 +148,23 @@ body{
 header h1 {
   font-size: 32px;
   margin-bottom: 10px;
+  .dark-mode &{
+    color: var(--white-color);
+  }
 }
-
+header h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  .dark-mode &{
+    color: var(--white-color);
+  }
+}
 header p {
   font-size: 18px;
   color: var(--text-color);
+  .dark-mode &{
+    color: var(--white-color);
+  }
 }
 
 /* Widgets section layout */
@@ -137,6 +194,7 @@ header p {
 .widget p {
   font-size: 28px;
   font-weight: bold;
+  
 }
 
 /* Widget hover effect */
@@ -188,6 +246,9 @@ header p {
     font-size: 14px;
     color: var(--background-color);
     margin: 0;
+    .dark-mode &{
+      color: var(--white-color);
+  }
 }
 .widget__data {
     padding: 20px;
