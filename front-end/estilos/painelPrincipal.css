@@ -175,3 +175,65 @@ header p {
       display: none;
   }
 }
+.rodape {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-terciaria);
+    text-align: center;
+    padding: 1.720%;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+.rodape__texto {
+    font-size: 14px;
+    color: var(--background-color);
+    margin: 0;
+}
+.widget__data {
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    margin-top: 2%;
+}
+.widget__kg{
+    width: 100%;
+    padding: 10px;
+    border-radius:2px;
+    border: 1px solid var(--cor-terciaria);
+    font-size: 16px;
+    color: var(--text-color);
+    background-color: var(--white-color);
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.widget__coperadores {
+  background-color: var(--white-color);
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.widget__coperadores h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.widget__coperadores p {
+  font-size: 28px;
+  font-weight: bold;
+}
+.widget__coperadores:hover {
+  transform: translateY(-5px);
+}
+.oi{
+ display: none;
+ active{
+  display: initial;
+ }
+}
