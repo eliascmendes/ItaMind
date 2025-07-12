@@ -31,7 +31,7 @@ def carregar_arquivo(caminho, sku):
 
     # Verifica se as colunas obrigatórias estão presentes
     if "data_dia" not in df.columns or "id_produto" not in df.columns or "total_venda_dia_kg" not in df.columns:
-        raise ValueError("❌ O arquivo deve conter as colunas: 'data_dia', 'id_produto', 'total_venda_dia_kg'")
+        raise ValueError(" O arquivo deve conter as colunas: 'data_dia', 'id_produto', 'total_venda_dia_kg'")
 
     # Filtra os dados pelo SKU e renomeia colunas para o formato exigido pelo Prophet
     df_filtrado = df[df["id_produto"] == sku][["data_dia", "total_venda_dia_kg"]]
@@ -75,12 +75,12 @@ def main():
     try:
         df = carregar_arquivo(caminho, sku)
     except Exception as e:
-        print(f"❌ Erro ao carregar dados: {e}")
+        print(f" Erro ao carregar dados: {e}")
         return
 
     # Verifica se há dados disponíveis para o SKU
     if df.empty:
-        print(f"⚠️ Nenhum dado encontrado para SKU {sku}")
+        print(f" Nenhum dado encontrado para SKU {sku}")
         return
 
     # Treina o modelo e gera a previsão
@@ -90,9 +90,9 @@ def main():
     rmse, mape = calcular_metricas(df, previsao)
 
     # Exibe os resultados no terminal
-    print("\n✅ Modelo treinado com sucesso!")
-    print(f"🔍 RMSE: {rmse:.2f}")
-    print(f"📉 MAPE: {mape:.2f}%")
+    print("\n Modelo treinado com sucesso!")
+    print(f" RMSE: {rmse:.2f}")
+    print(f" MAPE: {mape:.2f}%")
 
 # Executa o script se for chamado diretamente
 if __name__ == "__main__":
