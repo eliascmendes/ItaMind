@@ -57,7 +57,7 @@ const esquemaProduto = new mongoose.Schema(
     // quantos dias o produto dura após ser retirado do freezer
     dias_validade: {
       type: Number,
-      required: [true, 'Dias de validade são obrigatórios'],
+      required: [false, 'Dias de validade'],
       min: [1, 'Dias de validade deve ser maior que 0'],
     },
 
