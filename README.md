@@ -75,7 +75,7 @@ src/
 ├── services/        # Serviços externos
 └── utils/           # Utilitários
 ```
-### 🚀 Os Mentes por Trás do Projeto
+### 🚀 As Mentes por Trás do Projeto
 
 
 | Contribuidor | Função Principal                   | Foco de Contribuição                                         | Contato                                                                                                                                                                                                                                                                                                                                                                                               |
