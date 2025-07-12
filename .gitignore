@@ -2,3 +2,4 @@ node_modules
 Back-end/.env
 .vscode/settings.json
 CienciaDeDados/__pycache__/descongelamento_asa.cpython-313.pyc
+CienciaDeDados/__pycache__/previsao_xgboost.cpython-313.pyc
