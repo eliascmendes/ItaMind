@@ -237,7 +237,6 @@ const getDefaultPrevisao = async (req, res) => {
         .json({ error: 'Falha ao ler o arquivo CSV padrão.', details: erro.message })
     }
 
-    // mesmo processo de execução do python
     const caminhoScriptPython = path.resolve(
       __dirname,
       '..',
@@ -299,8 +298,7 @@ const getDefaultPrevisao = async (req, res) => {
   })
 }
 
-// busca previsões que já foram salvas no banco
-// permite filtrar por sku, data e paginar os resultados
+// busca previsões que já foram salvas no banco, permite filtrar por sku, data e paginar os resultados
 const getPrevisoesSalvas = async (req, res) => {
   try {
     const idUsuario = req.user?.id
