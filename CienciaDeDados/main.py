@@ -59,7 +59,6 @@ def calcular_retirada(quantidade_prevista, percentual_perda=15):
 def gerar_relatorio_para_data(previsao, sku, data_alvo, percentual_perda=15):
     relatorio = []
 
-    # Mapeia data de retirada para previsão
     retirada_por_data = {}
     for _, row in previsao.iterrows():
         data_venda = row["ds"].date()
@@ -88,7 +87,7 @@ def main():
     caminho = input("Digite o caminho do arquivo (.csv ou .xlsx): ")
     sku = int(input("Digite o SKU que deseja analisar: "))
     data_alvo = input("Digite a data para o relatório (formato YYYY-MM-DD): ")
-    dias_previsao = 30  # aumenta para garantir cobertura da data escolhida
+    dias_previsao = 30
 
     try:
         df = carregar_arquivo(caminho, sku)
@@ -107,12 +106,18 @@ def main():
     print(f" RMSE: {rmse:.2f}")
     print(f" MAPE: {mape:.2f}%")
 
+    # Exibe as previsões para os próximos 7 dias
+    print("\nPrevisões para os próximos 7 dias:")
+    previsoes_futuras = previsao.tail(dias_previsao).head(7)
+    for i in range(len(previsoes_futuras)):
+        data = previsoes_futuras.iloc[i]['ds'].date()
+        valor = previsoes_futuras.iloc[i]['yhat']
+        print(f"{data}: {valor:.2f} kg")
+
     # Gera relatório para a data escolhida
     relatorio = gerar_relatorio_para_data(previsao, sku, data_alvo)
-
     print("\n Relatório Operacional para", data_alvo)
     print(relatorio.to_string(index=False))
 
 if __name__ == "__main__":
     main()
-
