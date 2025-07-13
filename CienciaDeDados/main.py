@@ -79,7 +79,7 @@ def gerar_relatorio_para_data(previsao, sku, data_alvo, percentual_perda=15):
         "Kg a retirar hoje": calcular_retirada(kg_a_retirar),
         "Kg em descongelamento (pronto amanhã)": calcular_retirada(kg_em_descongelamento),
         "Kg disponível para venda hoje": round(kg_para_venda, 2) if kg_para_venda else "-",
-        "Idade de cada lote descongelado": 2 if kg_para_venda else "-"
+        "Idade do lote descongelado": 2 if kg_para_venda else "-"
     })
 
     return pd.DataFrame(relatorio)
