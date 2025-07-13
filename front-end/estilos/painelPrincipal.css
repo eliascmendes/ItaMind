@@ -143,10 +143,6 @@ body{
 }
 
 
-
-
-
-
 /* Títulos dentro de <header> */
 .main-content {
   flex: 1;
@@ -232,22 +228,6 @@ object-fit: cover;
 margin-bottom: 10px;
 }
 
-/* responsividade */
-@media (max-width: 768px) {
-  .widgets, .charts {
-      flex-direction: column;
-  }
-
-  .sidebar {
-      width: 60px;
-  }
-
-  .sidebar .logo,
-  .sidebar ul li a {
-      display: none;
-  }
-}
-
 /* Rodapé */
 .rodape {
     background-color: var(--cor-secundaria);
@@ -293,29 +273,61 @@ margin-bottom: 10px;
   background-color: var(--white-color);
   padding: 20px;
   border-radius: 8px;
-  flex: 1;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  display: flex; 
+  align-items: center;
 }
 
-/* Efeito hover para widget cooperadores */
-.widget__cooperadores h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: var(--primary-color);
-}
-
-.widget__cooperadores p {
-  font-size: 28px;
-  font-weight: bold;
-}
+/* Efeito de hover */
 .widget__cooperadores:hover {
   transform: translateY(-5px);
 }
-/* ?*/
-.oi{
- display: none;
- active{
-  display: initial;
- }
+
+/* Imagem do cooperador */
+.widget__foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Link completo (imagem + texto) */
+.perfil-link {
+  display: flex; 
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 30px; 
+}
+
+/* Texto ao lado da imagem */
+.perfil-link h3 {
+  font-size: 20px;
+  margin: 0 0 8px 0; 
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+
+/* Efeito de hover nos nomes de cada colaborador */
+.perfil-link:hover h3 {
+  color: #A9F7D1; 
+}
+
+/* responsividade */
+@media (max-width: 768px) {
+  
+  .widgets, .charts {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 60px;
+  }
+
+  .sidebar .logo,
+  .sidebar ul li a {
+      display: none;
+  }
 }
