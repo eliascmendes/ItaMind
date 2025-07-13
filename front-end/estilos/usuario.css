@@ -1,3 +1,6 @@
+/* Importando fontes do Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 /* Reset básico para remover margens, paddings e definir box-sizing */
 *{
     border: 0;
@@ -38,14 +41,16 @@ body{
 }
 /* Área principal do conteúdo */
 .conteudo{
-    
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     gap: 42px;
-    
+}
 
+.conteudo__titulo{
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
 }
 
 /* Container para os campos de entrada */
