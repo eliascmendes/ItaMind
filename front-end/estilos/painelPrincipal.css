@@ -1,35 +1,39 @@
+/* Reset básico para remover margens, paddings e definir box-sizing */
 *{
     border: 0;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
+/* Comportamento suave ao rolar a página */
 html{
   scroll-behavior: smooth;
 }
+/* Váriaveis (paleta) modo claro */
 :root{
     --cor-principal:#ffffff;
     --cor-secundaria:#085A8C;
     --cor-terciaria:#D9D9D9;
     --cor-quaternaria: #D9D9D9;
-    --primary-color: #085A8C;       /* Blue shade */
-    --secondary-color: #9c50e3;     /* Teal shade */
-    --background-color: #F5F7FA;    /* Light gray */
-    --text-color: #4A4A4A;          /* Dark gray */
-    --white-color: #FFFFFF;         /* Pure white */
-
+    --primary-color: #085A8C;       
+    --secondary-color: #9c50e3;     
+    --background-color: #F5F7FA;    
+    --text-color: #4A4A4A;          
+    --white-color: #FFFFFF;         
 }
+/* Váriaveis (paleta) modo escuro */
 .dark-mode{
-    --cor-principal: #0F0F0F; /* Dark background */
-    --cor-secundaria: #085A8C; /* Darker secondary color */
-    --cor-terciaria: #BB86FC; /* Lighter accent color */
-    --cor-quaternaria: #03DAC6; /* Teal accent color */
-    --primary-color: #085A8C; /* Purple shade */
-    --secondary-color: #03DAC6; /* Teal shade */
-    --background-color: #121212; /* Dark gray background */
-    --text-color: #4A4A4A; /* Light gray text */
-    --white-color: #FFFFFF; /* Pure white for contrast */
+    --cor-principal: #0F0F0F; 
+    --cor-secundaria: #085A8C; 
+    --cor-terciaria: #BB86FC; 
+    --cor-quaternaria: #03DAC6; 
+    --primary-color: #085A8C; 
+    --secondary-color: #03DAC6; 
+    --background-color: #121212; 
+    --text-color: #4A4A4A; 
+    --white-color: #FFFFFF; 
 }
+/* Estilo base do corpo */
 body{
     background-color: var(--cor-principal);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -37,7 +41,7 @@ body{
   color: var(--text-color);
 }
 
-
+/* Cabeçalho principal*/
 .cabecalho{
     background-color: var(--cor-secundaria);
     padding: 1.720%;
@@ -47,28 +51,31 @@ body{
     margin-bottom: 3%;
     
 }
-
+/* Área de usuário no cabeçalho */
 .cabecalho__usuario{
     display: flex;
     justify-content: center;
     text-align: center;
     gap: 20px;
 }
-
+/* Link do usuário */
 .cabecalho__usuario__link{
     color: var(--cor-terciaria);
 }
+/* Ícone/menu lateral no cabeçalho */
 .botao__menu{
     width: 30px;
     background-color: var(--cor-secundaria);
 
 }
+/* Contêiner do botão de configuração */
 .configuracoes {
   position: relative;
   display: inline-block;
   text-decoration: none;
 }
 
+/* Conteúdo do dropdown oculto por padrão */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -78,25 +85,27 @@ body{
   z-index: 1;
 }
 
+/* Links dentro do dropdown */
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
-
+/* Efeito hover nos links do dropdown */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-
+/* Mostra o dropdown quando passa o mouse */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
+/* Cor de fundo ao passar o mouse sobre o botão */
 .dropbtn:hover {
     background-color: #3e8e41;
 }
-
+/* Dropdown alternativo para configurações */
 .configuracao {
   position: relative;
   display: inline-block;
@@ -134,31 +143,23 @@ body{
 }
 
 
-
-
-
-
-
+/* Títulos dentro de <header> */
 .main-content {
   flex: 1;
   padding: 40px;
 }
 
-/* Header section styling */
-header h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-  .dark-mode &{
-    color: var(--white-color);
-  }
-}
+
+/* Títulos dentro de <header> */
+header h1,
 header h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-  .dark-mode &{
-    color: var(--white-color);
-  }
+    font-size: 32px;
+    margin-bottom: 10px;
+    .dark-mode & {
+        color: var(--white-color);
+    }
 }
+/* Parágrafo dentro de <header> */
 header p {
   font-size: 18px;
   color: var(--text-color);
@@ -167,7 +168,7 @@ header p {
   }
 }
 
-/* Widgets section layout */
+/* Caixa de dados */
 .widgets {
   display: flex;
   margin-top: 30px;
@@ -175,7 +176,7 @@ header p {
   
 }
 
-/* Individual widget styling */
+
 .widget {
   background-color: var(--white-color);
   padding: 20px;
@@ -197,19 +198,19 @@ header p {
   
 }
 
-/* Widget hover effect */
+/* Efeito hover nos widgets */
 .widget:hover {
   transform: translateY(-5px);
 }
 
-/* Charts section layout */
+/* Gráficos */
 .charts {
   display: flex;
   margin-top: 40px;
   gap: 20px;
 }
 
-/* Chart container styling */
+/* Container para cada gráfico */
 .chart-container {
   background-color: var(--white-color);
   padding: 20px;
@@ -218,21 +219,16 @@ header p {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-  .widgets, .charts {
-      flex-direction: column;
-  }
-
-  .sidebar {
-      width: 60px;
-  }
-
-  .sidebar .logo,
-  .sidebar ul li a {
-      display: none;
-  }
+/* Estilização das fotos dos Cooperadores*/
+.widget__foto {
+width: 50px; 
+height: 50px; 
+border-radius: 50%;
+object-fit: cover;
+margin-bottom: 10px;
 }
+
+/* Rodapé */
 .rodape {
     background-color: var(--cor-secundaria);
     color: var(--cor-terciaria);
@@ -250,6 +246,7 @@ header p {
       color: var(--white-color);
   }
 }
+/* Widget com entrada de data */
 .widget__data {
     padding: 20px;
     border-radius: 8px;
@@ -258,6 +255,7 @@ header p {
     transition: transform 0.3s;
     margin-top: 2%;
 }
+/* Campo de texto estilizado */
 .widget__kg{
     width: 100%;
     padding: 10px;
@@ -270,31 +268,66 @@ header p {
     margin-bottom: 10px;
     font-weight: bold;
 }
-.widget__coperadores {
+/* Widget de cooperadores */
+.widget__cooperadores {
   background-color: var(--white-color);
   padding: 20px;
   border-radius: 8px;
-  flex: 1;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  display: flex; 
+  align-items: center;
 }
 
-.widget__coperadores h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: var(--primary-color);
-}
-
-.widget__coperadores p {
-  font-size: 28px;
-  font-weight: bold;
-}
-.widget__coperadores:hover {
+/* Efeito de hover */
+.widget__cooperadores:hover {
   transform: translateY(-5px);
 }
-.oi{
- display: none;
- active{
-  display: initial;
- }
+
+/* Imagem do cooperador */
+.widget__foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Link completo (imagem + texto) */
+.perfil-link {
+  display: flex; 
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 30px; 
+}
+
+/* Texto ao lado da imagem */
+.perfil-link h3 {
+  font-size: 20px;
+  margin: 0 0 8px 0; 
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+
+/* Efeito de hover nos nomes de cada colaborador */
+.perfil-link:hover h3 {
+  color: #A9F7D1; 
+}
+
+/* responsividade */
+@media (max-width: 768px) {
+  
+  .widgets, .charts {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 60px;
+  }
+
+  .sidebar .logo,
+  .sidebar ul li a {
+      display: none;
+  }
 }

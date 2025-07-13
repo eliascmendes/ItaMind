@@ -1,10 +1,9 @@
-# Importando bibliotecas necessárias
-import pandas as pd  # Manipulação de dados
-from prophet import Prophet  # Modelo de previsão de séries temporais
-from sklearn.metrics import root_mean_squared_error, mean_absolute_percentage_error  # Métricas de avaliação
-import os  # Para manipular caminhos de arquivos
+import pandas as pd
+from prophet import Prophet
+from sklearn.metrics import root_mean_squared_error, mean_absolute_percentage_error
+from datetime import timedelta
+import os
 
-# Função que retorna os feriados municipais, estaduais e nacionais relevantes para São Luís - MA
 def obter_feriados():
     return pd.DataFrame({
         "holiday": "feriado",
@@ -17,11 +16,9 @@ def obter_feriados():
         "upper_window": 1
     })
 
-# Função que carrega o arquivo de dados (CSV ou Excel) e filtra pelo SKU desejado
 def carregar_arquivo(caminho, sku):
-    extensao = os.path.splitext(caminho)[1].lower()  # Obtém a extensão do arquivo
+    extensao = os.path.splitext(caminho)[1].lower()
 
-    # Lê o arquivo conforme a extensão
     if extensao == ".csv":
         df = pd.read_csv(caminho, encoding='latin1', sep=';', parse_dates=["data_dia"], dayfirst=True)
     elif extensao in [".xls", ".xlsx"]:
@@ -29,80 +26,98 @@ def carregar_arquivo(caminho, sku):
     else:
         raise ValueError(f"Formato de arquivo não suportado: {extensao}")
 
-    # Verifica se as colunas obrigatórias estão presentes
     if "data_dia" not in df.columns or "id_produto" not in df.columns or "total_venda_dia_kg" not in df.columns:
         raise ValueError(" O arquivo deve conter as colunas: 'data_dia', 'id_produto', 'total_venda_dia_kg'")
 
-    # Filtra os dados pelo SKU e renomeia colunas para o formato exigido pelo Prophet
     df_filtrado = df[df["id_produto"] == sku][["data_dia", "total_venda_dia_kg"]]
     df_filtrado = df_filtrado.rename(columns={"data_dia": "ds", "total_venda_dia_kg": "y"})
     df_filtrado["ds"] = pd.to_datetime(df_filtrado["ds"], dayfirst=True)
 
     return df_filtrado
 
-# Função que treina o modelo Prophet e gera a previsão para os próximos dias
 def treinar_e_prever(df, dias_previsao):
-    modelo = Prophet(
-        weekly_seasonality=True,  # Considera sazonalidade semanal
-        yearly_seasonality=False,  # Ignora sazonalidade anual
-        holidays=obter_feriados()  # Inclui feriados locais
-    )
-    modelo.fit(df)  # Treina o modelo com os dados históricos
-    futuro = modelo.make_future_dataframe(periods=dias_previsao)  # Cria datas futuras
-    previsao = modelo.predict(futuro)  # Gera a previsão
+    modelo = Prophet(weekly_seasonality=True, yearly_seasonality=False, holidays=obter_feriados())
+    modelo.fit(df)
+    futuro = modelo.make_future_dataframe(periods=dias_previsao)
+    previsao = modelo.predict(futuro)
     return previsao
 
-# Função que calcula as métricas de erro entre os dados reais e a previsão
 def calcular_metricas(df_real, df_previsao):
-    # Junta os dados reais com a previsão para as mesmas datas
     df_merged = pd.merge(df_real, df_previsao[["ds", "yhat"]], on="ds", how="inner")
-    y_true = df_merged["y"]  # Valores reais
-    y_pred = df_merged["yhat"]  # Valores previstos
-
-    # Calcula RMSE e MAPE (métricas de performance)
+    y_true = df_merged["y"]
+    y_pred = df_merged["yhat"]
     rmse = root_mean_squared_error(y_true, y_pred)
     mape = mean_absolute_percentage_error(y_true, y_pred) * 100
     return rmse, mape
 
-# Função principal que executa o fluxo completo
+def calcular_retirada(quantidade_prevista, percentual_perda=15):
+    if quantidade_prevista is None:
+        return "-"
+    quantidade_congelado = quantidade_prevista / (1 - (percentual_perda / 100))
+    return round(quantidade_congelado, 2)
+
+def gerar_relatorio_para_data(previsao, sku, data_alvo, percentual_perda=15):
+    relatorio = []
+
+    retirada_por_data = {}
+    for _, row in previsao.iterrows():
+        data_venda = row["ds"].date()
+        kg_previsto = round(row["yhat"], 2)
+        data_retirada = data_venda - timedelta(days=2)
+        retirada_por_data[data_retirada] = kg_previsto
+
+    data_alvo = pd.to_datetime(data_alvo).date()
+
+    kg_a_retirar = retirada_por_data.get(data_alvo, None)
+    kg_em_descongelamento = retirada_por_data.get(data_alvo - timedelta(days=1), None)
+    kg_para_venda = retirada_por_data.get(data_alvo - timedelta(days=2), None)
+
+    relatorio.append({
+        "Data de retirada": data_alvo.strftime("%d/%m/%Y"),
+        "SKU": sku,
+        "Kg a retirar hoje": calcular_retirada(kg_a_retirar),
+        "Kg em descongelamento (pronto amanhã)": calcular_retirada(kg_em_descongelamento),
+        "Kg disponível para venda hoje": round(kg_para_venda, 2) if kg_para_venda else "-",
+        "Idade do lote descongelado": 2 if kg_para_venda else "-"
+    })
+
+    return pd.DataFrame(relatorio)
+
 def main():
-    # Solicita ao usuário o caminho do arquivo e o SKU desejado
     caminho = input("Digite o caminho do arquivo (.csv ou .xlsx): ")
     sku = int(input("Digite o SKU que deseja analisar: "))
-    dias_previsao = 7  # Número de dias futuros para prever
+    data_alvo = input("Digite a data para o relatório (formato YYYY-MM-DD): ")
+    dias_previsao = 30
 
-    # Tenta carregar os dados e trata possíveis erros
     try:
         df = carregar_arquivo(caminho, sku)
     except Exception as e:
         print(f" Erro ao carregar dados: {e}")
         return
 
-    # Verifica se há dados disponíveis para o SKU
     if df.empty:
         print(f" Nenhum dado encontrado para SKU {sku}")
         return
 
-    # Treina o modelo e gera a previsão
     previsao = treinar_e_prever(df, dias_previsao)
-
-    # Calcula as métricas de erro
     rmse, mape = calcular_metricas(df, previsao)
 
-    # Exibe os resultados no terminal
     print("\n Modelo treinado com sucesso!")
     print(f" RMSE: {rmse:.2f}")
     print(f" MAPE: {mape:.2f}%")
 
     # Exibe as previsões para os próximos 7 dias
     print("\nPrevisões para os próximos 7 dias:")
-    previsoes_futuras = previsao.tail(dias_previsao)
-    for i in range(7):
+    previsoes_futuras = previsao.tail(dias_previsao).head(7)
+    for i in range(len(previsoes_futuras)):
         data = previsoes_futuras.iloc[i]['ds'].date()
         valor = previsoes_futuras.iloc[i]['yhat']
         print(f"{data}: {valor:.2f} kg")
 
-# Executa o script se for chamado diretamente
+    # Gera relatório para a data escolhida
+    relatorio = gerar_relatorio_para_data(previsao, sku, data_alvo)
+    print("\n Relatório Operacional para", data_alvo)
+    print(relatorio.to_string(index=False))
+
 if __name__ == "__main__":
     main()
-
