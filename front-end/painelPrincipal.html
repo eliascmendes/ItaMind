@@ -7,6 +7,7 @@
     <!-- Link do Css -->
     <link rel="stylesheet" href="./estilos/painelPrincipal.css" />
     <!-- Link dos gráficos (Chart.Js)-->
+     <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
@@ -49,6 +50,11 @@
             <h1 id="user_saudacao">Bem Vindo, User</h1>
             <h2>Previsão</h2>
           </header>
+          <div class="widget widget__data">
+              <h3 class="nome__data">Base de dados</h3>
+              <input class="dia-mes" type="file"/>
+            
+            </div>
           <div class=" widget__data-botao">
             <div class="widget widget__data">
               <h3 class="nome__data">Data</h3>
@@ -74,12 +80,12 @@
             <!-- Widget de Saída-->
              
             <div class="widget">
-              <h3>Hoje</h3>
+              <h3>Retirar Hoje</h3>
               <p>kg</p>
             </div>
             <!-- Widget de Entrada -->
             <div class="widget">
-              <h3> Descongelando</h3>
+              <h3> Descongelando </h3>
               <p>kg</p>
             </div>
             <!-- Widget de Ganho -->
@@ -88,6 +94,10 @@
               <p>kg</p>
             </div>
             <!-- Widget de Perda -->
+             <div class="widget">
+              <h3>Disponível para venda</h3>
+              <p>kg</p>
+            </div>
           </section>
 
           <!-- Seção dos Gráficos -->
@@ -103,14 +113,10 @@
           </section>
           <div>
           <div class="widget">
-              <div><h3>RMSE</h3><p>%</p></div>
+              <div><h3>RMSE</h3><p>Kg</p></div>
               <div><h3>MAPE</h3><p>%</p></div>
             </div>
-             <div class="widget widget__data">
-              <h3 class="nome__data">Base de dados</h3>
-              <input class="dia-mes" type="file"/>
-            
-            </div>
+             
           
           </div>
         </div>
