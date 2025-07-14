@@ -24,6 +24,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const contextoLinha = document.getElementById('lineChart').getContext('2d')
   const contextoBarras = document.getElementById('barChart').getContext('2d')
 
+  // função para buscar dados do usuário
+  const buscarDadosUsuario = async () => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        return
+      }
+
+      const resposta = await fetch('http://localhost:3000/api/auth/perfil', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        const nomeUsuario = dados.data.user.nome
+        const elementoSaudacao = document.getElementById('user_saudacao')
+        if (elementoSaudacao) {
+          elementoSaudacao.textContent = `Bem Vindo, ${nomeUsuario}`
+        }
+      } else if (resposta.status === 401) {
+        console.error('Sessão inválida para buscar dados do usuário.')
+      }
+    } catch (erro) {
+      console.error('Falha ao buscar dados do usuário:', erro)
+    }
+  }
+
   // criação do gráfico de linha
   const graficoLinha = new Chart(contextoLinha, {
     type: 'line', // tipo do gráfico
@@ -148,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // executa a função de buscar dados assim que a página carrega
+  buscarDadosUsuario()
   buscarPrevisaoPadrao()
 })
 document.querySelector('input').onclick = () => {
