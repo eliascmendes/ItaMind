@@ -45,7 +45,6 @@ def carregar_arquivo(caminho, sku):
 
 # função que processa dados csv vindos da entrada padrão para integração com node.js
 def processar_csv_entrada():
-    """Processa dados CSV da entrada padrão"""
     try:
         conteudo_csv = sys.stdin.read()
 
@@ -70,7 +69,6 @@ def processar_csv_entrada():
 
 # função que prepara dados específicos de um sku para treinamento do modelo prophet
 def preparar_dados_prophet(dados, sku):
-    """Prepara dados para o modelo Prophet"""
     try:
         # filtra pelo sku
         dados_sku = dados[dados['id_produto'] == sku].copy()
@@ -97,7 +95,6 @@ def preparar_dados_prophet(dados, sku):
 
 # função que treina modelo prophet com dados históricos de vendas
 def treinar_modelo_prophet(dados):
-    """Treina modelo Prophet com os dados"""
     try:
         modelo = Prophet(
             weekly_seasonality=True,
@@ -115,7 +112,6 @@ def treinar_modelo_prophet(dados):
 
 # função que gera previsão para próximos dias usando modelo treinado
 def gerar_previsao(modelo, dados, dias_previsao=7):
-    """Gera previsão para os próximos dias"""
     try:
         futuro = modelo.make_future_dataframe(periods=dias_previsao)
         previsao = modelo.predict(futuro)
@@ -128,7 +124,6 @@ def gerar_previsao(modelo, dados, dias_previsao=7):
 
 # função que calcula métricas de qualidade da previsão comparando com dados reais
 def calcular_metricas(dados_reais, previsao):
-    """Calcula métricas RMSE e MAPE"""
     try:
         # une dados reais com previsão
         dados_unidos = pd.merge(dados_reais, previsao[['ds', 'yhat']], on='ds', how='inner')
@@ -151,7 +146,6 @@ def calcular_metricas(dados_reais, previsao):
 
 # função principal que coordena todo fluxo de previsão
 def main():
-    """Função principal"""
     try:
         # modo integração com node.js
         if not sys.stdin.isatty():

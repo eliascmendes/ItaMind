@@ -154,9 +154,8 @@ def gerar_relatorio_operacional(previsao, sku, data_alvo_str):
 
     # mapeia a data de retirada (d-2) para a quantidade prevista na data da venda (d)
     retirada_por_data = {}
-    previsao_filtrada = previsao[previsao['ds'] > pd.to_datetime('today')]
 
-    for _, row in previsao_filtrada.iterrows():
+    for _, row in previsao.iterrows():
         data_venda = row["ds"].date()
         kg_previsto = round(row["yhat"], 2)
         data_retirada = data_venda - timedelta(days=2)
