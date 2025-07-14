@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itamind</title>
-    <!-- Link do Css -->
+    <!-- Link do Css-->
     <link rel="stylesheet" href="./estilos/usuario.css">
 </head>
 <body>
     <header class="cabecalho">
         <div class="dropdown">
-            <button class="dropbtn"><img class="botao__menu" src="./assents/menu.png" alt="botao__menu"></button>
+                <!-- Menu suspenso principal com botão de imagem -->
+            <button class="dropbtn"><img class="botao__menu" src="./assets/menu.png" alt="botao__menu"></button>
+             <!-- Botão com ícone do menu -->
                 <div class="dropdown-content">
+                <!-- Links dentro do menu suspenso -->
                     <a href="#previsao">Previsão</a>
                     <a href="#estoque">Estoque</a>
                     <a href="#addDados">Adicionar Dados</a>
@@ -19,11 +22,14 @@
                 </div>
         </div>
         <nav class="cabecalho__usuario">
-            <a class="cabecalho__usuario__link" href="#">Cadastro</a>
+            <!-- Área de navegação para o usuário -->
             <div class="dropdown">
-            <button class="dropbtn"><img class="botao__menu" src="./assents/gear-fill.png" alt="botao__menu"></button>
+            <button class="dropbtn"><img class="botao__menu" src="./assets/gear-fill.png" alt="botao__menu">
+            <!-- Ícone de configurações -->
+            </button>
                 <div class="dropdown-content">
-                    <a href="painelPincipal.html">Página Principal</a>
+                       <!-- Links do submenu das configurações -->
+                    <a href="painelPrincipal.html">Página Principal</a>
                     <a href="#">Link 2</a>
                     <a href="#">Link 3</a>
                 </div>
@@ -31,23 +37,30 @@
     </header>
     <main class="conteudo">
         <h1 class="conteudo__titulo">Bem Vindo</h1>
-        <img class="conteudo__imagem__bola-azul" src="./assents/bola-azul.png" alt="bola__azul">
+        <img class="conteudo__imagem__simbolo" src="./assets/Simbolo.png" alt="itamind_simbolo">
+         <!-- Aleterado para simbolo da itamind-->
 
         <section class="conteudo__input">
+             <!-- Seção para os campos de login -->
             <div>
                 <input class="conteudo__input__aparencia" type="text" placeholder="LOGIN">
+                 <!-- Campo de entrada para o login -->
             </div>
             <div>
                 <input class="conteudo__input__aparencia" type="text" placeholder="SENHA">
+                <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
             </div>
             
         </section>
         <section class="conteudo__input__botoes">
+                <!-- Seção dos botões abaixo dos campos -->
             <div>
-                <a class="conteudo__input__botao" href="painelPincipal.html"><strong>Entrar</strong></a>
+                <a class="conteudo__input__botao" href="painelPrincipal.html"><strong>Entrar</strong></a>
+                 <!-- Botão de login que redireciona para o painel principal, seria legal adicionar uma opção de senha incorreta e precisar realmente preencher os campos -->
             </div>
             <div>
-                <a class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>   
+                <a class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>  
+                <!-- Link para recuperar a senha, precisa criar uma página para isso --> 
             </div>
         </section>
         

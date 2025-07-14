@@ -1,20 +1,26 @@
+/* Importando fontes do Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+/* Reset básico para remover margens, paddings e definir box-sizing */
 *{
     border: 0;
     padding: 0;
     margin: 0;
 }
-
+/* Variáveis de cor definidas no escopo global */
 :root{
+    --fonte-principal: 'DM Sans', sans-serif;
     --cor-principal:#ffffff;
     --cor-secundaria:#085A8C;
     --cor-terciaria:#D9D9D9;
     --cor-quaternaria: #D9D9D9;
 
 }
+/* Fundo da página */
 body{
     background-color: var(--cor-principal);
 }
-
+/* Estilização do cabeçalho principal */
 .cabecalho{
     background-color: var(--cor-secundaria);
     padding: 1.720%;
@@ -23,35 +29,43 @@ body{
     align-items: center;
     margin-bottom: 3%;
 }
-
+/* Área de informações do usuário no cabeçalho */
 .cabecalho__usuario{
     display: flex;
     justify-content: center;
     text-align: center;
     gap: 20px;
 }
-
+/* Links do usuário no cabeçalho */
 .cabecalho__usuario__link{
     color: var(--cor-terciaria);
 }
-
+/* Área principal do conteúdo */
 .conteudo{
-    
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     gap: 42px;
-    
-
 }
 
+.conteudo__titulo{
+    font-family: var(--fonte-principal);
+    font-weight: 1000;
+}
+
+/* Container para os campos de entrada */
 .conteudo__input{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+/* Estilo para campos de texto */
 .conteudo__input__aparencia{
+    font-family: var(--fonte-principal);
+    font-size: 100%;
+    font-weight: 200;
+
     border: 2px solid var(--cor-secundaria);
     width: 300px;
     height: 30px;
@@ -60,13 +74,17 @@ body{
     background-color: var(--cor-principal);
     
 }
+/* Container dos botões */
 .conteudo__input__botoes{
     display: flex;
     gap: 20px;
     align-items: center;
     
 }
+/* Estilo padrão para os botões */
 .conteudo__input__botao{
+    font-family: var(--fonte-principal);
+    font-weight: 900;
     background-color: var(--cor-secundaria);
     color: var(--cor-terciaria);
     border-radius: 5px;
@@ -77,16 +95,15 @@ body{
 
 
 }
+/* Estilo do botão de entrada */
 .conteudo__input__botao__entrar{
     background-color: var(--cor-secundaria);
     border: 2px solid var(--cor-secundaria);
 
     border-radius:15PX ;
     padding: 1% 1% 1% 3%;
-    
-    
-
 }
+/* Estilo do link do esqueci minha senha */
 .conteudo__input__botao__links__senhaEsquecida{
     background-color: var(--cor-secundaria);
     border-radius:15PX ;
@@ -94,13 +111,13 @@ body{
     width: 10px;
 }
 
-
+/* Container do menu suspenso */
 .dropdown {
   position: relative;
   display: inline-block;
   text-decoration: none;
 }
-
+/* Conteúdo escondido do menu dropdown */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -109,35 +126,38 @@ body{
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-
+/* Estilo dos links no dropdown */
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
-
+/* Efeito ao passar o mouse nos itens do dropdown */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-
+/* Exibe o menu ao passar o mouse */
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
+/* Efeito visual no botão ao passar o mouse */
 .dropbtn:hover {
     background-color: #3e8e41;
 }
-.conteudo__imagem__bola-azul{
+/* Estilo da imagem bola azul */
+.conteudo__imagem__simbolo{
     width: 200px;
     height: 200px;
 
 }
+/* Ícone ou botão do menu */
 .botao__menu{
     width: 30px;
     background-color: var(--cor-secundaria);
 
 }
+/* Torna o texto em negrito para um elemento com o id="strong" */
 #strong{
     font-weight: bold;
 }
