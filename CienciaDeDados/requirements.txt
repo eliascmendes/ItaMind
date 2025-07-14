@@ -1,5 +1,5 @@
 pandas
 numpy
-fbprophet
+prophet
 scikit-learn
 openpyxl
