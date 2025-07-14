@@ -62,9 +62,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // função que busca os dados de previsão no servidor
   const buscarPrevisaoPadrao = async () => {
+    graficoLinha.data.datasets[0].label = 'Carregando dados...'
+    graficoLinha.data.labels = []
+    graficoLinha.data.datasets[0].data = []
+    graficoLinha.update()
+
     try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        alert('Você não está autenticado. Redirecionando para a página de login.')
+        window.location.href = 'Index.html'
+        return
+      }
+
       // faz uma requisição get para a api
-      const resposta = await fetch('http://localhost:3000/api/previsao/default')
+      const resposta = await fetch('http://localhost:3000/api/previsao/default', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      // se a previsão estiver sendo gerada, aguarda e tenta novamente
+      if (resposta.status === 202) {
+        console.log('Previsão sendo gerada no servidor, tentando novamente em 5 segundos...')
+        setTimeout(buscarPrevisaoPadrao, 5000) // tenta novamente após 5 segundos
+        return
+      }
+
+      if (resposta.status === 401) {
+        alert('Sua sessão expirou. Redirecionando para a página de login.')
+        localStorage.removeItem('jwt_token')
+        window.location.href = 'Index.html'
+        return
+      }
 
       if (!resposta.ok) {
         throw new Error(`Erro do servidor: ${resposta.status}`)
@@ -73,19 +103,41 @@ document.addEventListener('DOMContentLoaded', () => {
       // converte a resposta para json
       const dadosPrevisao = await resposta.json()
 
-      // prepara os dados para o gráfico
-      const rotulos = dadosPrevisao.map(item => {
-        // converte as datas para formato brasileiro
-        const data = new Date(item.data_venda)
-        return data.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+      // agregador para somar as previsões de todos os SKUs por dia
+      const previsoesAgregadas = new Map()
+
+      // itera sobre cada SKU retornado na previsão
+      dadosPrevisao.previsoes.forEach(skuData => {
+        // itera sobre a lista de previsões para aquele SKU
+        skuData.previsoes.forEach(previsao => {
+          const data = new Date(previsao.ds).toISOString().split('T')[0]
+          const valorPrevisto = previsao.yhat
+
+          if (previsoesAgregadas.has(data)) {
+            previsoesAgregadas.set(data, previsoesAgregadas.get(data) + valorPrevisto)
+          } else {
+            previsoesAgregadas.set(data, valorPrevisto)
+          }
+        })
       })
 
-      // arredonda os valores de previsão para 2 casas decimais
-      const pontosGrafico = dadosPrevisao.map(item => parseFloat(item.previsao_kg.toFixed(2)))
+      // ordena as datas antes de passá-las para o gráfico
+      const datasOrdenadas = Array.from(previsoesAgregadas.keys()).sort()
+
+      // prepara os dados para o gráfico a partir dos dados agregados
+      const rotulos = datasOrdenadas.map(data => {
+        const d = new Date(data + 'T00:00:00')
+        return d.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' })
+      })
+
+      const pontosGrafico = datasOrdenadas.map(data => {
+        return parseFloat(previsoesAgregadas.get(data).toFixed(2))
+      })
 
       // atualiza o gráfico com os novos dados
       graficoLinha.data.labels = rotulos
       graficoLinha.data.datasets[0].data = pontosGrafico
+      graficoLinha.data.datasets[0].label = 'Previsão de Vendas (kg)'
       graficoLinha.update()
     } catch (erro) {
       // em caso de erro, mostra no console e atualiza o gráfico

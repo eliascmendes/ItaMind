@@ -1,9 +1,18 @@
 const { spawn } = require('child_process')
 const path = require('path')
-const fs = require('fs')
+const fsp = require('fs').promises
 const Previsao = require('../models/Previsao')
 const Produto = require('../models/Produto')
 const Venda = require('../models/Venda')
+// resolução de problema de loooooping infinito
+// cache em memória para a previsão padrão
+let cachePrevisao = {
+  dados: null,
+  timestamp: null,
+  emGeracao: false,
+}
+// define a duração do cache em 1 hora
+const DURACAO_CACHE_MS = 60 * 60 * 1000
 
 // calcula quanto deve ser retirado do freezer considerando perdas
 // usado para planejar a retirada baseado na previsão de vendas
@@ -212,30 +221,41 @@ const getPrevisao = async (req, res) => {
 // gera previsões usando o arquivo csv padrão do sistema
 // mesmo processo do getPrevisao mas com dados fixos
 const getDefaultPrevisao = async (req, res) => {
-  const idUsuario = req.user?.id
+  const agora = Date.now()
 
-  if (!idUsuario) {
-    return res.status(401).json({ error: 'Usuário não autenticado.' })
+  // 1. verifica se existe um cache válido e retorna
+  if (cachePrevisao.dados && agora - cachePrevisao.timestamp < DURACAO_CACHE_MS) {
+    return res.json({
+      previsoes: cachePrevisao.dados,
+      fonte: 'cache',
+    })
   }
 
-  // caminho para o arquivo csv com dados históricos
-  const caminhoArquivoCsv = path.resolve(
-    __dirname,
-    '..',
-    '..',
-    '..',
-    'CienciaDeDados',
-    'dados_vendas_itamind.csv'
-  )
+  // 2. se uma previsão já estiver sendo gerada
+  if (cachePrevisao.emGeracao) {
+    return res
+      .status(202)
+      .json({ message: 'A previsão está sendo gerada. Tente novamente em alguns instantes.' })
+  }
 
-  // lê o arquivo csv padrão
-  fs.readFile(caminhoArquivoCsv, 'utf8', (erro, dadosCsv) => {
-    if (erro) {
-      console.error(erro)
-      return res
-        .status(500)
-        .json({ error: 'Falha ao ler o arquivo CSV padrão.', details: erro.message })
+  try {
+    // 3. trava o cache para evitar execuções concorrentes
+    cachePrevisao.emGeracao = true
+    const idUsuario = req.user?.id
+
+    if (!idUsuario) {
+      return res.status(401).json({ error: 'Usuário não autenticado.' })
     }
+
+    // caminho para o arquivo csv com dados históricos
+    const caminhoArquivoCsv = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'CienciaDeDados',
+      'dados_vendas_itamind.csv'
+    )
 
     const caminhoScriptPython = path.resolve(
       __dirname,
@@ -245,57 +265,77 @@ const getDefaultPrevisao = async (req, res) => {
       'CienciaDeDados',
       'run_prophet.py'
     )
-    const processoPython = spawn('python', [caminhoScriptPython])
 
-    let previsoes = ''
-    let erroExecucao = ''
+    const dadosCsv = await fsp.readFile(caminhoArquivoCsv, 'utf8')
 
-    processoPython.stdin.write(dadosCsv)
-    processoPython.stdin.end()
+    // encapsula a execução do script python em uma promise
+    const previsoesAnalisadas = await new Promise((resolve, reject) => {
+      const processoPython = spawn('python', [caminhoScriptPython])
 
-    processoPython.stdout.on('data', dados => {
-      previsoes += dados.toString()
-    })
+      let previsoes = ''
+      let erroPython = ''
 
-    processoPython.stderr.on('data', dados => {
-      erroExecucao += dados.toString()
-    })
+      processoPython.stdin.write(dadosCsv)
+      processoPython.stdin.end()
 
-    processoPython.on('close', async codigo => {
-      if (codigo !== 0) {
-        console.error(`Encerrado com o seguinte código: ${codigo}`)
-        console.error(erroExecucao)
-        return res
-          .status(500)
-          .json({ error: 'Falha ao executar o modelo de previsão.', details: erroExecucao })
-      }
+      processoPython.stdout.on('data', dados => {
+        previsoes += dados.toString()
+      })
 
-      try {
-        const previsoesAnalisadas = JSON.parse(previsoes)
+      processoPython.stderr.on('data', dados => {
+        erroPython += dados.toString()
+      })
 
-        // salva as previsões no banco
-        const previsoesSalvas = []
-        for (const previsao of previsoesAnalisadas) {
+      processoPython.on('error', err => {
+        reject({
+          status: 500,
+          json: { error: 'Falha ao iniciar o processo python.', details: err.message },
+        })
+      })
+
+      processoPython.on('close', codigo => {
+        if (codigo !== 0) {
+          console.error(`Script Python encerrado com código ${codigo}: ${erroPython}`)
+          reject({
+            status: 500,
+            json: { error: 'Falha ao executar o modelo de previsão.', details: erroPython },
+          })
+        } else {
           try {
-            const previsaoSalva = await salvarPrevisao(previsao, idUsuario)
-            previsoesSalvas.push(previsaoSalva)
-          } catch (erroSalvar) {
-            console.error(`Erro ao salvar previsão para SKU ${previsao.sku}:`, erroSalvar)
+            const resultado = JSON.parse(previsoes)
+            resolve(resultado)
+          } catch (erroParse) {
+            reject({
+              status: 500,
+              json: { error: 'Falha ao analisar previsões do script.', details: previsoes },
+            })
           }
         }
-
-        res.json({
-          previsoes: previsoesAnalisadas,
-          salvas_bd: previsoesSalvas.length,
-          total_geradas: previsoesAnalisadas.length,
-        })
-      } catch (erro) {
-        res
-          .status(500)
-          .json({ error: 'Falha ao analisar previsões do script.', details: previsoes })
-      }
+      })
     })
-  })
+
+    // 4. atualiza o cache com os novos dados
+    cachePrevisao.dados = previsoesAnalisadas
+    cachePrevisao.timestamp = Date.now()
+
+    // retorna a previsão recém-gerada
+    res.json({
+      previsoes: previsoesAnalisadas,
+      fonte: 'nova',
+    })
+  } catch (erro) {
+    if (erro && erro.status && erro.json) {
+      return res.status(erro.status).json(erro.json)
+    }
+    // erro do readFile ou outro erro inesperado
+    console.error('Erro ao buscar previsão padrão:', erro)
+    return res
+      .status(500)
+      .json({ error: 'Falha ao buscar previsão padrão.', details: erro.message })
+  } finally {
+    // 5. libera a trava do cache
+    cachePrevisao.emGeracao = false
+  }
 }
 
 // busca previsões que já foram salvas no banco, permite filtrar por sku, data e paginar os resultados

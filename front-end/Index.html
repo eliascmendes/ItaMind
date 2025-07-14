@@ -40,31 +40,62 @@
         <img class="conteudo__imagem__simbolo" src="./assets/Simbolo.png" alt="itamind_simbolo">
          <!-- Aleterado para simbolo da itamind-->
 
-        <section class="conteudo__input">
+        <form id="loginForm" class="conteudo__input">
              <!-- Seção para os campos de login -->
             <div>
-                <input class="conteudo__input__aparencia" type="text" placeholder="LOGIN">
+                <input id="loginEmail" class="conteudo__input__aparencia" type="text" placeholder="LOGIN">
                  <!-- Campo de entrada para o login -->
             </div>
             <div>
-                <input class="conteudo__input__aparencia" type="text" placeholder="SENHA">
+                <input id="loginSenha" class="conteudo__input__aparencia" type="password" placeholder="SENHA">
                 <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
             </div>
-            
-        </section>
+
+        </form>
         <section class="conteudo__input__botoes">
                 <!-- Seção dos botões abaixo dos campos -->
             <div>
-                <a class="conteudo__input__botao" href="painelPrincipal.html"><strong>Entrar</strong></a>
+                <button type="submit" form="loginForm" class="conteudo__input__botao"><strong>Entrar</strong></button>
                  <!-- Botão de login que redireciona para o painel principal, seria legal adicionar uma opção de senha incorreta e precisar realmente preencher os campos -->
             </div>
             <div>
-                <a class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>  
-                <!-- Link para recuperar a senha, precisa criar uma página para isso --> 
+                <a class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>
+                <!-- Link para recuperar a senha, precisa criar uma página para isso -->
             </div>
         </section>
-        
+
     </main>
     <footer></footer>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginSenha').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('jwt_token', data.token);
+                    window.location.href = 'painelPrincipal.html';
+                } else {
+                    alert(data.message || 'Falha no login.');
+                }
+            } catch (error) {
+                console.error('Erro ao tentar fazer login:', error);
+                alert('Erro ao tentar fazer login. Verifique o console para mais detalhes.');
+            }
+        });
+    </script>
 </body>
 </html>
