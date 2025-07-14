@@ -376,3 +376,41 @@ margin-bottom: 10px;
 .dia-mes{
   cursor: pointer;
 }
+.palavra-retirada{
+  font-size: 20px;
+  color: var(--cor-secundaria);
+  margin-top: 4%;
+  text-align: center;
+}
+.base-dados-input{
+  display: flex;
+  flex-direction: column;
+  
+}
+.caixa-base-dados{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-top: 2%;
+
+  
+}
+.widget__metricas {
+  align-items: center;
+  margin-top: 4%;
+}
+.metricas h3{
+  font-size: 25px;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  margin-top: 1%;
+}
+.metricas p {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 10px;
+}
+.widget__metricas{
+  width: 50%;
+}

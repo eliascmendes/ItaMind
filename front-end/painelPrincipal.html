@@ -50,7 +50,7 @@
             <h1 id="user_saudacao">Bem Vindo, User</h1>
             <h2>Previsão</h2>
           </header>
-          <div class="widget widget__data">
+          <div class="widget widget__data caixa-base-dados">
               <h3 class="base-dados-texto">Base de dados</h3>
               <input class="base-dados-input" id="base-dados-input" type="file"/>
             
@@ -62,7 +62,7 @@
             
             </div>
             <div class="widget widget__data">
-              <h3 class="nome__data">SKU</h3>
+              <h3 class="nome__sku">SKU</h3>
               <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo">
 
 <datalist id="sku">
@@ -74,7 +74,7 @@
             <div id="botao-gerar-previsao" class="widget botao-widget"><button class="botao-previsao"><strong>Gerar previsão</strong></button>
             </div>
           </div>
-          <h3>Retirada</h3>
+          <h3 class="palavra-retirada">Retirada</h3>
           <!-- Área de Estoque -->
           <section class="widgets">
             <!-- Widget de Saída-->
@@ -112,9 +112,9 @@
             </div>
           </section>
           <div>
-          <div class="widget">
-              <div><h3>RMSE</h3><p id="quantidade-RMSE">Kg</p></div>
-              <div><h3>MAPE</h3><p id="quantidade-MAPE">%</p></div>
+          <div class="widget widget__metricas">
+              <div class="metricas"><h3>RMSE</h3><p id="quantidade-RMSE">kg</p></div>
+              <div class="metricas"><h3>MAPE</h3><p id="quantidade-MAPE">%</p></div>
             </div>
              
           
