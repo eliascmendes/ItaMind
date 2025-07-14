@@ -49,32 +49,45 @@
             <h1 id="user_saudacao">Bem Vindo, User</h1>
             <h2>Previsão</h2>
           </header>
-          <div class="widget widget__data">
-            <h3>Data</h3>
-            <input type="date" />
+          <div class=" widget__data-botao">
+            <div class="widget widget__data">
+              <h3 class="nome__data">Data</h3>
+              <input class="dia-mes" type="date"/>
+            
+            </div>
+            <div class="widget widget__data">
+              <h3 class="nome__data">SKU</h3>
+              <input type="text" list="sku" placeholder="Selecione um tipo">
+
+<datalist id="sku">
+  <option value="Asa"></option>
+  <option value="Pé"></option>
+  
+</datalist>
+            </div>
+            <div class="widget botao-widget"><button class="botao-previsao"><strong>Gerar previsão</strong></button>
+            </div>
           </div>
+          <h3>Retirada</h3>
           <!-- Área de Estoque -->
           <section class="widgets">
             <!-- Widget de Saída-->
+             
             <div class="widget">
-              <h3>Saída</h3>
+              <h3>Hoje</h3>
               <p>kg</p>
             </div>
             <!-- Widget de Entrada -->
             <div class="widget">
-              <h3>Entrada</h3>
+              <h3> Descongelando</h3>
               <p>kg</p>
             </div>
             <!-- Widget de Ganho -->
             <div class="widget">
-              <h3>Ganho</h3>
+              <h3>Disponível</h3>
               <p>kg</p>
             </div>
             <!-- Widget de Perda -->
-            <div class="widget">
-              <h3>Perda</h3>
-              <p>kg</p>
-            </div>
           </section>
 
           <!-- Seção dos Gráficos -->
@@ -88,6 +101,18 @@
               <canvas id="barChart"></canvas>
             </div>
           </section>
+          <div>
+          <div class="widget">
+              <div><h3>RMSE</h3><p>%</p></div>
+              <div><h3>MAPE</h3><p>%</p></div>
+            </div>
+             <div class="widget widget__data">
+              <h3 class="nome__data">Base de dados</h3>
+              <input class="dia-mes" type="file"/>
+            
+            </div>
+          
+          </div>
         </div>
       </section>
       <section id="estoque">
@@ -158,7 +183,7 @@
       <section id="cooperadores">
         <div class="main-content">
           <header>
-            <h2>Cooperadores</h2>
+            <h2>Colaboradores</h2>
           </header>
 
           <!-- Área de Cooperadores -->

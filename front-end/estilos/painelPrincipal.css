@@ -66,6 +66,7 @@ body{
 .botao__menu{
     width: 30px;
     background-color: var(--cor-secundaria);
+    cursor: pointer;
 
 }
 /* Contêiner do botão de configuração */
@@ -182,7 +183,7 @@ header p {
   padding: 20px;
   border-radius: 8px;
   flex: 1;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.733);
   transition: transform 0.3s;
 }
 
@@ -251,9 +252,12 @@ margin-bottom: 10px;
     padding: 20px;
     border-radius: 8px;
     flex: 1;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.733);
     transition: transform 0.3s;
     margin-top: 2%;
+    display: flex;
+    justify-content: space-between;
+
 }
 /* Campo de texto estilizado */
 .widget__kg{
@@ -330,4 +334,45 @@ margin-bottom: 10px;
   .sidebar ul li a {
       display: none;
   }
+}
+.botao-widget{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    background-color: var(--cor-secundaria);
+    height: 75px;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.733);
+    transition: transform 0.3s;
+    margin-top: 2%;
+    display: flex;
+    
+    
+    
+    
+}
+.widget__data-botao{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 5%;
+    justify-content: center;
+    text-align: center;
+    
+  
+}
+.botao-previsao{
+  background-color: var(--cor-secundaria);
+  color: var(--cor-principal);
+  font-size: large;
+  cursor: pointer;
+  padding: 10px 20px;
+  
+}
+.dia-mes{
+  cursor: pointer;
 }
