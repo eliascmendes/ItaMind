@@ -1,10 +1,10 @@
-# Importando bibliotecas necessárias
-import pandas as pd  # Manipulação de dados
-from prophet import Prophet  # Modelo de previsão de séries temporais
-from sklearn.metrics import root_mean_squared_error, mean_absolute_percentage_error  # Métricas de avaliação
-import os  # Para manipular caminhos de arquivos
+# importando bibliotecas necessárias
+import pandas as pd  # manipulação de dados
+from prophet import Prophet  # modelo de previsão de séries temporais
+from sklearn.metrics import root_mean_squared_error, mean_absolute_percentage_error  # métricas de avaliação
+import os  # para manipular caminhos de arquivos
 
-# Função que retorna os feriados municipais, estaduais e nacionais relevantes para São Luís - MA
+# função que retorna os feriados municipais, estaduais e nacionais relevantes para são luís - ma
 def obter_feriados():
     return pd.DataFrame({
         "holiday": "feriado",
@@ -17,11 +17,11 @@ def obter_feriados():
         "upper_window": 1
     })
 
-# Função que carrega o arquivo de dados (CSV ou Excel) e filtra pelo SKU desejado
+# função que carrega o arquivo de dados (csv ou excel) e filtra pelo sku desejado
 def carregar_arquivo(caminho, sku):
-    extensao = os.path.splitext(caminho)[1].lower()  # Obtém a extensão do arquivo
+    extensao = os.path.splitext(caminho)[1].lower()  # obtém a extensão do arquivo
 
-    # Lê o arquivo conforme a extensão
+    # lê o arquivo conforme a extensão
     if extensao == ".csv":
         df = pd.read_csv(caminho, encoding='latin1', sep=';', parse_dates=["data_dia"], dayfirst=True)
     elif extensao in [".xls", ".xlsx"]:
@@ -29,72 +29,72 @@ def carregar_arquivo(caminho, sku):
     else:
         raise ValueError(f"Formato de arquivo não suportado: {extensao}")
 
-    # Verifica se as colunas obrigatórias estão presentes
+    # verifica se as colunas obrigatórias estão presentes
     if "data_dia" not in df.columns or "id_produto" not in df.columns or "total_venda_dia_kg" not in df.columns:
         raise ValueError(" O arquivo deve conter as colunas: 'data_dia', 'id_produto', 'total_venda_dia_kg'")
 
-    # Filtra os dados pelo SKU e renomeia colunas para o formato exigido pelo Prophet
-    df_filtrado = df[df["id_produto"] == sku][["data_dia", "total_venda_dia_kg"]]
+    # filtra os dados pelo sku e renomeia colunas para o formato exigido pelo prophet
+    df_filtrado = df[df["id_produto"] == sku][["data_dia", "total_venda_dia_kg"]].copy()
     df_filtrado = df_filtrado.rename(columns={"data_dia": "ds", "total_venda_dia_kg": "y"})
     df_filtrado["ds"] = pd.to_datetime(df_filtrado["ds"], dayfirst=True)
 
     return df_filtrado
 
-# Função que treina o modelo Prophet e gera a previsão para os próximos dias
+# função que treina o modelo prophet e gera a previsão para os próximos dias
 def treinar_e_prever(df, dias_previsao):
     modelo = Prophet(
-        weekly_seasonality=True,  # Considera sazonalidade semanal
-        yearly_seasonality=False,  # Ignora sazonalidade anual
-        holidays=obter_feriados()  # Inclui feriados locais
+        weekly_seasonality=True,  # considera sazonalidade semanal
+        yearly_seasonality=False,  # ignora sazonalidade anual
+        holidays=obter_feriados()  # inclui feriados locais
     )
-    modelo.fit(df)  # Treina o modelo com os dados históricos
-    futuro = modelo.make_future_dataframe(periods=dias_previsao)  # Cria datas futuras
-    previsao = modelo.predict(futuro)  # Gera a previsão
+    modelo.fit(df)  # treina o modelo com os dados históricos
+    futuro = modelo.make_future_dataframe(periods=dias_previsao)  # cria datas futuras
+    previsao = modelo.predict(futuro)  # gera a previsão
     return previsao
 
-# Função que calcula as métricas de erro entre os dados reais e a previsão
+# função que calcula as métricas de erro entre os dados reais e a previsão
 def calcular_metricas(df_real, df_previsao):
-    # Junta os dados reais com a previsão para as mesmas datas
+    # junta os dados reais com a previsão para as mesmas datas
     df_merged = pd.merge(df_real, df_previsao[["ds", "yhat"]], on="ds", how="inner")
-    y_true = df_merged["y"]  # Valores reais
-    y_pred = df_merged["yhat"]  # Valores previstos
+    y_true = df_merged["y"]  # valores reais
+    y_pred = df_merged["yhat"]  # valores previstos
 
-    # Calcula RMSE e MAPE (métricas de performance)
+    # calcula rmse e mape (métricas de performance)
     rmse = root_mean_squared_error(y_true, y_pred)
     mape = mean_absolute_percentage_error(y_true, y_pred) * 100
     return rmse, mape
 
-# Função principal que executa o fluxo completo
+# função principal que executa o fluxo completo
 def main():
-    # Solicita ao usuário o caminho do arquivo e o SKU desejado
+    # solicita ao usuário o caminho do arquivo e o sku desejado
     caminho = input("Digite o caminho do arquivo (.csv ou .xlsx): ")
     sku = int(input("Digite o SKU que deseja analisar: "))
-    dias_previsao = 7  # Número de dias futuros para prever
+    dias_previsao = 7  # número de dias futuros para prever
 
-    # Tenta carregar os dados e trata possíveis erros
+    # tenta carregar os dados e trata possíveis erros
     try:
         df = carregar_arquivo(caminho, sku)
     except Exception as e:
         print(f" Erro ao carregar dados: {e}")
         return
 
-    # Verifica se há dados disponíveis para o SKU
+    # verifica se há dados disponíveis para o sku
     if df.empty:
         print(f" Nenhum dado encontrado para SKU {sku}")
         return
 
-    # Treina o modelo e gera a previsão
+    # treina o modelo e gera a previsão
     previsao = treinar_e_prever(df, dias_previsao)
 
-    # Calcula as métricas de erro
+    # calcula as métricas de erro
     rmse, mape = calcular_metricas(df, previsao)
 
-    # Exibe os resultados no terminal
+    # exibe os resultados no terminal
     print("\n Modelo treinado com sucesso!")
     print(f" RMSE: {rmse:.2f}")
     print(f" MAPE: {mape:.2f}%")
 
-    # Exibe as previsões para os próximos 7 dias
+    # exibe as previsões para os próximos 7 dias
     print("\nPrevisões para os próximos 7 dias:")
     previsoes_futuras = previsao.tail(dias_previsao)
     for i in range(7):
@@ -102,7 +102,7 @@ def main():
         valor = previsoes_futuras.iloc[i]['yhat']
         print(f"{data}: {valor:.2f} kg")
 
-# Executa o script se for chamado diretamente
+# executa o script se for chamado diretamente
 if __name__ == "__main__":
     main()
 
