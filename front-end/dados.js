@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return
       }
 
-      const resposta = await fetch('http://localhost:3000/api/auth/perfil', {
+      const resposta = await fetch('https://itamind.onrender.com/api/auth/perfil', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // faz uma requisição get para a api
-      const resposta = await fetch('http://localhost:3000/api/previsao/default', {
+      const resposta = await fetch('https://itamind.onrender.com/api/previsao/default', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
