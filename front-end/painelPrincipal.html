@@ -51,19 +51,19 @@
             <h2>Previsão</h2>
           </header>
           <div class="widget widget__data">
-              <h3 class="nome__data">Base de dados</h3>
-              <input class="dia-mes" type="file"/>
+              <h3 class="base-dados-texto">Base de dados</h3>
+              <input class="base-dados-input" id="base-dados-input" type="file"/>
             
             </div>
           <div class=" widget__data-botao">
             <div class="widget widget__data">
               <h3 class="nome__data">Data</h3>
-              <input class="dia-mes" type="date"/>
+              <input class="dia-mes" id="data-selecionada" type="date"/>
             
             </div>
             <div class="widget widget__data">
               <h3 class="nome__data">SKU</h3>
-              <input type="text" list="sku" placeholder="Selecione um tipo">
+              <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo">
 
 <datalist id="sku">
   <option value="Asa"></option>
@@ -71,7 +71,7 @@
   
 </datalist>
             </div>
-            <div class="widget botao-widget"><button class="botao-previsao"><strong>Gerar previsão</strong></button>
+            <div id="botao-gerar-previsao" class="widget botao-widget"><button class="botao-previsao"><strong>Gerar previsão</strong></button>
             </div>
           </div>
           <h3>Retirada</h3>
@@ -81,22 +81,22 @@
              
             <div class="widget">
               <h3>Retirar Hoje</h3>
-              <p>kg</p>
+              <p id="kg-retirar-Hoje">kg</p>
             </div>
             <!-- Widget de Entrada -->
             <div class="widget">
               <h3> Descongelando </h3>
-              <p>kg</p>
+              <p id="kg-retirado-Ontem">kg</p>
             </div>
             <!-- Widget de Ganho -->
             <div class="widget">
               <h3>Disponível</h3>
-              <p>kg</p>
+              <p id="kg-retirado-antes-de-ontem">kg</p>
             </div>
             <!-- Widget de Perda -->
              <div class="widget">
               <h3>Disponível para venda</h3>
-              <p>kg</p>
+              <p id="disponivelParaVenda">kg</p>
             </div>
           </section>
 
