@@ -10,10 +10,9 @@
 /* Variáveis de cor definidas no escopo global */
 :root{
     --fonte-principal: 'DM Sans', sans-serif;
-    --cor-principal:#ffffff;
+    --cor-principal:#faf9f6;
     --cor-secundaria:#085A8C;
     --cor-terciaria:#D9D9D9;
-    --cor-quaternaria: #D9D9D9;
 
 }
 /* Fundo da página */
@@ -86,7 +85,7 @@ body{
     font-family: var(--fonte-principal);
     font-weight: 900;
     background-color: var(--cor-secundaria);
-    color: var(--cor-terciaria);
+    color: var(--cor-principal);
     border-radius: 5px;
     font-size: large;
     padding: 12px 25px;
