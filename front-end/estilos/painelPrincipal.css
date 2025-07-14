@@ -281,6 +281,7 @@ margin-bottom: 10px;
   transition: transform 0.3s;
   display: flex; 
   align-items: center;
+  margin-top: 2%;
 }
 
 /* Efeito de hover */
