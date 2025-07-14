@@ -94,6 +94,14 @@ def main():
     print(f" RMSE: {rmse:.2f}")
     print(f" MAPE: {mape:.2f}%")
 
+    # Exibe as previsões para os próximos 7 dias
+    print("\nPrevisões para os próximos 7 dias:")
+    previsoes_futuras = previsao.tail(dias_previsao)
+    for i in range(7):
+        data = previsoes_futuras.iloc[i]['ds'].date()
+        valor = previsoes_futuras.iloc[i]['yhat']
+        print(f"{data}: {valor:.2f} kg")
+
 # Executa o script se for chamado diretamente
 if __name__ == "__main__":
     main()
