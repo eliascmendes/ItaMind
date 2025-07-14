@@ -7,22 +7,26 @@
     padding: 0;
     margin: 0;
 }
-/* Variáveis de cor definidas no escopo global */
+/* Variáveis de cor e fontes definidas no escopo global */
 :root{
     --fonte-principal: 'DM Sans', sans-serif;
-    --cor-principal:#faf9f6;
-    --cor-secundaria:#085A8C;
-    --cor-terciaria:#D9D9D9;
-
+    --branco-1:#faf9f6;
+    --branco-2:#D9D9D9;
+    --azul-1:#085A8C;
+    --azul-2: #023059;
+    --verde-1: #a9f7d1;
+    --verde-2: #aafc5d;
+    --verde-3: #062022;
+    --preto: #0f0f0f;
 }
 /* Fundo da página */
 body{
-    background-color: var(--cor-principal);
+    background-color: var(--preto);
 }
 /* Estilização do cabeçalho principal */
 .cabecalho{
     background-color: var(--cor-secundaria);
-    padding: 1.720%;
+    padding: 2%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,42 +45,65 @@ body{
 }
 /* Área principal do conteúdo */
 .conteudo{
+
+    background-color: var(--azul-1); /* Cor de fundo azul */
+    border-radius: 10px; /* Bordas arredondadas */
+    width: fit-content; /* Ajusta a largura ao conteúdo */
+    margin: auto; /* Centraliza o container na página */
+    max-height: 300px;
+
+    padding-left: 12%;
     display:flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    gap: 42px;
+    justify-content: center;
+    gap: 100px;
 }
 
 .conteudo__titulo{
     font-family: var(--fonte-principal);
     font-weight: 1000;
+    color: var(--branco-1);
+}
+
+.conteudo__formulario{
+    box-sizing: border-box;
+    width: 500px;
+    height: 300px;
+    background-color: var(--branco-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 /* Container para os campos de entrada */
 .conteudo__input{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 /* Estilo para campos de texto */
 .conteudo__input__aparencia{
     font-family: var(--fonte-principal);
-    font-size: 100%;
+    font-size: 90%;
     font-weight: 200;
+    color: var(--azul-1);
 
-    border: 2px solid var(--cor-secundaria);
-    width: 300px;
-    height: 30px;
-    border-radius:15PX ;
-    padding: 1% 1% 1% 3%;
-    background-color: var(--cor-principal);
+    box-sizing: border-box;
+    border: 2px solid var(--azul-1);
+    width: 310px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 1% 1% 1% 2%;
+    background-color: var(--branco-1);
     
 }
 /* Container dos botões */
 .conteudo__input__botoes{
     display: flex;
-    gap: 20px;
+    gap: 30px;
     align-items: center;
     
 }
@@ -84,8 +111,8 @@ body{
 .conteudo__input__botao{
     font-family: var(--fonte-principal);
     font-weight: 900;
-    background-color: var(--cor-secundaria);
-    color: var(--cor-principal);
+    background-color: var(--azul-2);
+    color: var(--branco-1);
     border-radius: 5px;
     font-size: large;
     padding: 12px 25px;
@@ -96,8 +123,8 @@ body{
 }
 /* Estilo do botão de entrada */
 .conteudo__input__botao__entrar{
-    background-color: var(--cor-secundaria);
-    border: 2px solid var(--cor-secundaria);
+    background-color: var(--azul-2);
+    border: 2px solid var(--azul-2);
 
     border-radius:15PX ;
     padding: 1% 1% 1% 3%;
