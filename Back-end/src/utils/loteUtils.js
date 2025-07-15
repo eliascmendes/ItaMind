@@ -61,12 +61,20 @@ const calcularPercentualPerda = (dataRetirada, percentualBase = 15) => {
 
 // gera um identificador único para o lote
 const gerarIdLote = (idProduto, dataRetirada) => {
-  const data = new Date(dataRetirada)
-  const ano = data.getFullYear()
-  const mes = String(data.getMonth() + 1).padStart(2, '0')
-  const dia = String(data.getDate()).padStart(2, '0')
+  // evitar problemas de fuso horário
+  let dataFormatada
 
-  return `${idProduto}_${ano}${mes}${dia}_${Date.now().toString().slice(-4)}`
+  if (typeof dataRetirada === 'string' && dataRetirada.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    dataFormatada = dataRetirada.replace(/-/g, '')
+  } else {
+    const data = new Date(dataRetirada)
+    const ano = data.getFullYear()
+    const mes = String(data.getMonth() + 1).padStart(2, '0')
+    const dia = String(data.getDate()).padStart(2, '0')
+    dataFormatada = `${ano}${mes}${dia}`
+  }
+
+  return `${idProduto}_${dataFormatada}_${Date.now().toString().slice(-4)}`
 }
 
 // calcula a quantidade líquida considerando perdas
