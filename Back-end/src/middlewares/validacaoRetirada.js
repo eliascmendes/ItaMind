@@ -10,11 +10,14 @@ const validarRegistroRetirada = (req, res, next) => {
       'any.required': 'ID do produto é obrigatório',
     }),
 
-    data_retirada: Joi.date().iso().required().messages({
-      'date.base': 'Data de retirada deve ser uma data válida',
-      'date.format': 'Data de retirada deve estar no formato ISO (YYYY-MM-DD)',
-      'any.required': 'Data de retirada é obrigatória',
-    }),
+    data_retirada: Joi.string()
+      .pattern(/^\d{4}-\d{2}-\d{2}$/)
+      .required()
+      .messages({
+        'string.base': 'Data de retirada deve ser uma string',
+        'string.pattern.base': 'Data de retirada deve estar no formato YYYY-MM-DD',
+        'any.required': 'Data de retirada é obrigatória',
+      }),
 
     quantidade_kg: Joi.number().positive().precision(2).required().messages({
       'number.base': 'Quantidade deve ser um número',
@@ -27,11 +30,13 @@ const validarRegistroRetirada = (req, res, next) => {
       'string.max': 'Lote deve ter no máximo 50 caracteres',
     }),
 
-    data_venda_prevista: Joi.date().iso().min('now').optional().messages({
-      'date.base': 'Data de venda prevista deve ser uma data válida',
-      'date.format': 'Data de venda prevista deve estar no formato ISO',
-      'date.min': 'Data de venda prevista deve ser no futuro',
-    }),
+    data_venda_prevista: Joi.string()
+      .pattern(/^\d{4}-\d{2}-\d{2}$/)
+      .optional()
+      .messages({
+        'string.base': 'Data de venda prevista deve ser uma string',
+        'string.pattern.base': 'Data de venda prevista deve estar no formato YYYY-MM-DD',
+      }),
 
     observacoes: Joi.string().trim().max(500).optional().messages({
       'string.base': 'Observações deve ser uma string',
@@ -44,8 +49,7 @@ const validarRegistroRetirada = (req, res, next) => {
   if (error) {
     const mensagemErro = error.details[0].message
     return res.status(400).json({
-      status: 'erro',
-      message: mensagemErro,
+      error: mensagemErro,
     })
   }
 
@@ -72,24 +76,28 @@ const validarRegistroVenda = (req, res, next) => {
   if (error) {
     const mensagemErro = error.details[0].message
     return res.status(400).json({
-      status: 'erro',
-      message: mensagemErro,
+      error: mensagemErro,
     })
   }
 
   next()
 }
 
-// validação para atualizar estágio
+// validação para atualizar estágio do lote
 const validarAtualizacaoEstagio = (req, res, next) => {
   const schema = Joi.object({
-    estagio_atual: Joi.string()
+    novo_estagio: Joi.string()
       .valid('esquerda', 'central', 'venda', 'vencido')
-      .optional()
+      .required()
       .messages({
-        'string.base': 'Estágio deve ser uma string',
         'any.only': 'Estágio deve ser: esquerda, central, venda ou vencido',
+        'any.required': 'Novo estágio é obrigatório',
       }),
+
+    observacoes: Joi.string().trim().max(500).optional().messages({
+      'string.base': 'Observações deve ser uma string',
+      'string.max': 'Observações deve ter no máximo 500 caracteres',
+    }),
   })
 
   const { error } = schema.validate(req.body)
@@ -97,8 +105,7 @@ const validarAtualizacaoEstagio = (req, res, next) => {
   if (error) {
     const mensagemErro = error.details[0].message
     return res.status(400).json({
-      status: 'erro',
-      message: mensagemErro,
+      error: mensagemErro,
     })
   }
 
@@ -109,53 +116,43 @@ const validarAtualizacaoEstagio = (req, res, next) => {
 const validarParametrosBusca = (req, res, next) => {
   const schema = Joi.object({
     id_produto: Joi.number().integer().positive().optional(),
-
     estagio: Joi.string().valid('esquerda', 'central', 'venda', 'vencido').optional(),
-
-    status: Joi.string().valid('ativa', 'vendida', 'descartada').optional(),
-
-    lote: Joi.string().trim().optional(),
-
     data_inicio: Joi.date().iso().optional(),
-
-    data_fim: Joi.date().iso().min(Joi.ref('data_inicio')).optional().messages({
-      'date.min': 'Data fim deve ser posterior à data início',
-    }),
-
-    page: Joi.number().integer().positive().default(1).optional(),
-
-    limit: Joi.number().integer().positive().max(100).default(10).optional().messages({
-      'number.max': 'Limite máximo de 100 itens por página',
-    }),
+    data_fim: Joi.date().iso().min(Joi.ref('data_inicio')).optional(),
+    lote: Joi.string().trim().optional(),
+    page: Joi.number().integer().min(1).default(1).optional(),
+    limit: Joi.number().integer().min(1).max(100).default(10).optional(),
   })
 
-  const { error, value } = schema.validate(req.query)
+  const { error } = schema.validate(req.query)
 
   if (error) {
     const mensagemErro = error.details[0].message
     return res.status(400).json({
-      status: 'erro',
-      message: mensagemErro,
+      error: mensagemErro,
     })
   }
 
-  // atualiza req.query com valores validados
-  req.query = value
   next()
 }
 
-// validação para relatório
+// validação para parâmetros de relatório
 const validarParametrosRelatorio = (req, res, next) => {
   const schema = Joi.object({
     data_inicio: Joi.date().iso().required().messages({
+      'date.base': 'Data início deve ser uma data válida',
+      'date.format': 'Data início deve estar no formato ISO (YYYY-MM-DD)',
       'any.required': 'Data início é obrigatória',
     }),
 
     data_fim: Joi.date().iso().min(Joi.ref('data_inicio')).required().messages({
-      'any.required': 'Data fim é obrigatória',
+      'date.base': 'Data fim deve ser uma data válida',
+      'date.format': 'Data fim deve estar no formato ISO (YYYY-MM-DD)',
       'date.min': 'Data fim deve ser posterior à data início',
+      'any.required': 'Data fim é obrigatória',
     }),
 
+    estagio: Joi.string().valid('esquerda', 'central', 'venda', 'vencido').optional(),
     id_produto: Joi.number().integer().positive().optional(),
   })
 
@@ -164,8 +161,7 @@ const validarParametrosRelatorio = (req, res, next) => {
   if (error) {
     const mensagemErro = error.details[0].message
     return res.status(400).json({
-      status: 'erro',
-      message: mensagemErro,
+      error: mensagemErro,
     })
   }
 
