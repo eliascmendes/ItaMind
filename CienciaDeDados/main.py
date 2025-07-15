@@ -183,6 +183,48 @@ def gerar_relatorio_operacional(previsao, sku, data_alvo_str):
 
     return pd.DataFrame(relatorio_lista)
 
+# calcula a quantidade total vendida em um dia da semana selecionado (domingo, segunda,...) e compara entre os meses da base de dados
+def calcular_soma_por_dia_semana(dados_prophet, dia_semana):
+
+    # cria um dicionário de mapeamento de nomes dos dias da semana para o número correspondente que o pandas usa
+    dias_map = {
+        'segunda': 0,
+        'terça': 1,
+        'quarta': 2,
+        'quinta': 3,
+        'sexta': 4,
+        'sábado': 5,
+        'domingo': 6
+    }
+
+    # converte o texto do usuário para letras minúsculas
+    dia_semana = dia_semana.lower()
+
+    # verifica se o dia informado é válido
+    if dia_semana not in dias_map:
+        raise ValueError(f"Dia inválido: '{dia_semana}'. Use: {', '.join(dias_map.keys())}")
+
+    # obtém o número do dia da semana correspondente
+    numero_dia = dias_map[dia_semana]
+
+    # filtra os dados para o dia da semana desejado
+    dados_filtrados = dados_prophet[dados_prophet['ds'].dt.weekday == numero_dia].copy()
+
+    # extrai ano-mês para agrupamento
+    dados_filtrados['ano_mes'] = dados_filtrados['ds'].dt.to_period('M').astype(str)
+
+    # soma por mês
+    soma_mensal = dados_filtrados.groupby('ano_mes')['y'].sum().round(2)
+
+    # imprime no terminal
+    print(f"\n📊 Comparativo de vendas para '{dia_semana.capitalize()}' por mês:")
+    for mes, total in soma_mensal.items():
+        print(f" - {mes}: {total} kg")
+
+    return soma_mensal.to_dict()
+
+
+
 
 def main():
     try:
@@ -281,6 +323,12 @@ def main():
     except Exception as e:
         print(f"Ocorreu um erro inesperado na execução: {e}", file=sys.stderr)
         return
+    
+    dia = input("Digite o dia da semana (ex: domingo, segunda, ...): ").strip().lower()
+    try:
+        calcular_soma_por_dia_semana(dados_sku, dia)
+    except ValueError as ve:
+        print(f"Erro: {ve}")
 
 # ponto de entrada do script
 if __name__ == "__main__":
