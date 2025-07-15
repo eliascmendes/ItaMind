@@ -1,26 +1,28 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const conectarDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const previsaoRoutes = require('./routes/previsaoRoutes');
-const swaggerUi = require("swagger-ui-express")
-const swaggerSpecs = require("./config/swagger")
-const app = express();
-const PORT = process.env.PORT || 3000;
+require('dotenv').config()
+const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+const conectarDB = require('./config/db')
+const authRoutes = require('./routes/authRoutes')
+const previsaoRoutes = require('./routes/previsaoRoutes')
+const retiradaRoutes = require('./routes/retiradaRoutes')
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpecs = require('./config/swagger')
+const app = express()
+const PORT = process.env.PORT || 3000
 
-conectarDB();
+conectarDB()
 
 // intermediarios
-app.use(cors());
-app.use(morgan('combined'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+app.use(morgan('combined'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // rotas
-app.use('/api/auth', authRoutes);
-app.use('/api/previsao', previsaoRoutes);
+app.use('/api/auth', authRoutes)
+app.use('/api/previsao', previsaoRoutes)
+app.use('/api/retiradas', retiradaRoutes)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 /**
@@ -48,11 +50,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
  *               message: "pong"
  */
 app.get('/ping', (req, res) => {
-  res.json({ message: 'pong' });
-});
+  res.json({ message: 'pong' })
+})
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+  console.log(`Servidor rodando na porta ${PORT}`)
+})
 
-module.exports = app;
+module.exports = app
