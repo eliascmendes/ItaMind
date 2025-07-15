@@ -7,6 +7,7 @@ const {
   postCalcularRetirada,
   postCalcularIdadeLote,
   postObterEstagioLote,
+  getDadosGraficoBarras,
   getDefaultPrevisao,
   getPrevisoesSalvas,
   getPrevisaoById,
@@ -25,6 +26,9 @@ roteador.post('/previsao', autenticar, getPrevisao)
 
 // rota para gerar relatório diário operacional (requer autenticação)
 roteador.get('/relatorio-diario', autenticar, getRelatorioDiario)
+
+// rota para gerar dados do gráfico de barras (requer autenticação)
+roteador.get('/grafico-barras', autenticar, getDadosGraficoBarras)
 
 // rotas auxiliares para cálculos de lote (sem autenticação)
 roteador.post('/calcular_retirada', postCalcularRetirada)

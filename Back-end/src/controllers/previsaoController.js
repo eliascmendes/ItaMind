@@ -623,7 +623,7 @@ const getDadosGraficoBarras = async (req, res) => {
       }
     }
 
-    // verifica se encontrou dados
+    //  se encontrou dados
     if (dadosVendas.length === 0) {
       return res.status(404).json({
         error: `Nenhum dado encontrado para o SKU ${sku}`,
