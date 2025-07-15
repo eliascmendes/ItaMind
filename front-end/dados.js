@@ -178,8 +178,10 @@ document.addEventListener('DOMContentLoaded', () => {
       graficoLinha.data.datasets[0].label = 'Previsão de Vendas (kg)'
       graficoLinha.update()
 
-      // buscar relatório diário para os widgets de retirada
-      await buscarRelatorioDiario()
+      // buscar relatório diário para os widgets de retirada com data padrão
+      const dataInput = document.getElementById('data-selecionada')
+      const dataAlvo = dataInput ? dataInput.value : null
+      await buscarRelatorioDiario(237479, dataAlvo)
     } catch (erro) {
       // em caso de erro, mostra no console e atualiza o gráfico
       console.error('Falha ao buscar dados da previsão:', erro)
@@ -483,6 +485,13 @@ document.addEventListener('DOMContentLoaded', () => {
       await buscarPrevisaoPadrao()
       await buscarDadosEstoque()
 
+      // atualizar data selecionada
+      const dataInput = document.getElementById('data-selecionada')
+      const dataAlvo = dataInput ? dataInput.value : null
+      if (dataAlvo) {
+        await buscarRelatorioDiario(237479, dataAlvo)
+      }
+
       alert('Dados atualizados com sucesso!')
     } catch (erro) {
       alert('Erro ao atualizar dados')
@@ -509,6 +518,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnAtualizarDados = document.getElementById('btn-atualizar-dados')
   if (btnAtualizarDados) {
     btnAtualizarDados.addEventListener('click', atualizarTodosDados)
+  }
+
+  // adicionar evento para quando o usuário alterar a data
+  const inputData = document.getElementById('data-selecionada')
+  if (inputData) {
+    inputData.addEventListener('change', async () => {
+      const novaData = inputData.value
+      if (novaData) {
+        await buscarRelatorioDiario(237479, novaData)
+      }
+    })
   }
 })
 document.querySelector('input').onclick = () => {
