@@ -323,6 +323,12 @@ margin-bottom: 10px;
   gap: 0; 
 }
 
+.funcao-colaborador {
+  font-size: 0.85em; 
+  color: var(--text-color); 
+  margin-top: 5px;
+  text-align: center; 
+}
 
 /* Texto ao lado da imagem */
 .perfil-link h3 {
@@ -380,10 +386,10 @@ margin-bottom: 10px;
   cursor: pointer;
 }
 .palavra-retirada{
-  font-size: 20px;
-  color: var(--cor-secundaria);
+  font-size: 30px;
+  color: var(--text-color);
   margin-top: 4%;
-  text-align: center;
+  text-align: left;
 }
 .base-dados-input{
   display: flex;
