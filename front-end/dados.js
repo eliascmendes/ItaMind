@@ -132,6 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // converte a resposta para json
       const dadosPrevisao = await resposta.json()
 
+      // atualizar métricas RMSE e MAPE
+      if (dadosPrevisao.previsoes && dadosPrevisao.previsoes.length > 0) {
+        const primeiroSku = dadosPrevisao.previsoes[0]
+        document.getElementById('quantidade-RMSE').textContent =
+          primeiroSku.rmse?.toFixed(2) || '--'
+        document.getElementById('quantidade-MAPE').textContent =
+          primeiroSku.mape?.toFixed(2) + '%' || '--'
+      }
+
       // agregador para somar as previsões de todos os SKUs por dia
       const previsoesAgregadas = new Map()
 
@@ -168,6 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
       graficoLinha.data.datasets[0].data = pontosGrafico
       graficoLinha.data.datasets[0].label = 'Previsão de Vendas (kg)'
       graficoLinha.update()
+
+      // buscar relatório diário para os widgets de retirada
+      await buscarRelatorioDiario()
     } catch (erro) {
       // em caso de erro, mostra no console e atualiza o gráfico
       console.error('Falha ao buscar dados da previsão:', erro)
@@ -176,9 +188,328 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // executa a função de buscar dados assim que a página carrega
+  // função para buscar relatório diário e atualizar widgets de retirada
+  const buscarRelatorioDiario = async (sku = 237479, dataAlvo = null) => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) return
+
+      // usar data de hoje se não especificada
+      const data = dataAlvo || new Date().toISOString().split('T')[0]
+
+      const resposta = await fetch(
+        ////`https://itamind.onrender.com/api/previsao/relatorio-diario?sku=${sku}&data_alvo=${data}`
+        ////`http://localhost:3000/api/previsao/relatorio-diario?sku=${sku}&data_alvo=${data}`,
+        `https://itamind.onrender.com/api/previsao/relatorio-diario?sku=${sku}&data_alvo=${data}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        const relatorio = dados.relatorio
+
+        // atualizar widgets de retirada com valores distintos
+        // kg_a_retirar: quantidade a retirar hoje (com compensação de 15% de perda)
+        document.getElementById('kg-retirar-Hoje').textContent = `${
+          relatorio.kg_a_retirar || '--'
+        } kg`
+        // kg_em_descongelamento: produto em descongelamento (com compensação de 15% de perda)
+        document.getElementById('kg-retirado-Ontem').textContent = `${
+          relatorio.kg_em_descongelamento || '--'
+        } kg`
+        // kg_disponivel_bruto: produto disponível com compensação de perda aplicada
+        document.getElementById('kg-retirado-antes-de-ontem').textContent = `${
+          relatorio.kg_disponivel_bruto || '--'
+        } kg`
+        // kg_para_venda_hoje: quantidade líquida real disponível para venda
+        document.getElementById('disponivelParaVenda').textContent = `${
+          relatorio.kg_para_venda_hoje || '--'
+        } kg`
+      } else {
+        // se erro na busca, mostra valores padrão
+        document.getElementById('kg-retirar-Hoje').textContent = '-- kg'
+        document.getElementById('kg-retirado-Ontem').textContent = '-- kg'
+        document.getElementById('kg-retirado-antes-de-ontem').textContent = '-- kg'
+        document.getElementById('disponivelParaVenda').textContent = '-- kg'
+      }
+    } catch (erro) {
+      console.error('Falha ao buscar relatório diário:', erro)
+    }
+  }
+
+  // função para gerar previsão customizada
+  const gerarPrevisaoCustomizada = async () => {
+    const sku = document.getElementById('sku-selecionado').value
+    const data = document.getElementById('data-selecionada').value
+
+    if (!sku || !data) {
+      alert('Por favor, selecione um SKU e uma data')
+      return
+    }
+
+    // converter nome do SKU para número (mapeamento simples)
+    const skuMap = {
+      Asa: 237479,
+    }
+
+    const skuNumero = skuMap[sku] || 237479
+
+    try {
+      await buscarRelatorioDiario(skuNumero, data)
+      alert(`Relatório gerado para ${sku} na data ${data}`)
+    } catch (erro) {
+      alert('Erro ao gerar previsão customizada')
+    }
+  }
+
+  // buscar dados de retiradas para a seção de estoque
+  const buscarDadosEstoque = async () => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) return
+
+      const dataInicio = new Date()
+      dataInicio.setDate(dataInicio.getDate() - 7) // última semana
+      const dataFim = new Date()
+
+      const resposta = await fetch(
+        `https://itamind.onrender.com/api/retiradas/relatorio?data_inicio=${
+          dataInicio.toISOString().split('T')[0]
+        }&data_fim=${dataFim.toISOString().split('T')[0]}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        const relatorio = dados.relatorio
+
+        // atualizar seção de estoque se houver dados
+        if (relatorio.detalhes.length > 0) {
+          const total = relatorio.detalhes[0]
+
+          // encontrar widgets de estoque e atualizar (seção #estoque)
+          const estoqueWidgets = document.querySelectorAll('#estoque .widget p')
+          if (estoqueWidgets.length >= 4) {
+            estoqueWidgets[1].textContent = `${total.quantidade_retirada} kg`
+            estoqueWidgets[0].textContent = `${total.quantidade_vendida} kg`
+            estoqueWidgets[2].textContent = `${Math.max(
+              0,
+              total.quantidade_retirada - total.quantidade_vendida
+            )} kg` // Ganho
+            estoqueWidgets[3].textContent = `${Math.max(
+              0,
+              total.quantidade_vendida - total.quantidade_retirada
+            )} kg` // Perda
+          }
+        }
+      }
+    } catch (erro) {
+      console.error('Falha ao buscar dados de estoque:', erro)
+    }
+  }
+
+  // executar funções ao carregar a página
   buscarDadosUsuario()
   buscarPrevisaoPadrao()
+
+  // buscar dados de estoque após um  delay
+  setTimeout(buscarDadosEstoque, 2000)
+
+  // adicionar evento ao botão de gerar previsão
+  const botaoGerarPrevisao = document.getElementById('botao-gerar-previsao')
+  if (botaoGerarPrevisao) {
+    botaoGerarPrevisao.addEventListener('click', gerarPrevisaoCustomizada)
+  }
+
+  // função para registrar nova retirada
+  const registrarNovaRetirada = async () => {
+    const quantidade = document.getElementById('retirada-quantidade').value
+    const data = document.getElementById('retirada-data').value
+
+    if (!quantidade || !data) {
+      alert('Por favor, preencha a quantidade e a data')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        alert('Você não está autenticado')
+        return
+      }
+
+      // calcular data de venda prevista (2 dias após retirada)
+      const dataRetirada = new Date(data)
+      const dataVendaPrevista = new Date(dataRetirada)
+      dataVendaPrevista.setDate(dataVendaPrevista.getDate() + 2)
+
+      const dadosRetirada = {
+        id_produto: 237479,
+        data_retirada: data,
+        quantidade_kg: parseFloat(quantidade),
+        data_venda_prevista: dataVendaPrevista.toISOString().split('T')[0],
+        observacoes: 'Retirada registrada via painel web',
+      }
+      //localhost:3000
+      //https://itamind.onrender.com/api/retiradas/registrar
+      const resposta = await fetch('https://itamind.onrender.com/api/retiradas/registrar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dadosRetirada),
+      })
+
+      if (resposta.ok) {
+        const resultado = await resposta.json()
+        alert(`Retirada registrada com sucesso! Lote: ${resultado.retirada.lote}`)
+
+        // limpar campos
+        document.getElementById('retirada-quantidade').value = ''
+        document.getElementById('retirada-data').value = ''
+
+        // atualizar dados na tela
+        await buscarRelatorioDiario()
+        await buscarDadosEstoque()
+      } else {
+        const erro = await resposta.json()
+        alert(`Erro ao registrar retirada: ${erro.error}`)
+      }
+    } catch (erro) {
+      alert('Erro ao registrar retirada')
+      console.error(erro)
+    }
+  }
+
+  // função para ver retiradas recentes
+  const verRetiradas = async () => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        alert('Você não está autenticado')
+        return
+      }
+
+      const resposta = await fetch('https://itamind.onrender.com/api/retiradas/buscar?limit=100', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        let mensagem = 'Últimas retiradas:\n\n'
+
+        dados.retiradas.forEach((retirada, index) => {
+          // string YYYY-MM-DD e formatar para DD/MM/YYYY
+          const partesData = retirada.data_retirada.split('-')
+          const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`
+          mensagem += `${index + 1}. ${dataFormatada} - ${retirada.quantidade_kg}kg - ${
+            retirada.estagio_atual
+          }\n`
+        })
+
+        alert(mensagem)
+      } else {
+        alert('Erro ao buscar retiradas')
+      }
+    } catch (erro) {
+      alert('Erro ao buscar retiradas')
+      console.error(erro)
+    }
+  }
+
+  // função para gerar relatório
+  const gerarRelatorioRetiradas = async () => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        alert('Você não está autenticado')
+        return
+      }
+
+      const dataFim = new Date()
+      const dataInicio = new Date()
+      dataInicio.setDate(dataInicio.getDate() - 30) // últimos 30 dias
+
+      const resposta = await fetch(
+        `https://itamind.onrender.com/api/retiradas/relatorio?data_inicio=${
+          dataInicio.toISOString().split('T')[0]
+        }&data_fim=${dataFim.toISOString().split('T')[0]}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        const relatorio = dados.relatorio
+
+        let mensagem = `Relatório dos últimos 30 dias:\n\n`
+        mensagem += `Total de retiradas: ${relatorio.total_geral_retiradas}\n`
+        mensagem += `Quantidade retirada: ${relatorio.quantidade_geral_retirada} kg\n`
+        mensagem += `Quantidade vendida: ${relatorio.quantidade_geral_vendida} kg\n`
+        mensagem += `Em estoque: ${
+          relatorio.quantidade_geral_retirada - relatorio.quantidade_geral_vendida
+        } kg`
+
+        alert(mensagem)
+      } else {
+        alert('Erro ao gerar relatório')
+      }
+    } catch (erro) {
+      alert('Erro ao gerar relatório')
+      console.error(erro)
+    }
+  }
+
+  // função para atualizar todos os dados
+  const atualizarTodosDados = async () => {
+    try {
+      alert('Atualizando todos os dados...')
+
+      await buscarDadosUsuario()
+      await buscarPrevisaoPadrao()
+      await buscarDadosEstoque()
+
+      alert('Dados atualizados com sucesso!')
+    } catch (erro) {
+      alert('Erro ao atualizar dados')
+      console.error(erro)
+    }
+  }
+
+  // adicionar eventos aos novos botões
+  const btnRegistrarRetirada = document.getElementById('btn-registrar-retirada')
+  if (btnRegistrarRetirada) {
+    btnRegistrarRetirada.addEventListener('click', registrarNovaRetirada)
+  }
+
+  const btnVerRetiradas = document.getElementById('btn-ver-retiradas')
+  if (btnVerRetiradas) {
+    btnVerRetiradas.addEventListener('click', verRetiradas)
+  }
+
+  const btnGerarRelatorio = document.getElementById('btn-gerar-relatorio')
+  if (btnGerarRelatorio) {
+    btnGerarRelatorio.addEventListener('click', gerarRelatorioRetiradas)
+  }
+
+  const btnAtualizarDados = document.getElementById('btn-atualizar-dados')
+  if (btnAtualizarDados) {
+    btnAtualizarDados.addEventListener('click', atualizarTodosDados)
+  }
 })
 document.querySelector('input').onclick = () => {
   document.body.classList.toggle('dark-mode')
