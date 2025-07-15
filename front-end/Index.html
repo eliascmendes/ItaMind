@@ -10,12 +10,6 @@
   <body>
     <main class="conteudo">
       <div class="conteudo__saudacao">
-        <img
-          class="conteudo__imagem__simbolo"
-          src="./assets/SIMBOLO/SIMBOLO_BRANCO.png"
-          alt="itamind_simbolo"
-        />
-        <!-- Alterado para simbolo da itamind-->
         <h1 class="conteudo__titulo">Olá,</h1>
         <h1 class="conteudo__titulo">Bem Vindo</h1>
       </div>
@@ -42,6 +36,14 @@
             <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
           </div>
         </form>
+        
+        <div>
+            <label class="conteudo__input__opcoes">
+                <input type="checkbox">
+                LEMBRAR-ME
+            </label>
+            <a class="conteudo__input__opcoes" href="#" >ESQUECI MINHA SENHA</a>
+        </div>
 
         <section class="conteudo__input__botoes">
           <!-- Seção dos botões abaixo dos campos -->
@@ -59,7 +61,9 @@
         </section>
       </section>
     </main>
+
     <footer></footer>
+
     <script>
       const loginForm = document.getElementById('loginForm')
       loginForm.addEventListener('submit', async event => {

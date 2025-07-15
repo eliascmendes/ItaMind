@@ -19,122 +19,228 @@
     --verde-3: #062022;
     --preto: #0f0f0f;
 }
+
 /* Fundo da página */
 body{
-    background-color: var(--preto);
-}
-/* Estilização do cabeçalho principal */
-.cabecalho{
-    background-color: var(--cor-secundaria);
-    padding: 2%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3%;
-}
-/* Área de informações do usuário no cabeçalho */
-.cabecalho__usuario{
     display: flex;
     justify-content: center;
-    text-align: center;
-    gap: 20px;
+    align-items: center;
+    background-color: var(--branco-2);
+    min-height: 100vh;
 }
-/* Links do usuário no cabeçalho */
-.cabecalho__usuario__link{
-    color: var(--cor-terciaria);
-}
+
 /* Área principal do conteúdo */
-.conteudo{
-
-    background-color: var(--azul-1); /* Cor de fundo azul */
-    border-radius: 10px; /* Bordas arredondadas */
-    width: fit-content; /* Ajusta a largura ao conteúdo */
-    margin: auto; /* Centraliza o container na página */
-    max-height: 300px;
-
-    padding-left: 12%;
-    display:flex;
+.conteudo {
+    display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    gap: 100px;
+    border-radius: 10px;
+    /* Para os cantos permanecerem arredondados */
+    overflow: hidden;
+
+    /* Dimensões do container principal */
+    min-height: 600px;
+    max-height: 80vh;
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); /* Sombrinha */
 }
 
-.conteudo__titulo{
+/* Lado azul com a imagem de fundo) */
+.conteudo__saudacao {
+    /* Faz com que o lado azul ocupe 55% da largura total do container */
+    flex: 0 0 55%;
+    background-image: url('/front-end/assets/Tela_Login_Itamind.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: left 0% top 0%; /* Alinha o fundo no topo e à esquerda para mostrar o ITAMIND */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Alinha o conteúdo verticalmente na parte inferior */
+    align-items: flex-start; /* Alinha o conteúdo horizontalmente na parte esquerda */
+    padding: 30px; /* Padding geral para as bordas */
+    padding-left: 50px; /* Mais padding para afastar da borda esquerda */
+    padding-right: 50px; /* Padding para a borda direita */
+    text-align: left; /* Alinha o texto dentro do próprio bloco */
+}
+
+.conteudo__titulo {
     font-family: var(--fonte-principal);
     font-weight: 1000;
     color: var(--branco-1);
+    margin: 0;
+    line-height: 1.2;
+    font-size: 3em;
 }
 
-.conteudo__formulario{
-    box-sizing: border-box;
-    width: 500px;
-    height: 300px;
+/* Seção do Formulário */
+.conteudo__formulario {
+    flex: 1;
     background-color: var(--branco-1);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 0 10px 10px 0;
 }
 
 /* Container para os campos de entrada */
-.conteudo__input{
+.conteudo__input {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 15px;
 }
-/* Estilo para campos de texto */
-.conteudo__input__aparencia{
-    font-family: var(--fonte-principal);
-    font-size: 90%;
-    font-weight: 200;
-    color: var(--azul-1);
 
+/* Estilo para campos de texto */
+.conteudo__input__aparencia {
+    font-family: var(--fonte-principal);
+    font-size: 1.1em;
+    font-weight: 400;
+    color: var(--azul-1);
     box-sizing: border-box;
     border: 2px solid var(--azul-1);
-    width: 310px;
-    height: 40px;
-    border-radius: 5px;
-    padding: 1% 1% 1% 2%;
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    padding: 0 15px;
     background-color: var(--branco-1);
-    
 }
-/* Container dos botões */
-.conteudo__input__botoes{
+
+/* Placeholder style */
+.conteudo__input__aparencia::placeholder {
+    font-family: var(--fonte-principal);
+    color: var(--azul-1);
+    opacity: 0.7;
+}
+
+/* Ajustes para o checkbox e o link "Esqueci a senha" */
+.conteudo__formulario > div:nth-of-type(2) {
+    width: 100%;
+    max-width: 350px;
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
     align-items: center;
-    
+    margin-bottom: 30px;
+    font-family: var(--fonte-principal);
+    font-size: 0.95em;
+    color: var(--preto);
 }
+
+.conteudo__formulario > div:nth-of-type(2) label input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+}
+
+.conteudo__formulario > div:nth-of-type(2) a {
+    color: var(--azul-1);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.conteudo__formulario > div:nth-of-type(2) a:hover {
+    color: var(--azul-2);
+}
+
+.conteudo__input__opcoes{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    font-family: var(--fonte-principal);
+    font-size: smaller;
+    color: var(--azul-1);
+    text-decoration: none;
+}
+
+/* Container dos botões */
+.conteudo__input__botoes {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 350px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 /* Estilo padrão para os botões */
-.conteudo__input__botao{
+.conteudo__input__botao {
     font-family: var(--fonte-principal);
     font-weight: 900;
-    background-color: var(--azul-2);
     color: var(--branco-1);
-    border-radius: 5px;
-    font-size: large;
-    padding: 12px 25px;
-    width: 100px;
+    border-radius: 8px; /* Mais arredondado */
+    font-size: 1.1em;
+    padding: 14px 28px; /* Aumentei o padding para botões maiores e mais clicáveis */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 45%;
+    text-align: center;
     text-decoration: none;
-
-
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Sombra mais suave */
+    white-space: nowrap;
 }
-/* Estilo do botão de entrada */
-.conteudo__input__botao__entrar{
+
+/* Estilo específico para o botão "Entrar" */
+.conteudo__input__botoes button.conteudo__input__botao {
     background-color: var(--azul-2);
-    border: 2px solid var(--azul-2);
-
-    border-radius:15PX ;
-    padding: 1% 1% 1% 3%;
 }
-/* Estilo do link do esqueci minha senha */
-.conteudo__input__botao__links__senhaEsquecida{
-    background-color: var(--cor-secundaria);
-    border-radius:15PX ;
-    padding: 1% 1% 1% 3%;
-    width: 10px;
+
+.conteudo__input__botoes button.conteudo__input__botao:hover {
+    background-color: var(--azul-1);
+    transform: translateY(-2px);
+}
+
+/* Estilo específico para o botão "Esqueci a senha" (que é um <a>) */
+.conteudo__input__botoes a.conteudo__input__botao {
+    background-color: var(--azul-1); /* Um azul mais claro para o segundo botão */
+}
+
+.conteudo__input__botoes a.conteudo__input__botao:hover {
+    background-color: var(--azul-2);
+    transform: translateY(-2px);
+}
+
+/* MEDIA QUERIES para responsividade em telas menores */
+@media (max-width: 768px) {
+    .conteudo {
+        flex-direction: column; /* Em telas pequenas, empilha as divs */
+        min-height: auto; /* Altura flexível */
+        height: auto; /* Altura flexível */
+        max-height: none; /* Remove limitação de altura */
+        width: 95%; /* Ocupa mais largura em telas menores */
+    }
+
+    .conteudo__saudacao {
+        flex-basis: auto; /* Remove a largura fixa */
+        height: 300px; /* Uma altura fixa para a seção azul em mobile */
+        /* Ajuste a altura se o conteúdo não couber ou a imagem for cortada */
+        border-radius: 10px 10px 0 0; /* Arredonda apenas a parte superior */
+    }
+
+    .conteudo__formulario {
+        border-radius: 0 0 10px 10px; /* Arredonda apenas a parte inferior */
+        padding: 30px 20px; /* Ajuste o padding se necessário */
+    }
+
+    .conteudo__input__botoes {
+        flex-direction: column; /* Empilha os botões */
+        gap: 15px; /* Espaçamento entre botões empilhados */
+    }
+
+    .conteudo__input__botao {
+        flex-basis: 100%; /* Botões ocupam a largura total */
+    }
 }
 
 /* Container do menu suspenso */
