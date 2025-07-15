@@ -1,7 +1,7 @@
 const express = require('express')
-const { cadastrar, login, buscarPerfil } = require('../controllers/authController')
+const { cadastrar, login, buscarPerfil, recuperarSenha } = require('../controllers/authController')
 const { autenticar } = require('../middlewares/auth')
-const { validarCadastro, validarLogin } = require('../middlewares/validacao')
+const { validarCadastro, validarLogin, validarRecuperarSenha } = require('../middlewares/validacao')
 
 const router = express.Router()
 
@@ -119,6 +119,64 @@ router.post('/cadastrar', validarCadastro, cadastrar)
  *               message: "Email ou senha incorretos"
  */
 router.post('/login', validarLogin, login)
+
+/**
+ * @swagger
+ * /api/auth/recuperar-senha:
+ *   post:
+ *     summary: Recuperar senha
+ *     description: Permite ao usuário redefinir sua senha fornecendo email e nova senha
+ *     tags: [Autenticação]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               novaSenha:
+ *                 type: string
+ *                 minLength: 6
+ *           example:
+ *             email: "itamind@itamind.com"
+ *             novaSenha: "novasenha123"
+ *     responses:
+ *       200:
+ *         description: Senha atualizada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "sucesso"
+ *                 message:
+ *                   type: string
+ *                   example: "Senha atualizada com sucesso"
+ *       400:
+ *         description: Erro de validação
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RespostaErro'
+ *             example:
+ *               status: "erro"
+ *               message: "Por favor, forneça email e nova senha"
+ *       404:
+ *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RespostaErro'
+ *             example:
+ *               status: "erro"
+ *               message: "Usuário não encontrado"
+ */
+router.post('/recuperar-senha', validarRecuperarSenha, recuperarSenha)
 
 /**
  * @swagger
