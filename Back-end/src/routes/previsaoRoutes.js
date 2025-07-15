@@ -11,6 +11,7 @@ const {
   getPrevisoesSalvas,
   getPrevisaoById,
   deletePrevisao,
+  getRelatorioDiario,
 } = require('../controllers/previsaoController')
 
 // middleware de autenticação jwt
@@ -21,6 +22,9 @@ roteador.get('/default', autenticar, getDefaultPrevisao)
 
 // rota principal para gerar previsões usando python prophet (requer autenticação)
 roteador.post('/previsao', autenticar, getPrevisao)
+
+// rota para gerar relatório diário operacional (requer autenticação)
+roteador.get('/relatorio-diario', autenticar, getRelatorioDiario)
 
 // rotas auxiliares para cálculos de lote (sem autenticação)
 roteador.post('/calcular_retirada', postCalcularRetirada)

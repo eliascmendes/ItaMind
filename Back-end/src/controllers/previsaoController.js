@@ -444,6 +444,117 @@ const deletePrevisao = async (req, res) => {
   }
 }
 
+// gera relatório diário com base nos dados de previsão
+const getRelatorioDiario = async (req, res) => {
+  try {
+    const idUsuario = req.user?.id
+    const { sku, data_alvo } = req.query
+
+    if (!idUsuario) {
+      return res.status(401).json({ error: 'Usuário não autenticado.' })
+    }
+
+    if (!sku) {
+      return res.status(400).json({ error: 'SKU é obrigatório.' })
+    }
+
+    if (!data_alvo) {
+      return res.status(400).json({ error: 'Data alvo é obrigatória (formato AAAA-MM-DD).' })
+    }
+
+    // caminho para o arquivo csv com dados históricos
+    const caminhoArquivoCsv = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'CienciaDeDados',
+      'dados_vendas_itamind.csv'
+    )
+
+    const caminhoScriptPython = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'CienciaDeDados',
+      'run_prophet.py'
+    )
+
+    // executa o script python com os parâmetros para gerar relatório
+    const relatorio = await new Promise((resolve, reject) => {
+      const processoPython = spawn('python', [
+        caminhoScriptPython,
+        caminhoArquivoCsv,
+        sku,
+        data_alvo,
+      ])
+
+      let resultado = ''
+      let erro = ''
+
+      processoPython.stdout.on('data', dados => {
+        resultado += dados.toString()
+      })
+
+      processoPython.stderr.on('data', dados => {
+        erro += dados.toString()
+      })
+
+      processoPython.on('error', err => {
+        reject({
+          status: 500,
+          json: { error: 'Falha ao executar o script Python.', details: err.message },
+        })
+      })
+
+      processoPython.on('close', codigo => {
+        if (codigo !== 0) {
+          console.error(`Script Python encerrado com código ${codigo}: ${erro}`)
+          reject({
+            status: 500,
+            json: { error: 'Falha ao gerar relatório.', details: erro },
+          })
+        } else {
+          try {
+            // analisa o json retornado pelo script python
+            const relatorioJson = JSON.parse(resultado)
+
+            // verifica se houve erro no script
+            if (relatorioJson.error) {
+              reject({
+                status: 400,
+                json: { error: relatorioJson.error },
+              })
+            } else {
+              resolve(relatorioJson)
+            }
+          } catch (erroParse) {
+            reject({
+              status: 500,
+              json: { error: 'Falha ao processar relatório.', details: erroParse.message },
+            })
+          }
+        }
+      })
+    })
+
+    res.json({
+      relatorio,
+      sku: parseInt(sku),
+      data_alvo,
+    })
+  } catch (erro) {
+    if (erro && erro.status && erro.json) {
+      return res.status(erro.status).json(erro.json)
+    }
+    console.error('Erro ao gerar relatório diário:', erro)
+    return res
+      .status(500)
+      .json({ error: 'Falha ao gerar relatório diário.', details: erro.message })
+  }
+}
+
 // exporta todas as funções para uso nas rotas
 module.exports = {
   postCalcularRetirada,
@@ -454,4 +565,5 @@ module.exports = {
   getPrevisoesSalvas,
   getPrevisaoById,
   deletePrevisao,
+  getRelatorioDiario,
 }

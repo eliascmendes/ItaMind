@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from prophet import Prophet
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
+from datetime import timedelta
 import os
 import json
 import sys
@@ -144,11 +145,88 @@ def calcular_metricas(dados_reais, previsao):
         print(f"Erro ao calcular métricas: {e}", file=sys.stderr)
         return 0.0, 0.0
 
+# calcula quanto deve ser retirado do freezer considerando perdas
+def calcular_retirada(quantidade_prevista, percentual_perda=15):
+    if quantidade_prevista is None or pd.isna(quantidade_prevista) or quantidade_prevista <= 0:
+        return None
+    # fórmula para encontrar a quantidade original antes da perda percentual
+    quantidade_congelado = quantidade_prevista / (1 - (percentual_perda / 100))
+    return round(quantidade_congelado, 2)
+
+# gera relatório operacional com dados de retirada, descongelamento e venda
+def gerar_relatorio_operacional(previsao, sku, data_alvo_str):
+    # mapeia a data de retirada (d-2) para a quantidade prevista na data da venda (d)
+    retirada_por_data = {}
+
+    for _, row in previsao.iterrows():
+        data_venda = row["ds"].date()
+        kg_previsto = round(row["yhat"], 2)
+        data_retirada = data_venda - timedelta(days=2)
+        retirada_por_data[data_retirada] = kg_previsto
+
+    # converte a data alvo para o formato de data
+    data_alvo = pd.to_datetime(data_alvo_str).date()
+
+    # calcula as quantidades para o relatório com base na data alvo
+    # o que retirar hoje (data_alvo) para vender em d+2
+    kg_a_retirar = retirada_por_data.get(data_alvo)
+    # o que está em descongelamento (foi retirado ontem) para vender amanhã (d+1)
+    kg_em_descongelamento = retirada_por_data.get(data_alvo - timedelta(days=1))
+    # o que está pronto para venda hoje (foi retirado anteontem)
+    kg_para_venda_hoje = retirada_por_data.get(data_alvo - timedelta(days=2))
+
+    relatorio = {
+        "data_retirada": data_alvo.strftime("%d/%m/%Y"),
+        "sku": sku,
+        "kg_a_retirar": calcular_retirada(kg_a_retirar),
+        "kg_em_descongelamento": calcular_retirada(kg_em_descongelamento),
+        "kg_para_venda_hoje": round(kg_para_venda_hoje, 2) if kg_para_venda_hoje else None,
+    }
+
+    return relatorio
+
 # função principal que coordena todo fluxo de previsão
 def main():
     try:
+        # modo relatório com parâmetros da linha de comando
+        if len(sys.argv) >= 4:
+            caminho_arquivo = sys.argv[1]
+            sku = int(sys.argv[2])
+            data_alvo = sys.argv[3]
+
+            # carrega dados do arquivo
+            if caminho_arquivo.endswith('.csv'):
+                dados = pd.read_csv(caminho_arquivo, encoding='latin1', sep=';')
+                dados['data_dia'] = pd.to_datetime(dados['data_dia'], format='%d/%m/%Y', errors='coerce')
+            else:
+                dados = pd.read_excel(caminho_arquivo)
+                dados['data_dia'] = pd.to_datetime(dados['data_dia'], errors='coerce')
+
+            # prepara dados para o sku
+            dados_sku = preparar_dados_prophet(dados, sku)
+
+            if dados_sku.empty or len(dados_sku) < 10:
+                print(json.dumps({"error": "Dados insuficientes para o SKU especificado"}))
+                return
+
+            # treina modelo
+            modelo = treinar_modelo_prophet(dados_sku)
+            if modelo is None:
+                print(json.dumps({"error": "Falha ao treinar modelo Prophet"}))
+                return
+
+            # gera previsão com 30 dias para ter dados suficientes para o relatório
+            previsao = gerar_previsao(modelo, dados_sku, dias_previsao=30)
+            if previsao.empty:
+                print(json.dumps({"error": "Falha ao gerar previsão"}))
+                return
+
+            # gera relatório operacional
+            relatorio = gerar_relatorio_operacional(previsao, sku, data_alvo)
+            print(json.dumps(relatorio, ensure_ascii=False, indent=2))
+
         # modo integração com node.js
-        if not sys.stdin.isatty():
+        elif not sys.stdin.isatty():
             dados_originais = processar_csv_entrada()
 
             if dados_originais.empty:
