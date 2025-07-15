@@ -7,7 +7,7 @@
     <!-- Link do Css -->
     <link rel="stylesheet" href="./estilos/painelPrincipal.css" />
     <!-- Link dos gráficos (Chart.Js)-->
-     <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
@@ -51,41 +51,38 @@
             <h2>Previsão</h2>
           </header>
           <div class="widget widget__data caixa-base-dados">
-              <h3 class="base-dados-texto">Base de dados</h3>
-              <input class="base-dados-input" id="base-dados-input" type="file"/>
-            
-            </div>
-          <div class=" widget__data-botao">
+            <h3 class="base-dados-texto">Base de dados</h3>
+            <input class="base-dados-input" id="base-dados-input" type="file" />
+          </div>
+          <div class="widget__data-botao">
             <div class="widget widget__data">
               <h3 class="nome__data">Data</h3>
-              <input class="dia-mes" id="data-selecionada" type="date"/>
-            
+              <input class="dia-mes" id="data-selecionada" type="date" />
             </div>
             <div class="widget widget__data">
               <h3 class="nome__sku">SKU</h3>
-              <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo">
+              <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo" />
 
-<datalist id="sku">
-  <option value="Asa"></option>
-  <option value="Pé"></option>
-  
-</datalist>
+              <datalist id="sku">
+                <option value="Asa">Asa de Frango (237479)</option>
+              </datalist>
             </div>
-            <div id="botao-gerar-previsao" class="widget botao-widget"><button class="botao-previsao"><strong>Gerar previsão</strong></button>
+            <div id="botao-gerar-previsao" class="widget botao-widget">
+              <button class="botao-previsao"><strong>Gerar previsão</strong></button>
             </div>
           </div>
           <h3 class="palavra-retirada">Retirada</h3>
           <!-- Área de Estoque -->
           <section class="widgets">
             <!-- Widget de Saída-->
-             
+
             <div class="widget">
               <h3>Retirar Hoje</h3>
               <p id="kg-retirar-Hoje">kg</p>
             </div>
             <!-- Widget de Entrada -->
             <div class="widget">
-              <h3> Descongelando </h3>
+              <h3>Descongelando</h3>
               <p id="kg-retirado-Ontem">kg</p>
             </div>
             <!-- Widget de Ganho -->
@@ -94,7 +91,7 @@
               <p id="kg-retirado-antes-de-ontem">kg</p>
             </div>
             <!-- Widget de Perda -->
-             <div class="widget">
+            <div class="widget">
               <h3>Disponível para venda</h3>
               <p id="disponivelParaVenda">kg</p>
             </div>
@@ -112,12 +109,16 @@
             </div>
           </section>
           <div>
-          <div class="widget widget__metricas">
-              <div class="metricas"><h3>RMSE</h3><p id="quantidade-RMSE">kg</p></div>
-              <div class="metricas"><h3>MAPE</h3><p id="quantidade-MAPE">%</p></div>
+            <div class="widget widget__metricas">
+              <div class="metricas">
+                <h3>RMSE</h3>
+                <p id="quantidade-RMSE">kg</p>
+              </div>
+              <div class="metricas">
+                <h3>MAPE</h3>
+                <p id="quantidade-MAPE">%</p>
+              </div>
             </div>
-             
-          
           </div>
         </div>
       </section>
@@ -166,22 +167,31 @@
           <section class="widgets">
             <!-- Widget do Congelamento -->
             <div class="widget" id="addDados-congelamento">
-              <h3>Congelamento</h3>
-              <input type="number" class="widget widget__kg" placeholder="kg" />
+              <h3>Nova Retirada</h3>
+              <input
+                type="number"
+                id="retirada-quantidade"
+                class="widget widget__kg"
+                placeholder="kg"
+              />
+              <input type="date" id="retirada-data" class="widget widget__kg" />
+              <button id="btn-registrar-retirada" class="botao-previsao" style="margin-top: 10px">
+                Registrar
+              </button>
             </div>
             <!-- Widget do Dia 1-->
             <div class="widget" id="addDados-dia1">
-              <h3>Dia 1</h3>
-              <input type="number" class="widget widget__kg" placeholder="kg" />
+              <h3>Histórico</h3>
+              <button id="btn-ver-retiradas" class="botao-previsao">Ver Retiradas</button>
             </div>
             <!-- Widget do Dia 2 -->
             <div class="widget" id="addDados-dia2">
-              <h3>Dia 2</h3>
-              <input type="number" class="widget widget__kg" placeholder="kg" />
+              <h3>Relatórios</h3>
+              <button id="btn-gerar-relatorio" class="botao-previsao">Gerar Relatório</button>
             </div>
             <div class="widget" id="addDados-venda">
-              <h3>Venda</h3>
-              <input type="number" class="widget widget__kg" placeholder="kg" />
+              <h3>Atualizar</h3>
+              <button id="btn-atualizar-dados" class="botao-previsao">Atualizar Dados</button>
             </div>
           </section>
         </div>
