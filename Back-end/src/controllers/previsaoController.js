@@ -555,11 +555,150 @@ const getRelatorioDiario = async (req, res) => {
   }
 }
 
+// gera dados para gráfico de barras com vendas por dia da semana
+const getDadosGraficoBarras = async (req, res) => {
+  try {
+    const { sku } = req.query
+
+    if (!sku) {
+      return res.status(400).json({ error: 'SKU é obrigatório.' })
+    }
+
+    // caminho para o arquivo csv com dados históricos
+    const caminhoArquivoCsv = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'CienciaDeDados',
+      'dados_vendas_itamind.csv'
+    )
+
+    // le o arquivo csv e processa os dados diretamente
+    const csv = await fsp.readFile(caminhoArquivoCsv, 'latin1')
+    const linhas = csv.split('\n')
+    const dadosVendas = []
+
+    // processa cada linha do csv
+    for (let i = 1; i < linhas.length; i++) {
+      const linha = linhas[i].trim()
+      if (linha) {
+        const colunas = linha.split(';')
+        if (colunas.length >= 4) {
+          const [data, idProduto, descricao, totalVenda] = colunas
+          if (parseInt(idProduto) === parseInt(sku)) {
+            const [dia, mes, ano] = data.split('/')
+            if (dia && mes && ano && !isNaN(Date.parse(`${ano}-${mes}-${dia}`))) {
+              const dataFormatada = new Date(ano, mes - 1, dia)
+              const diaSemana = dataFormatada.getDay()
+
+              // converte domingo de 0 para 6, e ajusta outros dias
+              const diaSemanaAjustado = diaSemana === 0 ? 6 : diaSemana - 1
+              const nomesDias = [
+                'segunda',
+                'terça',
+                'quarta',
+                'quinta',
+                'sexta',
+                'sábado',
+                'domingo',
+              ]
+              const nomeDia = nomesDias[diaSemanaAjustado]
+
+              const anoMes = `${ano}-${mes.padStart(2, '0')}`
+              const vendasValor = parseFloat(totalVenda.replace(',', '.'))
+
+              // valida se o valor é válido
+              if (!isNaN(vendasValor) && vendasValor >= 0) {
+                dadosVendas.push({
+                  data: data,
+                  diaSemana: nomeDia,
+                  anoMes: anoMes,
+                  vendas: vendasValor,
+                })
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //  se encontrou dados
+    if (dadosVendas.length === 0) {
+      return res.status(404).json({
+        error: `Nenhum dado encontrado para o SKU ${sku}`,
+      })
+    }
+
+    // agrupa dados por dia da semana e mês
+    const dadosPorDia = {}
+    const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo']
+
+    diasSemana.forEach(dia => {
+      dadosPorDia[dia] = {}
+    })
+
+    dadosVendas.forEach(venda => {
+      if (!dadosPorDia[venda.diaSemana][venda.anoMes]) {
+        dadosPorDia[venda.diaSemana][venda.anoMes] = 0
+      }
+      dadosPorDia[venda.diaSemana][venda.anoMes] += venda.vendas
+    })
+
+    // arredonda os valores
+    Object.keys(dadosPorDia).forEach(dia => {
+      Object.keys(dadosPorDia[dia]).forEach(mes => {
+        dadosPorDia[dia][mes] = Math.round(dadosPorDia[dia][mes] * 100) / 100
+      })
+    })
+
+    // calcula estatísticas resumidas
+    const totalVendas = dadosVendas.reduce((total, venda) => total + venda.vendas, 0)
+    const mediaVendas = totalVendas / dadosVendas.length
+    const vendasPorDia = {}
+
+    Object.keys(dadosPorDia).forEach(dia => {
+      const vendas = Object.values(dadosPorDia[dia])
+      if (vendas.length > 0) {
+        vendasPorDia[dia] = {
+          total: vendas.reduce((total, valor) => total + valor, 0),
+          media: vendas.reduce((total, valor) => total + valor, 0) / vendas.length,
+          maxima: Math.max(...vendas),
+          minima: Math.min(...vendas),
+        }
+      }
+    })
+
+    const resultado = {
+      sku: parseInt(sku),
+      dados_por_dia: dadosPorDia,
+      resumo: {
+        total_registros: dadosVendas.length,
+        total_vendas: Math.round(totalVendas * 100) / 100,
+        media_vendas: Math.round(mediaVendas * 100) / 100,
+        periodo: {
+          inicio: dadosVendas[0].data,
+          fim: dadosVendas[dadosVendas.length - 1].data,
+        },
+        vendas_por_dia: vendasPorDia,
+      },
+    }
+
+    res.json(resultado)
+  } catch (erro) {
+    console.error('Erro ao gerar dados do gráfico:', erro)
+    return res
+      .status(500)
+      .json({ error: 'Falha ao gerar dados do gráfico.', details: erro.message })
+  }
+}
+
 // exporta todas as funções para uso nas rotas
 module.exports = {
   postCalcularRetirada,
   postCalcularIdadeLote,
   postObterEstagioLote,
+  getDadosGraficoBarras,
   getPrevisao,
   getDefaultPrevisao,
   getPrevisoesSalvas,

@@ -53,6 +53,127 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // função para buscar dados do gráfico de barras
+  const buscarDadosGrafico = async sku => {
+    try {
+      const token = localStorage.getItem('jwt_token')
+      if (!token) {
+        console.error('Token não encontrado')
+        return null
+      }
+
+      // URL para desenvolvimento local
+      //const baseUrl = 'http://localhost:3000'
+      // const baseUrl = 'https://itamind.onrender.com'
+      const baseUrl = 'https://itamind.onrender.com'
+
+      const resposta = await fetch(`${baseUrl}/api/previsao/grafico-barras?sku=${sku}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (resposta.ok) {
+        const dados = await resposta.json()
+        console.log('Dados do gráfico carregados:', dados)
+        return dados
+      } else {
+        const erro = await resposta.json().catch(() => ({ error: 'Erro desconhecido' }))
+        console.error('Erro ao buscar dados do gráfico:', resposta.status, erro)
+        return null
+      }
+    } catch (erro) {
+      console.error('Erro na requisição:', erro)
+      return null
+    }
+  }
+
+  // função para configurar o gráfico de barras
+  const configurarGraficoBarras = dados => {
+    const diasSemana = ['segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado', 'domingo']
+    const nomesDias = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+
+    // processa os dados para criar datasets por mês
+    const mesesUnicos = new Set()
+    diasSemana.forEach(dia => {
+      if (dados.dados_por_dia[dia]) {
+        Object.keys(dados.dados_por_dia[dia]).forEach(mes => mesesUnicos.add(mes))
+      }
+    })
+
+    const cores = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF8C00']
+
+    const datasets = Array.from(mesesUnicos)
+      .sort()
+      .map((mes, index) => ({
+        label: mes,
+        data: diasSemana.map(dia => dados.dados_por_dia[dia][mes] || 0),
+        backgroundColor: cores[index % cores.length],
+        borderColor: cores[index % cores.length],
+        borderWidth: 1,
+      }))
+
+    // limpa o gráfico anterior se existir
+    if (window.graficoBarras) {
+      window.graficoBarras.destroy()
+    }
+
+    // cria um subtítulo com informações resumidas
+    const subtitulo = dados.resumo
+      ? `Período: ${dados.resumo.periodo.inicio} - ${dados.resumo.periodo.fim} | Total: ${dados.resumo.total_vendas} kg | Média: ${dados.resumo.media_vendas} kg`
+      : ''
+
+    // configura o gráfico
+    window.graficoBarras = new Chart(contextoBarras, {
+      type: 'bar',
+      data: {
+        labels: nomesDias,
+        datasets: datasets,
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: [`Vendas por Dia da Semana - SKU ${dados.sku}`, subtitulo],
+            font: {
+              size: 14,
+            },
+          },
+          legend: {
+            display: true,
+            position: 'top',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Vendas (kg)',
+            },
+            ticks: {
+              callback: function (value) {
+                return value + ' kg'
+              },
+            },
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Dias da Semana',
+            },
+          },
+        },
+      },
+    })
+  }
+
   // criação do gráfico de linha
   const graficoLinha = new Chart(contextoLinha, {
     type: 'line', // tipo do gráfico
@@ -530,6 +651,63 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
+
+  // inicializar gráfico de barras
+  const inicializarGraficoBarras = async () => {
+    const sku = 237479
+
+    try {
+      console.log('Carregando dados do gráfico para SKU:', sku)
+      const dadosGrafico = await buscarDadosGrafico(sku)
+
+      if (dadosGrafico) {
+        console.log('Configurando gráfico com dados:', dadosGrafico)
+        configurarGraficoBarras(dadosGrafico)
+
+        // mostra informações no console para debug
+        if (dadosGrafico.resumo) {
+          console.log('Resumo das vendas:', dadosGrafico.resumo)
+        }
+      } else {
+        console.error('Não foi possível carregar dados do gráfico')
+
+        const contexto = document.getElementById('barChart').getContext('2d')
+        if (window.graficoBarras) {
+          window.graficoBarras.destroy()
+        }
+
+        window.graficoBarras = new Chart(contexto, {
+          type: 'bar',
+          data: {
+            labels: ['Erro'],
+            datasets: [
+              {
+                label: 'Erro ao carregar dados',
+                data: [0],
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                borderColor: 'rgba(255, 0, 0, 1)',
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Erro ao carregar dados do gráfico',
+              },
+            },
+          },
+        })
+      }
+    } catch (erro) {
+      console.error('Erro ao inicializar gráfico:', erro)
+    }
+  }
+
+  // chamar a função para inicializar o gráfico
+  inicializarGraficoBarras()
 })
 document.querySelector('input').onclick = () => {
   document.body.classList.toggle('dark-mode')
