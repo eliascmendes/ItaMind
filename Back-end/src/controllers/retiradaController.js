@@ -41,7 +41,7 @@ const registrarRetirada = async (req, res) => {
 
     const retirada = new Retirada({
       id_produto,
-      data_retirada: new Date(data_retirada),
+      data_retirada: data_retirada,
       quantidade_kg,
       lote: loteId,
       data_venda_prevista: dataVendaPrevista,
