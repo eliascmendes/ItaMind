@@ -272,44 +272,62 @@ margin-bottom: 10px;
     margin-bottom: 10px;
     font-weight: bold;
 }
-/* Widget de cooperadores */
+
+.palavra-c {
+  text-align: center;
+}
+
+/* 5 colunas de 5*/
+.cooperadores-grid {
+  display: grid; 
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px; 
+  padding: 20px; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+/* Widget de cooperadores individual */
 .widget__cooperadores {
   background-color: var(--white-color);
-  padding: 20px;
+  padding: 15px; 
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  display: flex; 
-  align-items: center;
-  margin-top: 2%;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  box-sizing: border-box; 
 }
 
 /* Efeito de hover */
 .widget__cooperadores:hover {
   transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
 }
 
 /* Imagem do cooperador */
 .widget__foto {
-  width: 80px;
-  height: 80px;
+  width: 70px; 
+  height: 70px; 
   border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 8px; 
 }
 
 /* Link completo (imagem + texto) */
 .perfil-link {
-  display: flex; 
-  align-items: center;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
   text-decoration: none;
   color: inherit;
-  gap: 30px; 
+  gap: 0; 
 }
+
 
 /* Texto ao lado da imagem */
 .perfil-link h3 {
-  font-size: 20px;
-  margin: 0 0 8px 0; 
+  font-size: 1em; 
+  margin: 0; 
   color: var(--primary-color);
   transition: color 0.3s ease;
 }
@@ -320,22 +338,6 @@ margin-bottom: 10px;
   color: #A9F7D1; 
 }
 
-/* responsividade */
-@media (max-width: 768px) {
-  
-  .widgets, .charts {
-      flex-direction: column;
-  }
-
-  .sidebar {
-      width: 60px;
-  }
-
-  .sidebar .logo,
-  .sidebar ul li a {
-      display: none;
-  }
-}
 .botao-widget{
     display: flex;
     justify-content: center;
@@ -414,4 +416,153 @@ margin-bottom: 10px;
 }
 .widget__metricas{
   width: 50%;
+}
+
+/* Cabeçalho principal (Ajustes para responsividade) */
+@media (max-width: 768px) {
+  .cabecalho {
+    padding: 15px; 
+  }
+
+  .cabecalho__usuario {
+    gap: 10px; 
+  }
+
+  .botao__menu {
+    width: 25px; 
+  }
+}
+
+/* Main Content - Ajustes para responsividade */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px; 
+  }
+
+  header h1,
+  header h2 {
+    font-size: 26px; 
+  }
+
+  header p {
+    font-size: 16px; 
+  }
+}
+
+/* Widgets (gerais com ajustes para responsividade) */
+@media (max-width: 768px) {
+  .widgets {
+    flex-direction: column; 
+    margin-top: 20px;
+  }
+
+  .widget {
+    padding: 15px; 
+  }
+
+  .widget h3 {
+    font-size: 18px; 
+  }
+
+  .widget p {
+    font-size: 24px; 
+  }
+}
+
+/* Gráficos (Ajustes para responsividade) */
+@media (max-width: 768px) {
+  .charts {
+    flex-direction: column; 
+    margin-top: 20px; 
+  }
+
+  .chart-container {
+    padding: 15px; 
+  }
+}
+
+
+/* Widget de Dados e Botão (Ajustes para responsividade)*/
+@media (max-width: 768px) {
+    .widget__data-botao {
+        flex-direction: column; 
+        gap: 15px; 
+    }
+
+    .widget__data, .botao-widget {
+        width: 100%; 
+    }
+
+    .base-dados-input {
+    
+      margin-top: 10px;
+    }
+}
+
+
+/* Métricas (Ajustes para responsividade) */
+@media (max-width: 768px) {
+  .widget__metricas {
+    width: 100%; 
+    margin-top: 20px; 
+    flex-direction: column; 
+    align-items: center; 
+  }
+  .metricas {
+    text-align: center; 
+    margin-bottom: 10px; 
+  }
+  .metricas h3 {
+    font-size: 22px; 
+  }
+  .metricas p {
+    font-size: 20px; 
+  }
+}
+
+
+/* Rodapé - Ajustes para responsividade */
+@media (max-width: 768px) {
+  .rodape {
+    padding: 15px; 
+  }
+
+  .rodape__texto {
+    font-size: 12px; 
+  }
+}
+
+
+/* Responsividade Específica para Cooperadores */
+
+@media (max-width: 1024px) {
+  .cooperadores-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas em tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .cooperadores-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em celulares maiores */
+  }
+  .widget__foto {
+    width: 60px; 
+    height: 60px;
+  }
+  .perfil-link h3 {
+    font-size: 0.9em; 
+  }
+}
+
+@media (max-width: 480px) {
+  .cooperadores-grid {
+    grid-template-columns: 1fr; /* 1 coluna em celulares pequenos */
+  }
+  .widget__foto {
+    width: 50px; 
+    height: 50px;
+  }
+  .perfil-link h3 {
+    font-size: 0.85em; 
+  }
 }
