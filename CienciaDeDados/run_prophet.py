@@ -180,7 +180,8 @@ def gerar_relatorio_operacional(previsao, sku, data_alvo_str):
         "sku": sku,
         "kg_a_retirar": calcular_retirada(kg_a_retirar),
         "kg_em_descongelamento": calcular_retirada(kg_em_descongelamento),
-        "kg_para_venda_hoje": round(kg_para_venda_hoje, 2) if kg_para_venda_hoje else None,
+        "kg_disponivel_bruto": calcular_retirada(kg_para_venda_hoje),  # quantidade bruta retirada (com compensação)
+        "kg_para_venda_hoje": round(kg_para_venda_hoje, 2) if kg_para_venda_hoje else None,  # quantidade líquida real
     }
 
     return relatorio
