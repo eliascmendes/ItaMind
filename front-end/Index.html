@@ -1,81 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Itamind</title>
     <!-- Link do Css-->
-    <link rel="stylesheet" href="./estilos/usuario.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./estilos/usuario.css" />
+  </head>
+  <body>
     <main class="conteudo">
+      <div class="conteudo__saudacao">
+        <img
+          class="conteudo__imagem__simbolo"
+          src="./assets/SIMBOLO/SIMBOLO_BRANCO.png"
+          alt="itamind_simbolo"
+        />
+        <!-- Alterado para simbolo da itamind-->
+        <h1 class="conteudo__titulo">Olá,</h1>
+        <h1 class="conteudo__titulo">Bem Vindo</h1>
+      </div>
 
-        <div class="conteudo__saudacao">
-            <img class="conteudo__imagem__simbolo" src="./assets/SIMBOLO/SIMBOLO_BRANCO.png" alt="itamind_simbolo">
-            <!-- Alterado para simbolo da itamind-->
-             <h1 class="conteudo__titulo">Olá,</h1>
-            <h1 class="conteudo__titulo">Bem Vindo</h1>
-        </div>
-        
+      <section class="conteudo__formulario">
+        <form id="loginForm" class="conteudo__input">
+          <!-- Seção para os campos de login -->
+          <div>
+            <input
+              id="loginEmail"
+              class="conteudo__input__aparencia"
+              type="text"
+              placeholder="LOGIN"
+            />
+            <!-- Campo de entrada para o login -->
+          </div>
+          <div>
+            <input
+              id="loginSenha"
+              class="conteudo__input__aparencia"
+              type="password"
+              placeholder="SENHA"
+            />
+            <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
+          </div>
+        </form>
 
-        <section class="conteudo__formulario">
-            <form id="loginForm" class="conteudo__input">
-             <!-- Seção para os campos de login -->
-            <div>
-                <input id="loginEmail" class="conteudo__input__aparencia" type="text" placeholder="LOGIN">
-                 <!-- Campo de entrada para o login -->
-            </div>
-            <div>
-                <input id="loginSenha" class="conteudo__input__aparencia" type="password" placeholder="SENHA">
-                <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
-            </div>
-            </form>
-
-            <section class="conteudo__input__botoes">
-                    <!-- Seção dos botões abaixo dos campos -->
-                <div>
-                    <button type="submit" form="loginForm" class="conteudo__input__botao"><strong>Entrar</strong></button>
-                    <!-- Botão de login que redireciona para o painel principal, seria legal adicionar uma opção de senha incorreta e precisar realmente preencher os campos -->
-                </div>
-                <div>
-                    <a class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>
-                    <!-- Link para recuperar a senha, precisa criar uma página para isso -->
-                </div>
-            </section>
+        <section class="conteudo__input__botoes">
+          <!-- Seção dos botões abaixo dos campos -->
+          <div>
+            <button type="submit" form="loginForm" class="conteudo__input__botao">
+              <strong>Entrar</strong>
+            </button>
+            <!-- Botão de login que redireciona para o painel principal, seria legal adicionar uma opção de senha incorreta e precisar realmente preencher os campos -->
+          </div>
+          <div>
+            <a onclick="recuperarSenha()" class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>
+            </button>
+            <!-- Link para recuperar a senha, precisa criar uma página para isso -->
+          </div>
         </section>
-
+      </section>
     </main>
     <footer></footer>
     <script>
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+      const loginForm = document.getElementById('loginForm')
+      loginForm.addEventListener('submit', async event => {
+        event.preventDefault()
 
-            const email = document.getElementById('loginEmail').value;
-            const senha = document.getElementById('loginSenha').value;
+        const email = document.getElementById('loginEmail').value
+        const senha = document.getElementById('loginSenha').value
 
-            try {
-                const response = await fetch('https://itamind.onrender.com/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, senha })
-                });
+        try {
+          const response = await fetch('https://itamind.onrender.com/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, senha }),
+          })
 
-                const data = await response.json();
+          const data = await response.json()
 
-                if (response.ok) {
-                    localStorage.setItem('jwt_token', data.token);
-                    window.location.href = 'painelPrincipal.html';
-                } else {
-                    alert(data.message || 'Falha no login.');
-                }
-            } catch (error) {
-                console.error('Erro ao tentar fazer login:', error);
-                alert('Erro ao tentar fazer login. Verifique o console para mais detalhes.');
-            }
-        });
+          if (response.ok) {
+            localStorage.setItem('jwt_token', data.token)
+            window.location.href = 'painelPrincipal.html'
+          } else {
+            alert(data.message || 'Falha no login.')
+          }
+        } catch (error) {
+          console.error('Erro ao tentar fazer login:', error)
+          alert('Erro ao tentar fazer login. Verifique o console para mais detalhes.')
+        }
+      })
+
+      async function recuperarSenha() {
+        const email = prompt('Digite seu email:')
+        if (!email) return
+
+        const novaSenha = prompt('Digite sua nova senha:')
+        if (!novaSenha) return
+
+        try {
+          //https://itamind.onrender.com/api/auth/recuperar-senha
+          //localhost
+          const response = await fetch('http://localhost:3000/api/auth/recuperar-senha', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, novaSenha }),
+          })
+
+          const data = await response.json()
+
+          if (response.ok) {
+            alert('Senha alterada com sucesso! Faça login com a nova senha.')
+          } else {
+            alert(data.message || 'Erro ao alterar senha.')
+          }
+        } catch (error) {
+          console.error('Erro ao tentar alterar senha:', error)
+          alert('Erro ao tentar alterar senha. Verifique o console para mais detalhes.')
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
