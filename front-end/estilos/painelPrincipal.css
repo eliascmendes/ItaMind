@@ -152,14 +152,21 @@ body{
 
 
 /* Títulos dentro de <header> */
+/* Esta regra se aplica a ambos h1 e h2 */
 header h1,
-header h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
+header h2 { 
+    font-size:32px; 
+    margin-bottom: 50px;
     .dark-mode & {
         color: var(--white-color);
     }
 }
+
+header h2 {
+    font-size: 24px; /* Isso sobrescreve os 32px definidos acima, se o h2 vier depois */
+    margin-bottom: 10px;
+}
+
 /* Parágrafo dentro de <header> */
 header p {
   font-size: 18px;
