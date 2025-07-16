@@ -7,6 +7,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png" />
     <!-- Link do Css-->
     <link rel="stylesheet" href="./estilos/usuario.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   </head>
 
   <body>
@@ -34,14 +35,15 @@
                   type="password"
                   placeholder="SENHA"
               />
+              <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
           </div>
         </form>
 
         <div class="conteudo__input__opcoes">
-            <label>
-                <input type="checkbox">
-                LEMBRAR-ME
-            </label>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="lembrarMeSwitch">
+                <label class="form-check-label" for="lembrarMeSwitch">LEMBRAR-ME</label>
+            </div>
             <a class="conteudo__input__opcoes__link" href="#" onclick="recuperarSenha()">ESQUECI MINHA SENHA</a>
         </div>
 
@@ -119,6 +121,25 @@
           alert('Erro ao tentar alterar senha. Verifique o console para mais detalhes.')
         }
       }
+
+      document.addEventListener('DOMContentLoaded', () => {
+          const togglePassword = document.getElementById('togglePassword');
+          const loginSenha = document.getElementById('loginSenha');
+          const lembrarMeSwitch = document.getElementById('lembrarMeSwitch');
+
+          if (togglePassword && loginSenha) {
+              togglePassword.addEventListener('click', () => {
+                  // Alterna o tipo do input
+                  const type = loginSenha.getAttribute('type') === 'password' ? 'text' : 'password';
+                  loginSenha.setAttribute('type', type);
+
+                  // Alterna o ícone
+                  togglePassword.classList.toggle('bi-eye');
+                  togglePassword.classList.toggle('bi-eye-slash');
+              });
+          }
+      });
+
     </script>
   </body>
 </html>

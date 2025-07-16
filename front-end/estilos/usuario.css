@@ -123,12 +123,25 @@ body{
 /* Estilo para o campo de texto */
 .conteudo__input__aparencia {
     border: none;
-    width: calc(100% - 20px);
+    width:100%;
     border-radius: 0 8px 8px 0;
-    padding: 0 15px; 
+    padding: 0 15px;
+    padding-right: 45px;
     height: 46px;
     background-color: var(--branco-1);
     outline: none;
+}
+
+/* NOVO: Estilo para o ícone de toggle de senha */
+.toggle-password {
+    position: absolute; /* Posiciona o ícone livremente dentro do wrapper */
+    right: 15px; /* Distância da borda direita do input */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
+    cursor: pointer; /* Indica que é clicável */
+    color: var(--azul-1); /* Cor do ícone */
+    font-size: 1.2em; /* Tamanho do ícone */
+    z-index: 2; /* Garante que o ícone esteja acima do input */
 }
 
 /* Placeholder style */
@@ -152,10 +165,7 @@ body{
 }
 
 /* Estilização do login */
-.conteudo__formulario > div:nth-of-type(2) label input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.1);
-}
+
 .conteudo__formulario > div:nth-of-type(2) a {
     color: var(--azul-1);
     text-decoration: none;
@@ -171,6 +181,7 @@ body{
     box-sizing: content-box;
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 30px;
     font-family: var(--fonte-principal);
     font-size: smaller;
@@ -178,6 +189,12 @@ body{
     text-decoration: none;
     padding-bottom: 50px;
 }
+
+/* Opcional: Para mudar a cor do switch quando está ligado, se o default do Bootstrap não for o seu azul */
+.form-check-input:checked {
+    background-color: var(--azul-1); /* Use sua variável de cor azul */
+}
+
 
 /* Estilização enncadeada pro "Esqueci minha senha"*/
 .conteudo__input__opcoes__link{
