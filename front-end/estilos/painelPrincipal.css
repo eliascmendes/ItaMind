@@ -19,7 +19,15 @@ html{
     --secondary-color: #9c50e3;     
     --background-color: #F5F7FA;    
     --text-color: #4A4A4A;          
-    --white-color: #FFFFFF;         
+    --white-color: #FFFFFF; 
+   
+     /*Paleta Itamind*/
+    --bg-color:#EEEEEE #0F0F0F;
+    --preto: #0F0F0F;  
+    --azulji : #023059; 
+    --azul: #085A8C;
+    --verde:#062022;  
+     --ciano : #A9F7D1; 
 }
 /* Váriaveis (paleta) modo escuro */
 .dark-mode{
@@ -32,6 +40,13 @@ html{
     --background-color: #121212; 
     --text-color: #4A4A4A; 
     --white-color: #FFFFFF; 
+    
+    /*Paleta Itamind*/
+    --bg-color: #0F0F0F;
+    --branco: #EEEEEE;  
+    --cianin : #A9F7D1; 
+    --azul: #085A8C;
+    --verde:#AAFC5D;    
 }
 /* Estilo base do corpo */
 body{
@@ -102,10 +117,6 @@ body{
   display: block;
 }
 
-/* Cor de fundo ao passar o mouse sobre o botão */
-.dropbtn:hover {
-    background-color: #3e8e41;
-}
 /* Dropdown alternativo para configurações */
 .configuracao {
   position: relative;
@@ -117,6 +128,7 @@ body{
   display: none;
   
   position: absolute;
+  top: 100%; 
   right: 0%;
   background-color: #f9f9f9;
   min-width: 200px;
@@ -147,6 +159,7 @@ body{
 
 .configuracao:hover {
     background-color: #3e8e41;
+
 }
 
 
@@ -435,6 +448,55 @@ margin-bottom: 10px;
 }
 .widget__metricas{
   width: 50%;
+}
+
+/* Estilo para o botão do menu (com a classe .dropbtn) */
+section.cabecalho .dropbtn {
+  background-color: transparent; 
+  border: none;                 
+  color: var(--white-color);       
+  padding: 8px;                 
+  text-decoration: none;        
+  display: flex;                
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;              
+  transition: color 0.2s ease;  
+}
+
+/* Estilo para o botão de configuração (com a classe .configuracao) */
+section.cabecalho .configuracao {
+  background-color: transparent; 
+  border: none;                 
+  color: var(--branco-1);       
+  padding: 8px;                 
+  text-decoration: none;        
+  display: flex;                
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;              
+  transition: color 0.2s ease; 
+}
+
+
+/* Efeito ao passar o mouse sobre o botão .dropbtn (ícone de menu) */
+section.cabecalho .dropbtn:hover i{
+  color: var(--ciano);     
+}
+
+section.cabecalho .configuracao:hover i {
+  color: var(--ciano);     
+}
+
+/* Efeito ao passar o mouse sobre o botão .configuracao (ícone de engrenagem) */
+
+
+/* Garante que o próprio elemento <i> (o ícone Bootstrap) não tenha um fundo */
+/* e define um tamanho padrão para os ícones dentro desses botões */
+section.cabecalho .dropbtn i,
+section.cabecalho .configuracao i {
+  background-color: transparent !important; 
+  font-size: 30px; 
 }
 
 /* Cabeçalho principal (Ajustes para responsividade) */
