@@ -36,7 +36,6 @@ body{
     align-items: stretch;
     justify-content: center;
     border-radius: 10px;
-    /* Para os cantos permanecerem arredondados */
     overflow: hidden;
 
     /* Dimensões do container principal */
@@ -46,12 +45,11 @@ body{
     max-width: 1000px;
     margin: 50px auto;
 
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); /* Sombrinha */
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
 }
 
 /* Lado azul com a imagem de fundo) */
 .conteudo__saudacao {
-    /* Faz com que o lado azul ocupe 55% da largura total do container */
     flex: 0 0 55%;
     background-image: url('../assets/TelaLoginItamind.png');
     background-repeat: no-repeat;
@@ -68,6 +66,7 @@ body{
     text-align: left;
 }
 
+/* Estilo do 'Olá, Bem-Vindo' */
 .conteudo__titulo {
     font-family: var(--fonte-principal);
     font-weight: 1000;
@@ -100,43 +99,36 @@ body{
     margin-bottom: 15px;
 }
 
-/* NOVO: Estilo para o wrapper de cada input */
-/* Este é o container que envolve o input e o bloco azul */
+/* Container que envolve o input e o bloco azul */
 .conteudo__input__wrapper {
-    position: relative; /* Essencial para posicionar o pseudo-elemento ::before */
-    width: 100%; /* Garante que o wrapper ocupe a largura total disponível */
-    display: flex; /* Permite que o ::before e o input fiquem lado a lado */
-    align-items: center; /* Alinha o conteúdo verticalmente no centro */
-    border: 2px solid var(--azul-1); /* A borda agora fica no wrapper */
-    border-radius: 8px; /* O arredondamento da borda agora fica no wrapper */
-    background-color: var(--branco-1); /* O fundo branco do campo agora fica no wrapper */
-    /* Este elemento é o que tem a aparência externa do campo */
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--azul-1);
+    border-radius: 8px;
+    background-color: var(--branco-1);
 }
 
-/* NOVO: Pseudo-elemento para o bloco azul esquerdo */
-/* Este é o "bloco" azul que aparece à esquerda do input */
+/* Pseudo-elemento para o bloco azul */
 .conteudo__input__wrapper::before {
-    content: ''; /* Conteúdo vazio é obrigatório para pseudo-elementos */
-    position: relative; /* Posiciona o bloco azul dentro do fluxo flex do wrapper */
-    width: 20px; /* Largura do bloco azul */
-    height: 100%; /* Ocupa toda a altura do wrapper */
-    background-color: var(--azul-1); /* Cor azul escuro definida pela variável */
-    border-radius: 5px 0 0 5px; /* Arredonda apenas os cantos esquerdo superior e esquerdo inferior */
+    content: '';
+    position: relative;
+    width: 20px;
+    height: 100%;
+    background-color: var(--azul-1);
+    border-radius: 5px 0 0 5px;
 }
 
-/* Estilo para o campo de texto (o input real) */
-/* O input agora não tem borda, pois a borda está no wrapper */
+/* Estilo para o campo de texto */
 .conteudo__input__aparencia {
-    border: none; /* REMOVIDO: A borda agora está no .conteudo__input__wrapper */
-    width: calc(100% - 20px); /* Ajusta a largura do input para compensar a largura do bloco azul (20px) */
-    border-radius: 0 8px 8px 0; /* Arredonda apenas os cantos direito superior e direito inferior */
-    padding: 0 15px; /* Mantém o padding interno para o texto */
-    height: 46px; /* Altura do input */
-    background-color: var(--branco-1); /* Fundo branco do input */
-    outline: none; /* Remove o contorno que aparece ao focar no input */
-
-    /* O resto das propriedades como font-family, font-size, font-weight, color etc.
-       permanecem como estavam no seu CSS original para esta classe. */
+    border: none;
+    width: calc(100% - 20px);
+    border-radius: 0 8px 8px 0;
+    padding: 0 15px; 
+    height: 46px;
+    background-color: var(--branco-1);
+    outline: none;
 }
 
 /* Placeholder style */
@@ -159,22 +151,22 @@ body{
     color: var(--preto);
 }
 
+/* Estilização do login */
 .conteudo__formulario > div:nth-of-type(2) label input[type="checkbox"] {
     margin-right: 8px;
     transform: scale(1.1);
 }
-
 .conteudo__formulario > div:nth-of-type(2) a {
     color: var(--azul-1);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
 }
-
 .conteudo__formulario > div:nth-of-type(2) a:hover {
     color: var(--azul-2);
 }
 
+/* Estilização das opções do login */
 .conteudo__input__opcoes{
     box-sizing: content-box;
     display: flex;
@@ -187,6 +179,7 @@ body{
     padding-bottom: 50px;
 }
 
+/* Estilização enncadeada pro "Esqueci minha senha"*/
 .conteudo__input__opcoes__link{
     color: var(--azul-1);
     text-decoration: none;
@@ -228,35 +221,34 @@ body{
     transform: translateY(-2px);
 }
 
-/* MEDIA QUERIES para responsividade em telas menores */
+/* responsividades hehe */
 @media (max-width: 768px) {
     .conteudo {
-        flex-direction: column; /* Em telas pequenas, empilha as divs */
-        min-height: auto; /* Altura flexível */
-        height: auto; /* Altura flexível */
-        max-height: none; /* Remove limitação de altura */
-        width: 95%; /* Ocupa mais largura em telas menores */
+        flex-direction: column;
+        min-height: auto;
+        height: auto;
+        max-height: none;
+        width: 95%;
     }
 
     .conteudo__saudacao {
-        flex-basis: auto; /* Remove a largura fixa */
-        height: 300px; /* Uma altura fixa para a seção azul em mobile */
-        /* Ajuste a altura se o conteúdo não couber ou a imagem for cortada */
-        border-radius: 10px 10px 0 0; /* Arredonda apenas a parte superior */
+        flex-basis: auto;
+        height: 300px;
+        border-radius: 10px 10px 0 0;
     }
 
     .conteudo__formulario {
-        border-radius: 0 0 10px 10px; /* Arredonda apenas a parte inferior */
-        padding: 30px 20px; /* Ajuste o padding se necessário */
+        border-radius: 0 0 10px 10px;
+        padding: 30px 20px;
     }
 
     .conteudo__input__botoes {
-        flex-direction: column; /* Empilha os botões */
-        gap: 15px; /* Espaçamento entre botões empilhados */
+        flex-direction: column;
+        gap: 15px;
     }
 
     .conteudo__input__botao {
-        flex-basis: 100%; /* Botões ocupam a largura total */
+        flex-basis: 100%;
     }
 }
 
@@ -266,6 +258,7 @@ body{
   display: inline-block;
   text-decoration: none;
 }
+
 /* Conteúdo escondido do menu dropdown */
 .dropdown-content {
   display: none;
@@ -275,6 +268,7 @@ body{
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
+
 /* Estilo dos links no dropdown */
 .dropdown-content a {
   color: black;
@@ -282,30 +276,36 @@ body{
   text-decoration: none;
   display: block;
 }
+
 /* Efeito ao passar o mouse nos itens do dropdown */
 .dropdown-content a:hover {
   background-color: #ddd;
 }
+
 /* Exibe o menu ao passar o mouse */
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 /* Efeito visual no botão ao passar o mouse */
 .dropbtn:hover {
     background-color: #3e8e41;
 }
+
 /* Estilo da imagem bola azul */
 .conteudo__imagem__simbolo{
     width: 200px;
     height: 200px;
 
 }
+
 /* Ícone ou botão do menu */
 .botao__menu{
     width: 30px;
     background-color: var(--cor-secundaria);
 
 }
+
 /* Torna o texto em negrito para um elemento com o id="strong" */
 #strong{
     font-weight: bold;
