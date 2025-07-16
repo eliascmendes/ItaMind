@@ -58,33 +58,31 @@ body{
   background-color: var(--background-color);
   color: var(--text-color);
 }
-
-/* Cabeçalho principal*/
-.cabecalho{
-    background-color: var(--cor-secundaria);
-    padding: 0.3%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3%;   
+/* CABEÇALHO */
+.cabecalho {
+  background-color: var(--cor-secundaria);
+  padding: 0.3%;
+  display: flex; 
+  justify-content: flex-start; 
+  align-items: center; 
+  margin-bottom: 3%;
+  position: relative; 
+}
+/* ITAMIND LOGO */
+.cabecalho__img {
+  position: absolute; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  height: 100%; 
+  width: auto; 
+  object-fit: contain;
+   top: 25%;
+  padding-top: 0%;
+  height: 30px;
+  z-index: 1;
 }
 
-.cabecalho__img{
-  padding-top: 10px;
-  height: 40px;
-}
 
-/* Área de usuário no cabeçalho */
-.cabecalho__usuario{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    gap: 20px;
-}
-/* Link do usuário */
-.cabecalho__usuario__link{
-    color: var(--cor-terciaria);
-}
 /* Ícone/menu lateral no cabeçalho */
 .botao__menu{
     width: 30px;
@@ -136,13 +134,14 @@ body{
   display: none;
   
   position: absolute;
-  top: 100%; 
+  top: 80%; 
   right: 0%;
   background-color: #f9f9f9;
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 100;
   padding: 10px 0;
+  border-radius: 5px;
 }
 
 .configuracao-content a {
@@ -174,16 +173,25 @@ body{
 /* Títulos dentro de <header> */
 .main-content {
   flex: 1;
-  padding: 40px;
+  padding: 20px;
 }
 
 
 /* Títulos dentro de <header> */
-/* Esta regra se aplica a ambos h1 e h2 */
-header h1,
+header h1 {
+  font-size:32px; 
+    margin-bottom: 30px;
+    margin-top: 0px;
+    .dark-mode & {
+        color: var(--white-color);
+    }
+
+}
+
 header h2 { 
     font-size:32px; 
     margin-bottom: 50px;
+    margin-top: 30px;
     .dark-mode & {
         color: var(--white-color);
     }
@@ -206,7 +214,7 @@ header p {
 /* Caixa de dados */
 .widgets {
   display: flex;
-  margin-top: 30px;
+  margin-top: 20px;
   gap: 20px;
   
 }
@@ -223,7 +231,7 @@ header p {
 
 .widget h3 {
   font-size: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   color: var(--primary-color);
 }
 
@@ -307,9 +315,6 @@ margin-bottom: 10px;
     font-weight: bold;
 }
 
-.palavra-c {
-  text-align: center;
-}
 
 /* 5 colunas de 5*/
 .cooperadores-grid {
@@ -492,7 +497,7 @@ section.cabecalho .dropbtn:hover i{
   color: var(--ciano);     
 }
 
-section.cabecalho .configuracao:hover i {
+section.cabecalho .configuracao:hover > .dropbtn i{
   color: var(--ciano);     
 }
 
@@ -504,7 +509,24 @@ section.cabecalho .configuracao:hover i {
 section.cabecalho .dropbtn i,
 section.cabecalho .configuracao i {
   background-color: transparent !important; 
-  font-size: 30px; 
+  font-size: 25px; 
+}
+
+.dark-mode { /* Tema escuro quando esta classe estiver no body/html */
+    --background-color: #121212;
+    --text-color: #EEEEEE; /* Exemplo: texto mais claro no fundo escuro */
+    /* ... outras variáveis para o modo escuro ... */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Adiciona transição suave */
+}
+
+/* Opcional: Estilo para o switch do Bootstrap quando ligado */
+#darkModeSwitch:checked + .form-check-label .bi {
+    color: var(--azul); /* Cor do ícone quando o dark mode está ativo */
 }
 
 /* Cabeçalho principal (Ajustes para responsividade) */

@@ -23,7 +23,7 @@
       <section class="cabecalho">
         <div class="dropdown">
           <button class="dropbtn">
-            <i class="bi bi-grid-fill"></i>
+            <i class="bi bi-gear-fill"></i>
             <!--<img class="botao__menu" src="./assets/menu.png" alt="botao__menu" />-->
           </button>
           <div class="dropdown-content">
@@ -31,26 +31,13 @@
             <!-- <a href="#estoque">Estoque</a> -->
             <a href="#addDados">Adicionar Dados</a>
             <a href="#cooperadores">Cooperadores</a>
+            <a href="Index.html">Sair da conta</a>
           </div>
         </div>
 
         <div>
           <img class="cabecalho__img" src="./assets/LOGOTIPO/LOGOTIPO_BRANCO.png" alt="Id da Itamind">
         </div>
-
-        <!-- Barra de configuração-->
-        <nav class="cabecalho__usuario">
-          <div class="configuracao">
-            <button class="dropbtn">
-              <!--<img class="botao__menu" src="./assets/gear-fill.png" alt="Configuração" />-->
-              <i class="bi bi-gear-fill"></i>
-            </button>
-            <div class="configuracao-content">
-              <a href="Index.html">Sair da conta</a>
-              <label><input type="checkbox" /> dark-mode</label>
-            </div>
-          </div>
-        </nav>
       </section>
       <section id="previsao">
         <!-- Área do Conteúdo Principal de previsão -->
@@ -58,30 +45,7 @@
           <!-- Seção da Header -->
           <header>
             <h1 id="user_saudacao">Bem Vindo, User</h1>
-            <h2>Previsão</h2>
           </header>
-          <!-- <div class="widget widget__data caixa-base-dados">
-            <h3 class="base-dados-texto">Base de dados</h3>
-            <input class="base-dados-input" id="base-dados-input" type="file" />
-          </div> -->
-          <div class="widget__data-botao">
-            <div class="widget widget__data">
-              <h3 class="nome__data">Data</h3>
-              <input class="dia-mes" id="data-selecionada" type="date" value="2025-06-22" />
-            </div>
-            <div class="widget widget__data">
-              <h3 class="nome__sku">SKU</h3>
-              <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo" />
-
-              <datalist id="sku">
-                <option value="Asa">Asa de Frango (237479)</option>
-              </datalist>
-            </div>
-            <div id="botao-gerar-previsao" class="widget botao-widget">
-              <button class="botao-previsao"><strong>Gerar previsão</strong></button>
-            </div>
-          </div>
-          <h3 class="palavra-retirada">Retirada</h3>
           <!-- Área de Estoque -->
           <section class="widgets">
             <!-- Widget de Saída-->
@@ -135,11 +99,34 @@
       <section id="addDados">
         <!-- Main Content Area -->
         <div class="main-content">
+
+          <h2>Previsão</h2>
+         <!-- <div class="widget widget__data caixa-base-dados">
+            <h3 class="base-dados-texto">Base de dados</h3>
+            <input class="base-dados-input" id="base-dados-input" type="file" />
+         </div> -->
+          <div class="widget__data-botao">
+            <div class="widget widget__data">
+              <h3 class="nome__data">Data</h3>
+              <input class="dia-mes" id="data-selecionada" type="date" value="2025-06-22" />
+            </div>
+            <div class="widget widget__data">
+              <h3 class="nome__sku">SKU</h3>
+              <input id="sku-selecionado" type="text" list="sku" placeholder="Selecione um tipo" />
+
+              <datalist id="sku">
+                <option value="Asa">Asa de Frango (237479)</option>
+              </datalist>
+            </div>
+            <div id="botao-gerar-previsao" class="widget botao-widget">
+              <button class="botao-previsao"><strong>Gerar previsão</strong></button>
+            </div>
+          </div>
+
           <!-- Header Section -->
           <header>
             <h2>Adicionar Dados</h2>
           </header>
-
           <!-- Seção Adicionar Dados-->
           <section class="widgets">
             <!-- Widget do Congelamento -->
@@ -326,4 +313,6 @@
   </body>
   <!-- Link para agregar funções do Javascript -->
   <script src="dados.js"></script>
+ <!-- Botão função js -->
+  <script scr="botãodark.js"></script>
 </html>
