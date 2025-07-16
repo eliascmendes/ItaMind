@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="./estilos/painelPrincipal.css" />
     <!-- Link dos gráficos (Chart.Js)-->
     <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
   </head>
   <body>
     <!-- Dashboard Container -->
@@ -21,11 +24,11 @@
         <div class="dropdown">
           <button class="dropbtn">
             <i class="bi bi-grid-fill"></i>
-           <!--<img class="botao__menu" src="./assets/menu.png" alt="botao__menu" />-->
+            <!--<img class="botao__menu" src="./assets/menu.png" alt="botao__menu" />-->
           </button>
           <div class="dropdown-content">
             <a href="#previsao">Previsão</a>
-            <a href="#estoque">Estoque</a>
+            <!-- <a href="#estoque">Estoque</a> -->
             <a href="#addDados">Adicionar Dados</a>
             <a href="#cooperadores">Cooperadores</a>
           </div>
@@ -34,8 +37,8 @@
         <nav class="cabecalho__usuario">
           <div class="configuracao">
             <button class="dropbtn">
-             <!--<img class="botao__menu" src="./assets/gear-fill.png" alt="Configuração" />--> 
-                <i class="bi bi-gear-fill"></i>
+              <!--<img class="botao__menu" src="./assets/gear-fill.png" alt="Configuração" />-->
+              <i class="bi bi-gear-fill"></i>
             </button>
             <div class="configuracao-content">
               <a href="Index.html">Sair da conta</a>
@@ -59,7 +62,7 @@
           <div class="widget__data-botao">
             <div class="widget widget__data">
               <h3 class="nome__data">Data</h3>
-              <input class="dia-mes" id="data-selecionada" type="date" value="2025-06-22">
+              <input class="dia-mes" id="data-selecionada" type="date" value="2025-06-22" />
             </div>
             <div class="widget widget__data">
               <h3 class="nome__sku">SKU</h3>
@@ -124,39 +127,6 @@
           </div>
         </div>
       </section>
-      <section id="estoque">
-        <!-- Main Content Área -->
-        <div class="main-content">
-          <!-- Header Section -->
-          <header>
-            <h2>Estoque</h2>
-          </header>
-
-          <!-- Área de Estoque -->
-          <section class="widgets">
-            <!-- Widget Saída -->
-            <div class="widget">
-              <h3>Saída</h3>
-              <p>kg</p>
-            </div>
-            <!-- Widget Entrada -->
-            <div class="widget">
-              <h3>Entrada</h3>
-              <p>kg</p>
-            </div>
-            <!-- Widget Ganho -->
-            <div class="widget">
-              <h3>Ganho</h3>
-              <p>kg</p>
-            </div>
-            <!-- Widget Perda -->
-            <div class="widget">
-              <h3>Perda</h3>
-              <p>kg</p>
-            </div>
-          </section>
-        </div>
-      </section>
       <section id="addDados">
         <!-- Main Content Area -->
         <div class="main-content">
@@ -196,7 +166,6 @@
               <button id="btn-atualizar-dados" class="botao-previsao">Atualizar Dados</button>
             </div>
           </section>
-
         </div>
       </section>
       <section id="cooperadores">
@@ -205,7 +174,7 @@
             <h2 class="palavra-c">Equipe De Desenvolvimento</h2>
           </header>
 
-         <!-- Área de Cooperadores -->
+          <!-- Área de Cooperadores -->
           <section class="cooperadores-grid">
             <!-- Nomes de todos os Colaboradores (Falta o sobrenome de alguns e as fotos) -->
             <!-- Widget Akira -->
@@ -216,21 +185,28 @@
                 class="perfil-link"
               >
                 <img src="./assets/Akira.jpg" alt="Foto de Akira Alcantara" class="widget__foto" />
-                <h3>Akira Alcantara</h3> <p class="funcao-colaborador">Desenvolvedor Front-end e UI/UX Designer</p>
+                <h3>Akira Alcantara</h3>
+                <p class="funcao-colaborador">Desenvolvedor Front-end e UI/UX Designer</p>
               </a>
             </div>
             <!-- Widget André -->
             <div class="widget__cooperadores">
               <a href="https://linkedin.com/in/andrefneves" target="_blank" class="perfil-link">
                 <img src="./assets/André.jpeg" alt="Foto de André Neves" class="widget__foto" />
-                <h3>André Neves</h3> <p class="funcao-colaborador">Product Owner</p>
+                <h3>André Neves</h3>
+                <p class="funcao-colaborador">Product Owner</p>
               </a>
             </div>
             <!-- Widget Beatriz -->
             <div class="widget__cooperadores">
-              <a href="https://www.linkedin.com/in/beatriz-costa-0701a1365" target="_blank" class="perfil-link">
+              <a
+                href="https://www.linkedin.com/in/beatriz-costa-0701a1365"
+                target="_blank"
+                class="perfil-link"
+              >
                 <img src="assets/Beatriz.jpeg" alt="Foto de Beatriz Costa" class="widget__foto" />
-                <h3>Beatriz Costa</h3> <p class="funcao-colaborador">Documentação do projeto</p>
+                <h3>Beatriz Costa</h3>
+                <p class="funcao-colaborador">Documentação do projeto</p>
               </a>
             </div>
 
@@ -238,8 +214,9 @@
 
             <div class="widget__cooperadores">
               <a href="https://linkedin.com/in/eliascmendhes" target="_blank" class="perfil-link">
-                <img src="assets/Elias.jpeg" alt="Foto de Elias Mendes" class="widget__foto" />
-                <h3>Elias Mendes</h3> <p class="funcao-colaborador">Desenvolvedor Back-end</p>
+                <img src="assets/Elias.jpg" alt="Foto de Elias Mendes" class="widget__foto" />
+                <h3>Elias Mendes</h3>
+                <p class="funcao-colaborador">Desenvolvedor Back-end</p>
               </a>
             </div>
 
@@ -248,7 +225,8 @@
             <div class="widget__cooperadores">
               <a href="https://linkedin.com/in/erycktorres/" target="_blank" class="perfil-link">
                 <img src="./assets/Eryck.jpg" alt="Foto de Eryck Torres" class="widget__foto" />
-                <h3>Eryck Torres</h3> <p class="funcao-colaborador">Desenvolvedor Front-end e UI/UX Designer</p>
+                <h3>Eryck Torres</h3>
+                <p class="funcao-colaborador">Desenvolvedor Front-end e UI/UX Designer</p>
               </a>
             </div>
 
@@ -258,11 +236,15 @@
               <a
                 href="https://linkedin.com/in/hevelyn-fernanda-20562331a"
                 target="_blank"
-                class="perfil-link">
-                <img src="./assets/Hevelyn.jpeg"
+                class="perfil-link"
+              >
+                <img
+                  src="./assets/Hevelyn.jpeg"
                   alt="Foto de Hevelyn Fernanda"
-                  class="widget__foto"/>
-                <h3>Hevelyn Fernanda</h3> <p class="funcao-colaborador">Scrum master</p>
+                  class="widget__foto"
+                />
+                <h3>Hevelyn Fernanda</h3>
+                <p class="funcao-colaborador">Scrum master</p>
               </a>
             </div>
 
@@ -272,9 +254,11 @@
               <a
                 href="https://linkedin.com/in/josué-silva-1aaab7364"
                 target="_blank"
-                class="perfil-link">
+                class="perfil-link"
+              >
                 <img src="assets/Josué.jpeg" alt="Foto de Josué Florez" class="widget__foto" />
-                <h3>Josué Florez</h3> <p class="funcao-colaborador">Desenvolvedor Front-end</p>
+                <h3>Josué Florez</h3>
+                <p class="funcao-colaborador">Desenvolvedor Front-end</p>
               </a>
             </div>
 
@@ -284,21 +268,25 @@
               <a
                 href="https://linkedin.com/in/juan-leite-315b1925a"
                 target="_blank"
-                class="perfil-link">
+                class="perfil-link"
+              >
                 <img src="assets/Juan.jpg" alt="Foto de Juan Leite" class="widget__foto" />
-                <h3>Juan Leite</h3> <p class="funcao-colaborador">Desenvolvedor Back-end</p>
+                <h3>Juan Leite</h3>
+                <p class="funcao-colaborador">Desenvolvedor Back-end</p>
               </a>
             </div>
 
             <!-- Widget Karen-->
 
             <div class="widget__cooperadores">
-              <a href="https://www.linkedin.com/in/karen-angelytha-164391243" target="_blank" class="perfil-link">
-                <img
-                  src="assets/Karen.jpeg"
-                  alt="Foto de Karen Angelytha"
-                  class="widget__foto"/>
-                <h3>Karen Angelytha</h3> <p class="funcao-colaborador">Análista de dados</p>
+              <a
+                href="https://www.linkedin.com/in/karen-angelytha-164391243"
+                target="_blank"
+                class="perfil-link"
+              >
+                <img src="assets/Karen.jpeg" alt="Foto de Karen Angelytha" class="widget__foto" />
+                <h3>Karen Angelytha</h3>
+                <p class="funcao-colaborador">Análista de dados</p>
               </a>
             </div>
 
@@ -309,8 +297,10 @@
                 <img
                   src="assets/Thamyli.jpeg"
                   alt="Foto de Thamyli Mykaelli"
-                  class="widget__foto"/>
-                <h3>Thamyli Mykaelli</h3> <p class="funcao-colaborador">Desenvolvedora Front-end</p>
+                  class="widget__foto"
+                />
+                <h3>Thamyli Mykaelli</h3>
+                <p class="funcao-colaborador">Desenvolvedora Front-end</p>
               </a>
             </div>
           </section>
@@ -321,8 +311,12 @@
     <footer class="rodape">
       <p class="rodape__texto">© 2025 - Equipe ItaMind</p>
     </footer>
-   <!--Link para Bootstrap.js-->
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!--Link para Bootstrap.js-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
   </body>
   <!-- Link para agregar funções do Javascript -->
   <script src="dados.js"></script>
