@@ -56,16 +56,16 @@ body{
     background-image: url('../assets/TelaLoginItamind.png');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: left 0% top 0%; /* Alinha o fundo no topo e à esquerda para mostrar o ITAMIND */
+    background-position: left 0% top 0%;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Alinha o conteúdo verticalmente na parte inferior */
-    align-items: flex-start; /* Alinha o conteúdo horizontalmente na parte esquerda */
-    padding: 30px; /* Padding geral para as bordas */
-    padding-left: 50px; /* Mais padding para afastar da borda esquerda */
-    padding-right: 50px; /* Padding para a borda direita */
-    text-align: left; /* Alinha o texto dentro do próprio bloco */
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: left;
 }
 
 .conteudo__titulo {
@@ -100,19 +100,43 @@ body{
     margin-bottom: 15px;
 }
 
-/* Estilo para campos de texto */
+/* NOVO: Estilo para o wrapper de cada input */
+/* Este é o container que envolve o input e o bloco azul */
+.conteudo__input__wrapper {
+    position: relative; /* Essencial para posicionar o pseudo-elemento ::before */
+    width: 100%; /* Garante que o wrapper ocupe a largura total disponível */
+    display: flex; /* Permite que o ::before e o input fiquem lado a lado */
+    align-items: center; /* Alinha o conteúdo verticalmente no centro */
+    border: 2px solid var(--azul-1); /* A borda agora fica no wrapper */
+    border-radius: 8px; /* O arredondamento da borda agora fica no wrapper */
+    background-color: var(--branco-1); /* O fundo branco do campo agora fica no wrapper */
+    /* Este elemento é o que tem a aparência externa do campo */
+}
+
+/* NOVO: Pseudo-elemento para o bloco azul esquerdo */
+/* Este é o "bloco" azul que aparece à esquerda do input */
+.conteudo__input__wrapper::before {
+    content: ''; /* Conteúdo vazio é obrigatório para pseudo-elementos */
+    position: relative; /* Posiciona o bloco azul dentro do fluxo flex do wrapper */
+    width: 20px; /* Largura do bloco azul */
+    height: 100%; /* Ocupa toda a altura do wrapper */
+    background-color: var(--azul-1); /* Cor azul escuro definida pela variável */
+    border-radius: 5px 0 0 5px; /* Arredonda apenas os cantos esquerdo superior e esquerdo inferior */
+}
+
+/* Estilo para o campo de texto (o input real) */
+/* O input agora não tem borda, pois a borda está no wrapper */
 .conteudo__input__aparencia {
-    font-family: var(--fonte-principal);
-    font-size: 1.1em;
-    font-weight: 400;
-    color: var(--azul-1);
-    box-sizing: border-box;
-    border: 2px solid var(--azul-1);
-    width: 100%;
-    height: 50px;
-    border-radius: 8px;
-    padding: 0 15px;
-    background-color: var(--branco-1);
+    border: none; /* REMOVIDO: A borda agora está no .conteudo__input__wrapper */
+    width: calc(100% - 20px); /* Ajusta a largura do input para compensar a largura do bloco azul (20px) */
+    border-radius: 0 8px 8px 0; /* Arredonda apenas os cantos direito superior e direito inferior */
+    padding: 0 15px; /* Mantém o padding interno para o texto */
+    height: 46px; /* Altura do input */
+    background-color: var(--branco-1); /* Fundo branco do input */
+    outline: none; /* Remove o contorno que aparece ao focar no input */
+
+    /* O resto das propriedades como font-family, font-size, font-weight, color etc.
+       permanecem como estavam no seu CSS original para esta classe. */
 }
 
 /* Placeholder style */
@@ -152,23 +176,29 @@ body{
 }
 
 .conteudo__input__opcoes{
+    box-sizing: content-box;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 30px;
     font-family: var(--fonte-principal);
     font-size: smaller;
     color: var(--azul-1);
     text-decoration: none;
+    padding-bottom: 50px;
 }
+
+.conteudo__input__opcoes__link{
+    color: var(--azul-1);
+    text-decoration: none;
+}
+
 
 /* Container dos botões */
 .conteudo__input__botoes {
     display: flex;
-    gap: 20px;
     width: 100%;
     max-width: 350px;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: center;
 }
 
 /* Estilo padrão para os botões */
@@ -179,9 +209,6 @@ body{
     border-radius: 8px; /* Mais arredondado */
     font-size: 1.1em;
     padding: 14px 28px; /* Aumentei o padding para botões maiores e mais clicáveis */
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 45%;
     text-align: center;
     text-decoration: none;
     border: none;
@@ -198,16 +225,6 @@ body{
 
 .conteudo__input__botoes button.conteudo__input__botao:hover {
     background-color: var(--azul-1);
-    transform: translateY(-2px);
-}
-
-/* Estilo específico para o botão "Esqueci a senha" (que é um <a>) */
-.conteudo__input__botoes a.conteudo__input__botao {
-    background-color: var(--azul-1); /* Um azul mais claro para o segundo botão */
-}
-
-.conteudo__input__botoes a.conteudo__input__botao:hover {
-    background-color: var(--azul-2);
     transform: translateY(-2px);
 }
 

@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Itamind</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/Simbolo.png" />
     <!-- Link do Css-->
-    <link rel="stylesheet" href="./estilos/usuario.css" />
+    <link rel="stylesheet" href="./estilos/usuario.css"/>
   </head>
+
   <body>
     <main class="conteudo">
       <div class="conteudo__saudacao">
@@ -16,49 +18,41 @@
 
       <section class="conteudo__formulario">
         <form id="loginForm" class="conteudo__input">
-          <!-- Seção para os campos de login -->
-          <div>
-            <input
-              id="loginEmail"
-              class="conteudo__input__aparencia"
-              type="text"
-              placeholder="LOGIN"
-            />
-            <!-- Campo de entrada para o login -->
+          <div class="conteudo__input__wrapper">
+              <input 
+                  id="loginEmail"
+                  class="conteudo__input__aparencia"
+                  type="text"
+                  placeholder="LOGIN"
+              />
           </div>
-          <div>
-            <input
-              id="loginSenha"
-              class="conteudo__input__aparencia"
-              type="password"
-              placeholder="SENHA"
-            />
-            <!-- Campo de entrada para a senha (alterar type para password por quesito de segurança, mas devo fazer isso quando for arrumar melhor essa área) -->
+
+          <div class="conteudo__input__wrapper">
+              <input
+                  id="loginSenha"
+                  class="conteudo__input__aparencia"
+                  type="password"
+                  placeholder="SENHA"
+              />
           </div>
         </form>
 
-        <div>
-            <label class="conteudo__input__opcoes">
+        <div class="conteudo__input__opcoes">
+            <label>
                 <input type="checkbox">
                 LEMBRAR-ME
             </label>
-            <a class="conteudo__input__opcoes" href="#" >ESQUECI MINHA SENHA</a>
+            <a class="conteudo__input__opcoes__link" href="#" onclick="recuperarSenha()">ESQUECI MINHA SENHA</a>
         </div>
 
         <section class="conteudo__input__botoes">
-          <!-- Seção dos botões abaixo dos campos -->
           <div>
             <button type="submit" form="loginForm" class="conteudo__input__botao">
               <strong>Entrar</strong>
             </button>
-            <!-- Botão de login que redireciona para o painel principal, seria legal adicionar uma opção de senha incorreta e precisar realmente preencher os campos -->
-          </div>
-          <div>
-            <a onclick="recuperarSenha()" class="conteudo__input__botao" href="#"><strong>Esqueci a senha</strong></a>
-            </button>
-            <!-- Link para recuperar a senha, precisa criar uma página para isso -->
-          </div>
-        </section>
+            </div>
+          </section>
+
       </section>
     </main>
 
