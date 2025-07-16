@@ -709,6 +709,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // chamar a função para inicializar o gráfico
   inicializarGraficoBarras()
 })
-document.querySelector('input').onclick = () => {
-  document.body.classList.toggle('dark-mode')
-}
+
