@@ -1,3 +1,6 @@
+/* Importando fontes do Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 /* Reset básico para remover margens, paddings e definir box-sizing */
 *{
     border: 0;
@@ -51,7 +54,7 @@ html{
 /* Estilo base do corpo */
 body{
     background-color: var(--cor-principal);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'DM Sans', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
 }
